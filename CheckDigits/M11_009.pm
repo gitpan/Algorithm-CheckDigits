@@ -87,7 +87,7 @@ __END__
 
 =head1 NAME
 
-CheckDigits::M11_009 - compute check digits method 11-009
+CheckDigits::M11_009 - compute check digits NRIC (SG)
 
 =head1 SYNOPSIS
 

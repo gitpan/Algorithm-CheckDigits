@@ -25,7 +25,7 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = qw( CheckDigits );
 
-our $VERSION = '0.27';
+our $VERSION = '0.29';
 
 my %methods = (
 	'm001'			=> 'Algorithm::CheckDigits::M001',
@@ -78,33 +78,43 @@ my %methods = (
 	'vat_sl'		=> 'Algorithm::CheckDigits::M014',
 	'm015'			=> 'Algorithm::CheckDigits::M015',
 	'pzn'			=> 'Algorithm::CheckDigits::M015',
-	'm016'			=> 'Algorithm::CheckDigits::M016',
-	'pkz'			=> 'Algorithm::CheckDigits::M016',
-	'm017'			=> 'Algorithm::CheckDigits::M017',
-	'cpf'			=> 'Algorithm::CheckDigits::M017',
-	'titulo_eleitor'	=> 'Algorithm::CheckDigits::M017',
-	'm018'			=> 'Algorithm::CheckDigits::M018',
-	'blutbeutel'		=> 'Algorithm::CheckDigits::M018',
-	'bzue_de'		=> 'Algorithm::CheckDigits::M018',
-	'ustid_de'		=> 'Algorithm::CheckDigits::M018',
-	'm019'			=> 'Algorithm::CheckDigits::M019',
-	'ccc_es'		=> 'Algorithm::CheckDigits::M019',
+	'mbase-002'		=> 'Algorithm::CheckDigits::MBase_002',
+	'blutbeutel'		=> 'Algorithm::CheckDigits::MBase_002',
+	'bzue_de'		=> 'Algorithm::CheckDigits::MBase_002',
+	'ustid_de'		=> 'Algorithm::CheckDigits::MBase_002',
+	'vatrn_de'		=> 'Algorithm::CheckDigits::MBase_002',
 	'mbase-003'		=> 'Algorithm::CheckDigits::MBase_003',
 	'sici'			=> 'Algorithm::CheckDigits::MBase_003',
+	'm11-003'		=> 'Algorithm::CheckDigits::M11_003',
+	'pkz'			=> 'Algorithm::CheckDigits::M11_003',
+	'm11-004'		=> 'Algorithm::CheckDigits::M11_004',
+	'cpf'			=> 'Algorithm::CheckDigits::M11_004',
+	'titulo_eleitor'	=> 'Algorithm::CheckDigits::M11_004',
+	'm11-006'		=> 'Algorithm::CheckDigits::M11_006',
+	'ccc_es'		=> 'Algorithm::CheckDigits::M11_006',
 	'm11-007'		=> 'Algorithm::CheckDigits::M11_007',
 	'ustid_fi'		=> 'Algorithm::CheckDigits::M11_007',
+	'vatrn_fi'		=> 'Algorithm::CheckDigits::M11_007',
 	'm11-008'		=> 'Algorithm::CheckDigits::M11_008',
 	'ustid_dk'		=> 'Algorithm::CheckDigits::M11_008',
+	'vatrn_dk'		=> 'Algorithm::CheckDigits::M11_008',
 	'm11-009'		=> 'Algorithm::CheckDigits::M11_009',
 	'nric_sg'		=> 'Algorithm::CheckDigits::M11_009',
 	'm11-010'		=> 'Algorithm::CheckDigits::M11_010',
 	'ahv_ch'		=> 'Algorithm::CheckDigits::M11_010',
 	'm11-011'		=> 'Algorithm::CheckDigits::M11_011',
 	'ustid_nl'		=> 'Algorithm::CheckDigits::M11_011',
+	'vatrn_nl'		=> 'Algorithm::CheckDigits::M11_011',
 	'm11-012'		=> 'Algorithm::CheckDigits::M11_012',
 	'bwpk_de'		=> 'Algorithm::CheckDigits::M11_012',
+	'm11-013'		=> 'Algorithm::CheckDigits::M11_013',
+	'ustid_gr'		=> 'Algorithm::CheckDigits::M11_013',
+	'vatrn_gr'		=> 'Algorithm::CheckDigits::M11_013',
+	'm11-015'		=> 'Algorithm::CheckDigits::M11_015',
+	'esr5_ch'		=> 'Algorithm::CheckDigits::M11_015',
 	'm11-016'		=> 'Algorithm::CheckDigits::M11_016',
 	'ustid_pl'		=> 'Algorithm::CheckDigits::M11_016',
+	'vatrn_pl'		=> 'Algorithm::CheckDigits::M11_016',
 );
 
 sub CheckDigits {

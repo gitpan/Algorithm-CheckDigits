@@ -1,4 +1,4 @@
-package Algorithm::CheckDigits::M019;
+package Algorithm::CheckDigits::M11_015;
 
 use 5.006;
 use strict;
@@ -24,7 +24,7 @@ our @EXPORT_OK = ( 'new', @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = ();
 
-my @weight = ( 6, 3, 7, 9, 10, 5, 8, 4, 2, 1 );
+my @weight = ( 2, 3, 4, 5, 6, 7 );
 
 sub new {
 	my $proto = shift;
@@ -37,58 +37,47 @@ sub new {
 
 sub is_valid {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d{4}-?\d{4})-?(\d\d)-?(\d{10})$/) {
-		return uc($2) eq $self->_compute_checkdigits($1,$3);
+	if ($number =~ /^(\d+)(\d)$/) {
+		return $2 == $self->_compute_checkdigits($1);
 	}
 	return ''
 } # is_valid()
 
 sub complete {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d{4}-?\d{4})[-\s]+(\d{10})$/) {
-		return "$1-"
-		     . $self->_compute_checkdigits($1,$2)
-		     . "-$2";
+	if ($number =~ /^(\d+)$/) {
+		return "$1" . $self->_compute_checkdigits($1);
 	}
 	return '';
 } # complete()
 
 sub basenumber {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d{4}-?\d{4})-?(\d\d)-?(\d{10})$/) {
-		return "$1-  -$3" if ($2 eq $self->_compute_checkdigits($1,$3));
+	if ($number =~ /^(\d+)(\d)$/) {
+		return $1 if ($2 == $self->_compute_checkdigits($1));
 	}
 	return '';
 } # basenumber()
 
 sub checkdigit {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d{4}-?\d{4})-?(\d\d)-?(\d{10})$/) {
-		return $2 if ($2 eq $self->_compute_checkdigits($1,$3));
+	if ($number =~ /^(\d+)(\d)$/) {
+		return $2 if ($2 == $self->_compute_checkdigits($1));
 	}
 	return '';
 } # checkdigit()
 
 sub _compute_checkdigits {
 	my $self    = shift;
-	my $bank    = shift;
-	my $account = shift;
 
-	$bank =~ s/-//g;
-
-	my $calc = sub {
-		my @digits = split(//,shift);
-		my $sum = 0;
-		for (my $i = 0; $i <= $#digits; $i++) {
-			$sum += $weight[$i] * $digits[$#digits - $i];
-		}
-		$sum %= 11;
-		return $sum ? 11 - $sum : 0;
-	};
-	my $first  = $calc->($bank);
-	my $second = $calc->($account);
-
-	return sprintf("%d%d",$first,$second);
+	my @digits = split(//,shift);
+	my $sum = 0;
+	for (my $i = $#digits; $i >= 0; $i--) {
+		$sum += $weight[($#digits - $i) % 6] * $digits[$i];
+	}
+	$sum %= 11;
+	my $retval = (0 == $sum) ? '00' : (11 - $sum);
+	$retval;
 } # _compute_checkdigit()
 
 # Preloaded methods go here.
@@ -98,26 +87,26 @@ __END__
 
 =head1 NAME
 
-CheckDigits::M019 - compute check digits method 019
+CheckDigits::M11_015 - compute check digits for ESR5 (CH)
 
 =head1 SYNOPSIS
 
   use CheckDigits;
 
-  $ccc = CheckDigits('ccc_es');
+  $ustid = CheckDigits('esr5_ch');
 
-  if ($ccc->is_valid('2420-0730-27-0050103552')) {
+  if ($ustid->is_valid('123456786')) {
 	# do something
   }
 
-  $cn = $ccc->complete('2420-0730-  -0050103552');
-  # $cn = '2420-0730-27-0050103552'
+  $cn = $ustid->complete('12345678');
+  # $cn = '123456786'
 
-  $cd = $ccc->checkdigit('2420-0730-27-0050103552');
-  # $cd = '27'
+  $cd = $ustid->checkdigit('123456786');
+  # $cd = '6'
 
-  $bn = $ccc->basenumber('2420-0730-27-0050103552');
-  # $bn = '2420-0730-  -0050103552';
+  $bn = $ustid->basenumber('123456786');
+  # $bn = '12345678';
   
 =head1 DESCRIPTION
 
@@ -127,7 +116,7 @@ CheckDigits::M019 - compute check digits method 019
 
 =item 1
 
-Beginning right all digits are weighted 6,3,7,9,10,5,8,4,2,1.
+Beginning left every digit is weighted with 7,9,10,5,8,4,2.
 
 =item 2
 
@@ -135,15 +124,13 @@ The weighted digits are added.
 
 =item 3
 
-The sum of step 2 is taken modulo 11.
+The sum from step 2 is taken modulo 11.
 
 =item 4
 
-The checkdigit is 11 minus the sum from step 3.
-
-If the difference is 10, the checkdigit is 1.
-
-If the difference is 11, the checkdigit is 0.
+The checkdigit is 11 minus the sum from step 3. Is the difference 10,
+the number won't be taken. If the difference is 11, the checkdigit is
+0.
 
 =back
 

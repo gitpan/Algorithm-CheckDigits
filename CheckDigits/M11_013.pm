@@ -1,4 +1,4 @@
-package Algorithm::CheckDigits::M018;
+package Algorithm::CheckDigits::M11_013;
 
 use 5.006;
 use strict;
@@ -35,56 +35,51 @@ sub new {
 
 sub is_valid {
 	my ($self,$number) = @_;
-	if ($number =~ /^(.+)(.)$/) {
-		return uc($2) eq $self->_compute_checkdigit($1);
+	if ($number =~ /^([0-9]+)(\d)$/) {
+		return $2 == $self->_compute_checkdigits($1);
 	}
 	return ''
 } # is_valid()
 
 sub complete {
 	my ($self,$number) = @_;
-	if ($number =~ /^[ 0-9]+$/) {
-		return  $number . $self->_compute_checkdigit($number);
+	if ($number =~ /^([0-9]+)$/
+	   and (my $cd = $self->_compute_checkdigits($1)) ne '') {
+		return $1 . $cd;
 	}
 	return '';
 } # complete()
 
 sub basenumber {
 	my ($self,$number) = @_;
-	if ($number =~ /^(.+)(.)$/) {
-		return $1 if (uc($2) eq $self->_compute_checkdigit($1));
+	if ($number =~ /^([0-9]+)(\d)$/) {
+		return $1 if ($2 == $self->_compute_checkdigits($1));
 	}
 	return '';
 } # basenumber()
 
 sub checkdigit {
 	my ($self,$number) = @_;
-	if ($number =~ /^(.+)(.)$/) {
-		return $2 if (uc($2) eq $self->_compute_checkdigit($1));
+	if ($number =~ /^([0-9]+)(\d)$/) {
+		return $2 if ($2 == $self->_compute_checkdigits($1));
 	}
 	return '';
 } # checkdigit()
 
-sub _compute_checkdigit {
+sub _compute_checkdigits {
 	my $self   = shift;
 	my $number = shift;
 
-	if ($number =~ /^[ 0-9]+$/) {
+	$number =~ s/\.//g;
 
-		$number =~ s/ //g;
-		my @digits = split(//,$number);
-		my $sum    = 0;
-		my $prod   = 10;
-
-		for (my $i = 0; $i <= $#digits; $i++) {
-
-			$sum  = (($prod + $digits[$i]) % 10) || 10;
-			$prod = (2 * $sum) % 11;
-
-		}
-		return (11 - $prod) % 10;
+	my @digits = split(//,$number);
+	my $len = scalar(@digits);
+	my $sum = 0;
+	for (my $i = $#digits; $i >= 0; $i--) {
+		$sum += 2 ** ($len - $i) * $digits[$i];
 	}
-	return -1;
+	$sum %= 11;
+	return ($sum > 9) ? 0 : $sum;
 } # _compute_checkdigit()
 
 # Preloaded methods go here.
@@ -94,26 +89,26 @@ __END__
 
 =head1 NAME
 
-CheckDigits::M018 - compute check digits method 018
+CheckDigits::M11_013 - compute check digits for VAT Registration Number (GR)
 
 =head1 SYNOPSIS
 
   use CheckDigits;
 
-  $bb = CheckDigits('blutbeutel');
+  $ustid = CheckDigits('ustid_gr');
 
-  if ($bb->is_valid('2761011234567893')) {
+  if ($ustid->is_valid('123456783')) {
 	# do something
   }
 
-  $cn = $bb->complete('276101123456789');
-  # $cn = '2761011234567893'
+  $cn = $ustid->complete('12345678');
+  # $cn = '123456783'
 
-  $cd = $bb->checkdigit('2761011234567893');
+  $cd = $ustid->checkdigit('123456783');
   # $cd = '3'
 
-  $bn = $bb->basenumber('2761011234567893');
-  # $bn = '276101123456789';
+  $bn = $ustid->basenumber('123456783');
+  # $bn = '12345678';
   
 =head1 DESCRIPTION
 
@@ -123,31 +118,24 @@ CheckDigits::M018 - compute check digits method 018
 
 =item 1
 
-Start with values P = 10, S = 0.
+Beginning right with the digit before the checkdigit all digits are
+weighted with 2 ** position. I. e. the last digit is
+multiplied with 2, the next with 4, then 8 and so on.
 
 =item 2
 
-Beginning left you do the following for all digits
-
-=over 4
-
-=item 1
-
-S = (P + digit) modulo 10
-
-=item 2
-
-If S is 0 then S = 10.
+The weighted digits are added.
 
 =item 3
 
-P = (2 * S) modulo 11
+The sum from step 2 is taken modulo 11.
+
+=item 4
+
+If the sum from step 3 is greater than 9, the check sum is 0 else it
+is the sum itself.
 
 =back
-
-=item 3
-
-The check digit is (11 - P) modulo 10.
 
 =head2 METHODS
 
@@ -155,18 +143,19 @@ The check digit is (11 - P) modulo 10.
 
 =item is_valid($number)
 
-Returns true only if C<$number> consists solely of numbers and the last digit
-is a valid check digit according to the algorithm given above.
+Returns true only if C<$number> consists solely of numbers and hyphens
+and the two digits in the middle
+are valid check digits according to the algorithm given above.
 
 Returns false otherwise,
 
 =item complete($number)
 
-The check digit for C<$number> is computed and concatenated to the end
-of C<$number>.
+The check digit for C<$number> is computed and inserted into the
+middle of C<$number>.
 
 Returns the complete number with check digit or '' if C<$number>
-does not consist solely of digits and spaces.
+does not consist solely of digits, hyphens and spaces.
 
 =item basenumber($number)
 
@@ -177,8 +166,8 @@ Return '' otherwise.
 
 =item checkdigit($number)
 
-Returns the checkdigit of C<$number> if C<$number> has a valid check
-digit.
+Returns the check digits of C<$number> if C<$number> has valid check
+digits.
 
 Return '' otherwise.
 
@@ -197,6 +186,5 @@ Mathias Weidner, E<lt>mathias@weidner.in-bad-schmiedeberg.deE<gt>
 L<perl>,
 L<CheckDigits>,
 F<www.pruefziffernberechnung.de>,
-F<www.eurocode.org>.
 
 =cut

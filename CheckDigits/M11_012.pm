@@ -100,7 +100,7 @@ __END__
 
 =head1 NAME
 
-CheckDigits::M11_012 - compute check digits method 11-012
+CheckDigits::M11_012 - compute check digits for Bundeswehrpersonenkennnummer (DE)
 
 =head1 SYNOPSIS
 

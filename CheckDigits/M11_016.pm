@@ -86,7 +86,7 @@ __END__
 
 =head1 NAME
 
-CheckDigits::M11_016 - compute check digits method 11-016
+CheckDigits::M11_016 - compute check digits vor VAT Registration Number (PL)
 
 =head1 SYNOPSIS
 

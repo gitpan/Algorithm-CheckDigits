@@ -86,7 +86,7 @@ __END__
 
 =head1 NAME
 
-CheckDigits::M11_007 - compute check digits method 11-007
+CheckDigits::M11_007 - compute check digits for VAT Registration Number (FI)
 
 =head1 SYNOPSIS
 

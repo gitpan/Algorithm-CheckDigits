@@ -124,7 +124,8 @@ __END__
 
 =head1 NAME
 
-CheckDigits::MBase_003 - compute check digits method Base-003
+CheckDigits::MBase_003 - compute check digits for SICI (Serial Item
+and Contribution Identifier)
 
 =head1 SYNOPSIS
 

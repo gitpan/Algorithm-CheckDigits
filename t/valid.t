@@ -11,8 +11,7 @@ BEGIN {
         do 't/valid.data';
 	plan(tests => ($#testcases + 1) * 5
 	    ,todo => [
-	    	236, 241, 246, 251, 256, 261, 266, 271, 276, 281,
-		286, 291, 296, 301, 306, 
+		166, 171, 176, 181, 186, 191, 196, 201, 206, 211, 216, 221, 226,
 		]
 	    ); 
 };
@@ -21,6 +20,7 @@ use Algorithm::CheckDigits;
 my $checkdigit;
 
 foreach my $tcase (@testcases) {
+#foreach my $tcase ($testcases[$#testcases]) {
 	if ($checkdigit = CheckDigits($tcase->[0])) {
 		my $is_valid = $checkdigit->is_valid($tcase->[1]);
 		ok($is_valid

@@ -83,26 +83,26 @@ __END__
 
 =head1 NAME
 
-CheckDigits::M11_008 - compute check digits method 11-008
+CheckDigits::M11_008 - compute check digits for VAT Registration Number (DK)
 
 =head1 SYNOPSIS
 
   use CheckDigits;
 
-  $ustid = CheckDigits('ustid_fi');
+  $ustid = CheckDigits('ustid_dk');
 
-  if ($ustid->is_valid('13669598')) {
+  if ($ustid->is_valid('13585628')) {
 	# do something
   }
 
-  $cn = $ustid->complete('1366959');
-  # $cn = '13669598'
+  $cn = $ustid->complete('1358562');
+  # $cn = '13585628'
 
-  $cd = $ustid->checkdigit('13669598');
+  $cd = $ustid->checkdigit('13585628');
   # $cd = '8'
 
-  $bn = $ustid->basenumber('13669598');
-  # $bn = '1366959';
+  $bn = $ustid->basenumber('13585628');
+  # $bn = '1358562';
   
 =head1 DESCRIPTION
 

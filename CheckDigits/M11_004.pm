@@ -1,4 +1,4 @@
-package Algorithm::CheckDigits::M016;
+package Algorithm::CheckDigits::M11_004;
 
 use 5.006;
 use strict;
@@ -24,8 +24,6 @@ our @EXPORT_OK = ( 'new', @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = ();
 
-my @weight = ( 4,2,1,6,3,7,9,10,5,8,4,2 );
-
 sub new {
 	my $proto = shift;
 	my $type  = shift;
@@ -37,33 +35,33 @@ sub new {
 
 sub is_valid {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d{11})(\d)$/) {
-		return $2 == $self->_compute_checkdigit($1);
+	if ($number =~ /^([-\d.]+)(\d\d)$/) {
+		return $2 eq $self->_compute_checkdigit($1);
 	}
 	return ''
 } # is_valid()
 
 sub complete {
 	my ($self,$number) = @_;
-	if ($number =~ /^\d{11}$/) {
+	if ($number =~ /^[-\d.]+$/) {
 		my $cd = $self->_compute_checkdigit($number);
-		return  0 > $cd ? '' : $number . $cd;
+		return $number . $cd unless 0 > $cd;
 	}
 	return '';
 } # complete()
 
 sub basenumber {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d{11})(\d)$/) {
-		return $1 if ($2 == $self->_compute_checkdigit($1));
+	if ($number =~ /^([-\d.]+)(\d\d)$/) {
+		return $1 if ($2 eq $self->_compute_checkdigit($1));
 	}
 	return '';
 } # basenumber()
 
 sub checkdigit {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d{11})(\d)$/) {
-		return $2 if ($2 == $self->_compute_checkdigit($1));
+	if ($number =~ /^([-\d.]+)(\d\d)$/) {
+		return $2 if ($2 eq $self->_compute_checkdigit($1));
 	}
 	return '';
 } # checkdigit()
@@ -71,25 +69,35 @@ sub checkdigit {
 sub _compute_checkdigit {
 	my $self   = shift;
 	my $number = shift;
+	my ($cd1,$cd2) = ('','');
 
-	if ($number =~ /^\d{11}$/) {
-
+	my $calc_cd = sub {
+		my $number = shift;
+		my $weight = shift;
 		my @digits = split(//,$number);
 		my $sum    = 0;
-		my $cf     = 0;
-
 		for (my $i = 0; $i <= $#digits; $i++) {
-
-			$sum += $weight[$i] * $digits[$i];
-
-		}
+			$sum += $weight * $digits[$i];
+			--$weight;
+		};
 		$sum %= 11;
-		for (my $i = 0; $i <= 9; $i++) {
-			return $i
-				if (10 == ($sum + $weight[11] * $i) % 11);
-		}
+		return 0 if (2 > $sum);
+		return 11 - $sum;
+	};
+
+	return -1 unless ($number =~ /^[-\d.]+$/);
+
+	$number =~ s/[-.]//g;
+	if ('cpf' eq $self->{type}) {
+		return -1 unless length($number) == 9;
+		$cd1 = $calc_cd->($number,10);
+		$cd2 = $calc_cd->($number . $cd1,11);
+	} elsif ('titulo_eleitor' eq $self->{type}) {
+		$number = substr("00000000000" . $number, -10);
+		$cd1 = $calc_cd->(substr($number,0,8),9);
+		$cd2 = $calc_cd->(substr($number,-2) . $cd1,4);
 	}
-	return -1;
+	return $cd1 . $cd2;
 } # _compute_checkdigit()
 
 # Preloaded methods go here.
@@ -99,26 +107,26 @@ __END__
 
 =head1 NAME
 
-CheckDigits::M016 - compute check digits method 016
+CheckDigits::M11_004 - compute check digits for CPF (BR), Título Eleitoral (BR)
 
 =head1 SYNOPSIS
 
   use CheckDigits;
 
-  $pkz = CheckDigits('pkz');
+  $cpf = CheckDigits('cpf');
 
-  if ($pkz->is_valid('150765400354')) {
+  if ($cpf->is_valid('043.033.407-90')) {
 	# do something
   }
 
-  $cn = $pkz->complete('15076540035');
-  # $cn = '150765400354'
+  $cn = $cpf->complete('043.033.407-');
+  # $cn = '043.033.407-90'
 
-  $cd = $pkz->checkdigit('150765400354');
-  # $cd = '4'
+  $cd = $cpf->checkdigit('043.033.407-90');
+  # $cd = '90'
 
-  $bn = $pkz->basenumber('150765400354');
-  # $bn = '150765400354'
+  $bn = $cpf->basenumber('043.033.407-90');
+  # $bn = '043.033.407-'
   
 =head1 DESCRIPTION
 
@@ -128,43 +136,27 @@ CheckDigits::M016 - compute check digits method 016
 
 =item 1
 
-The checkdigit is set to 0.
+From left to right all digits are multiplied with their position
+in the sequence.
 
 =item 2
 
-From right to left the digits are weighted (multiplied) with
-2,4,8,5,10,9,7,3,6,1,2,4.
+The sum of all products is computed.
 
 =item 3
 
-The products are added.
+The sum of step 2 is taken modulo 11.
+
+a) If the result is 0 or 1 the checkdigit is 0
+
+b) otherwise the checkdigit is 11 minus the result.
 
 =item 4
 
-The sum of step 3 is taken modulo 11.
-
-=item 5
-
-The value of step 4 is added to a multiple (0..9) of the weight of the
-checkdigit (2).
-
-=item 6
-
-The sum of step 5 is taken modulo 11.
-
-=item 7
-
-The checkdigit is the multiple of the weight of the checkdigit where
-the value of step 6 equals 10.
-
-=item 8
-
-If there can't be reached a value of 10 in step 6, the number cannot
-be taken as a PKZ.
+The first checkdigit is appended to the number and step 1 to 3 are
+repeated.
 
 =back
-
-To validate a PKZ apply steps 2 to 4 to the complete number.
 
 =head2 METHODS
 

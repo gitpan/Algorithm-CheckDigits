@@ -1,4 +1,4 @@
-package Algorithm::CheckDigits::M017;
+package Algorithm::CheckDigits::MBase_002;
 
 use 5.006;
 use strict;
@@ -35,33 +35,32 @@ sub new {
 
 sub is_valid {
 	my ($self,$number) = @_;
-	if ($number =~ /^([-\d.]+)(\d\d)$/) {
-		return $2 eq $self->_compute_checkdigit($1);
+	if ($number =~ /^(.+)(.)$/) {
+		return uc($2) eq $self->_compute_checkdigit($1);
 	}
 	return ''
 } # is_valid()
 
 sub complete {
 	my ($self,$number) = @_;
-	if ($number =~ /^[-\d.]+$/) {
-		my $cd = $self->_compute_checkdigit($number);
-		return $number . $cd unless 0 > $cd;
+	if ($number =~ /^[ 0-9]+$/) {
+		return  $number . $self->_compute_checkdigit($number);
 	}
 	return '';
 } # complete()
 
 sub basenumber {
 	my ($self,$number) = @_;
-	if ($number =~ /^([-\d.]+)(\d\d)$/) {
-		return $1 if ($2 eq $self->_compute_checkdigit($1));
+	if ($number =~ /^(.+)(.)$/) {
+		return $1 if (uc($2) eq $self->_compute_checkdigit($1));
 	}
 	return '';
 } # basenumber()
 
 sub checkdigit {
 	my ($self,$number) = @_;
-	if ($number =~ /^([-\d.]+)(\d\d)$/) {
-		return $2 if ($2 eq $self->_compute_checkdigit($1));
+	if ($number =~ /^(.+)(.)$/) {
+		return $2 if (uc($2) eq $self->_compute_checkdigit($1));
 	}
 	return '';
 } # checkdigit()
@@ -69,35 +68,23 @@ sub checkdigit {
 sub _compute_checkdigit {
 	my $self   = shift;
 	my $number = shift;
-	my ($cd1,$cd2) = ('','');
 
-	my $calc_cd = sub {
-		my $number = shift;
-		my $weight = shift;
+	if ($number =~ /^[ 0-9]+$/) {
+
+		$number =~ s/ //g;
 		my @digits = split(//,$number);
 		my $sum    = 0;
+		my $prod   = 10;
+
 		for (my $i = 0; $i <= $#digits; $i++) {
-			$sum += $weight * $digits[$i];
-			--$weight;
-		};
-		$sum %= 11;
-		return 0 if (2 > $sum);
-		return 11 - $sum;
-	};
 
-	return -1 unless ($number =~ /^[-\d.]+$/);
+			$sum  = (($prod + $digits[$i]) % 10) || 10;
+			$prod = (2 * $sum) % 11;
 
-	$number =~ s/[-.]//g;
-	if ('cpf' eq $self->{type}) {
-		return -1 unless length($number) == 9;
-		$cd1 = $calc_cd->($number,10);
-		$cd2 = $calc_cd->($number . $cd1,11);
-	} elsif ('titulo_eleitor' eq $self->{type}) {
-		$number = substr("00000000000" . $number, -10);
-		$cd1 = $calc_cd->(substr($number,0,8),9);
-		$cd2 = $calc_cd->(substr($number,-2) . $cd1,4);
+		}
+		return (11 - $prod) % 10;
 	}
-	return $cd1 . $cd2;
+	return -1;
 } # _compute_checkdigit()
 
 # Preloaded methods go here.
@@ -107,26 +94,27 @@ __END__
 
 =head1 NAME
 
-CheckDigits::M017 - compute check digits method 017
+CheckDigits::MBase_002 - compute check digits for blood bags (DE), BZÜ
+(DE), VAT Registration Number (DE)
 
 =head1 SYNOPSIS
 
   use CheckDigits;
 
-  $cpf = CheckDigits('cpf');
+  $bb = CheckDigits('blutbeutel');
 
-  if ($cpf->is_valid('043.033.407-90')) {
+  if ($bb->is_valid('2761011234567893')) {
 	# do something
   }
 
-  $cn = $cpf->complete('043.033.407-');
-  # $cn = '043.033.407-90'
+  $cn = $bb->complete('276101123456789');
+  # $cn = '2761011234567893'
 
-  $cd = $cpf->checkdigit('043.033.407-90');
-  # $cd = '90'
+  $cd = $bb->checkdigit('2761011234567893');
+  # $cd = '3'
 
-  $bn = $cpf->basenumber('043.033.407-90');
-  # $bn = '043.033.407-'
+  $bn = $bb->basenumber('2761011234567893');
+  # $bn = '276101123456789';
   
 =head1 DESCRIPTION
 
@@ -136,27 +124,31 @@ CheckDigits::M017 - compute check digits method 017
 
 =item 1
 
-From left to right all digits are multiplied with their position
-in the sequence.
+Start with values P = 10, S = 0.
 
 =item 2
 
-The sum of all products is computed.
+Beginning left you do the following for all digits
+
+=over 4
+
+=item 1
+
+S = (P + digit) modulo 10
+
+=item 2
+
+If S is 0 then S = 10.
 
 =item 3
 
-The sum of step 2 is taken modulo 11.
-
-a) If the result is 0 or 1 the checkdigit is 0
-
-b) otherwise the checkdigit is 11 minus the result.
-
-=item 4
-
-The first checkdigit is appended to the number and step 1 to 3 are
-repeated.
+P = (2 * S) modulo 11
 
 =back
+
+=item 3
+
+The check digit is (11 - P) modulo 10.
 
 =head2 METHODS
 
@@ -205,6 +197,7 @@ Mathias Weidner, E<lt>mathias@weidner.in-bad-schmiedeberg.deE<gt>
 
 L<perl>,
 L<CheckDigits>,
-F<www.pruefziffernberechnung.de>.
+F<www.pruefziffernberechnung.de>,
+F<www.eurocode.org>.
 
 =cut

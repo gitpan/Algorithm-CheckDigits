@@ -89,7 +89,7 @@ __END__
 
 =head1 NAME
 
-CheckDigits::M11_010 - compute check digits method 11-010
+CheckDigits::M11_010 - compute check digits AHV number (CH)
 
 =head1 SYNOPSIS
 

@@ -1,5 +1,10 @@
 Revision history for Perl extension CheckDigits.
 
+0.29  Wed, 05 May 2004 23:00:26 +0200
+	- Method 11-013 (vatrn_gr), 11-015 (esr5_ch) implemented
+	- Renamed methods 016,017,018,019
+	- Changed man pages (synopsis) for some methods
+
 0.27  Wed, 28 Apr 2004 23:22:41 +0200
 	- Method 11-012 implemented
 	- Man page in CheckDigits.pm changed
