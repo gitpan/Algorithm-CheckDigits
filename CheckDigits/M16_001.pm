@@ -1,4 +1,4 @@
-package Algorithm::CheckDigits::M015;
+package Algorithm::CheckDigits::M16_001;
 
 use 5.006;
 use strict;
@@ -35,24 +35,23 @@ sub new {
 
 sub is_valid {
 	my ($self,$number) = @_;
-	if ($number =~ /^(.+)(.)$/) {
-		return uc($2) eq $self->_compute_checkdigit($1);
+	if ($number =~ /^([0-9a-f]{15})([0-9a-f])$/i) {
+		return $2 eq $self->_compute_checkdigit($1);
 	}
 	return ''
 } # is_valid()
 
 sub complete {
 	my ($self,$number) = @_;
-	if ($number =~ /^[0-9]+$/) {
-		my $cd = $self->_compute_checkdigit($number);
-		return $number . $cd unless 0 > $cd;
+	if ($number =~ /^[0-9a-f]{15}$/i) {
+		return $number . $self->_compute_checkdigit($number);
 	}
 	return '';
 } # complete()
 
 sub basenumber {
 	my ($self,$number) = @_;
-	if ($number =~ /^(.+)(.)$/) {
+	if ($number =~ /^([0-9a-f]{15})([0-9a-f])$/i) {
 		return $1 if (uc($2) eq $self->_compute_checkdigit($1));
 	}
 	return '';
@@ -60,7 +59,7 @@ sub basenumber {
 
 sub checkdigit {
 	my ($self,$number) = @_;
-	if ($number =~ /^(.+)(.)$/) {
+	if ($number =~ /^([0-9a-f]{15})([0-9a-f])$/i) {
 		return $2 if (uc($2) eq $self->_compute_checkdigit($1));
 	}
 	return '';
@@ -70,21 +69,21 @@ sub _compute_checkdigit {
 	my $self   = shift;
 	my $number = shift;
 
-	if ($number =~ /^[-0-9]+$/) {
+	if ($number =~ /^[0-9a-f]{15}$/i) {
+		my ($a,$b,$c);
 
-		$number =~ s/-//g;
 		my @digits = split(//,$number);
-		my $sum    = 0;
-		my $weight = 2;
+		$a         = 16;
 
 		for (my $i = 0; $i <= $#digits; $i++) {
 
-			$sum += $weight * $digits[$i];
-			++$weight;
+			$b = ($a % 17) + hex($digits[$i]);
+			$c = $b % 16;
+			$c = 16 unless ($c);
+			$a = 2 * $c;
 
 		}
-		$sum %= 11;
-		return 10 == $sum ? -1 : $sum;
+		return sprintf("%X",(17 - ($a % 17)) % 16);
 	}
 	return -1;
 } # _compute_checkdigit()
@@ -96,26 +95,26 @@ __END__
 
 =head1 NAME
 
-CheckDigits::M015 - compute check digits method 015
+CheckDigits::M16_001 - compute check digits for ISAN
 
 =head1 SYNOPSIS
 
   use CheckDigits;
 
-  $pzn = CheckDigits('pzn');
+  $isan = CheckDigits('isan');
 
-  if ($pzn->is_valid('4877800')) {
+  if ($isan->is_valid('123A567B8912E01A')) {
 	# do something
   }
 
-  $cn = $pzn->complete('487780');
-  # $cn = '4877800'
+  $cn = $isan->complete('123A567B8912E01');
+  # $cn = '123A567B8912E01A'
 
-  $cd = $pzn->checkdigit('4877800');
-  # $cd = '0'
+  $cd = $isan->checkdigit('123A567B8912E01A');
+  # $cd = '4'
 
-  $bn = $pzn->basenumber('4877800');
-  # $bn = '487780'
+  $bn = $isan->basenumber('123A567B8912E01A');
+  # $bn = '123A567B8912E01'
   
 =head1 DESCRIPTION
 
@@ -125,22 +124,26 @@ CheckDigits::M015 - compute check digits method 015
 
 =item 1
 
-From left to right beginning with the first position all digits are
-multiplied with 2,3,4,...
+C<a(1) = 16>
+
+C<b(i) = a(i) % 17 +d(i)>, where C<d(i)> is the decimal value of the
+hexdigit at position I<i>.
+
+C<c(i) = b(i) % 16>
+
+C<a(i) = c(i-1) * 2>, for I<i> greater than 1
 
 =item 2
 
-The sum of all products is computed.
+Beginning left for each I<i> = 1..16, C<a>, C<b>, C<c> are computed.
 
 =item 3
 
-The checkdigit ist the sum of step 2 taken modulo 11.
+The check digit is the value for C<d(16)> where C<c(16)> equals 1.
 
 =item 4
 
-If the checkdigit is '10' the whole number is not taken as a PZN.
-
-=over 8
+The check digit is appended as hexadecimal value to the number.
 
 =back
 

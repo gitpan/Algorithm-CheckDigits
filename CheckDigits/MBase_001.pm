@@ -1,4 +1,4 @@
-package Algorithm::CheckDigits::M012;
+package Algorithm::CheckDigits::MBase_001;
 
 use 5.006;
 use strict;
@@ -24,8 +24,6 @@ our @EXPORT_OK = ( 'new', @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = ();
 
-my @weight = ( 1,3,1,7,3,9,1 );
-
 sub new {
 	my $proto = shift;
 	my $type  = shift;
@@ -37,7 +35,7 @@ sub new {
 
 sub is_valid {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d{6})(\d)$/) {
+	if ($number =~ /^(\d+)(\d)$/) {
 		return $2 == $self->_compute_checkdigit($1);
 	}
 	return ''
@@ -45,7 +43,7 @@ sub is_valid {
 
 sub complete {
 	my ($self,$number) = @_;
-	if ($number =~ /^\d{6}$/) {
+	if ($number =~ /^\d+$/) {
 		return  $number . $self->_compute_checkdigit($number);
 	}
 	return '';
@@ -53,7 +51,7 @@ sub complete {
 
 sub basenumber {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d{6})(\d)$/) {
+	if ($number =~ /^(\d+)(\d)$/) {
 		return $1 if ($2 == $self->_compute_checkdigit($1));
 	}
 	return '';
@@ -61,7 +59,7 @@ sub basenumber {
 
 sub checkdigit {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d{6})(\d)$/) {
+	if ($number =~ /^(\d+)(\d)$/) {
 		return $2 if ($2 == $self->_compute_checkdigit($1));
 	}
 	return '';
@@ -71,15 +69,20 @@ sub _compute_checkdigit {
 	my $self   = shift;
 	my $number = shift;
 
-	if ($number =~ /^\d{6}$/) {
+	if ($number =~ /^\d+$/) {
 
 		my @digits = split(//,$number);
 		my $sum    = 0;
+		my $even   = 0;
 
 		for (my $i = 0; $i <= $#digits; $i++) {
 
-			$sum += $weight[$i] * $digits[$i];
-
+			if ($even) {
+				$sum += $digits[$i];
+			} else {
+				$sum += 3 * $digits[$i];
+			}
+			$even = not $even;
 		}
 		return (10 - ($sum % 10) % 10);
 	}
@@ -93,26 +96,26 @@ __END__
 
 =head1 NAME
 
-CheckDigits::M012 - compute check digits method 012
+CheckDigits::MBase_001 - compute check digits for UPC (US)
 
 =head1 SYNOPSIS
 
   use CheckDigits;
 
-  $sedol = CheckDigits('sedol');
+  $rv = CheckDigits('upc');
 
-  if ($sedol->is_valid('0123457')) {
+  if ($rv->is_valid('012345678905')) {
 	# do something
   }
 
-  $cn = $sedol->complete('012345');
-  # $cn = '0123457'
+  $cn = $rv->complete('01234567890');
+  # $cn = '012345678905'
 
-  $cd = $sedol->checkdigit('0123457');
-  # $cd = '7'
+  $cd = $rv->checkdigit('012345678905');
+  # $cd = '5'
 
-  $bn = $sedol->basenumber('0123457');
-  # $bn = '012345'
+  $bn = $rv->basenumber('012345678905');
+  # $bn = '01234567890'
   
 =head1 DESCRIPTION
 
@@ -122,17 +125,24 @@ CheckDigits::M012 - compute check digits method 012
 
 =item 1
 
-Beginning left all numbers are weighted with 1,3,1,7,3,9 and 1
-(checkdigit)
+Add all digits in odd-numbered positions.
 
 =item 2
 
-The sum of all products is computed.
+Multiply the sum from step 1 with 3.
 
 =item 3
 
-The check digit is the difference of the sum from step 3 to the next
-multiple of 10.
+Add all digits in even-numbered positions.
+
+=item 4
+
+Add the product from step 2 and the sum from step 3.
+
+=item 5
+
+If the sum from step 4 is 0 modulo 10, the check digit is 0. Else the
+check digit is 10 minus the sum from step 4 taken modulo 10.
 
 =back
 
@@ -183,6 +193,8 @@ Mathias Weidner, E<lt>mathias@weidner.in-bad-schmiedeberg.deE<gt>
 
 L<perl>,
 L<CheckDigits>,
-F<www.pruefziffernberechnung.de>.
+F<www.pruefziffernberechnung.de>,
+F<www.export911.com/e911/coding/upcChar.htm>,
+F<www.adams1.com/pub/russadam/upccode.html>.
 
 =cut

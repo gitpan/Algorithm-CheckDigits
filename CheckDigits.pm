@@ -25,7 +25,7 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = qw( CheckDigits );
 
-our $VERSION = '0.29';
+our $VERSION = '0.30';
 
 my %methods = (
 	'm001'			=> 'Algorithm::CheckDigits::M001',
@@ -62,22 +62,8 @@ my %methods = (
 	'identcode_dp'		=> 'Algorithm::CheckDigits::M009',
 	'm010'			=> 'Algorithm::CheckDigits::M010',
 	'rentenversicherung'	=> 'Algorithm::CheckDigits::M010',
-	'm011'			=> 'Algorithm::CheckDigits::M011',
-	'upc'			=> 'Algorithm::CheckDigits::M011',
-	'm012'			=> 'Algorithm::CheckDigits::M012',
-	'sedol'			=> 'Algorithm::CheckDigits::M012',
-	'm013'			=> 'Algorithm::CheckDigits::M013',
-	'postcheckkonti'	=> 'Algorithm::CheckDigits::M013',
-	'm014'			=> 'Algorithm::CheckDigits::M014',
-	'isbn'			=> 'Algorithm::CheckDigits::M014',
-	'issn'			=> 'Algorithm::CheckDigits::M014',
-	'ustid_pt'		=> 'Algorithm::CheckDigits::M014',
-	'hkid'			=> 'Algorithm::CheckDigits::M014',
-	'wagonnr_br'		=> 'Algorithm::CheckDigits::M014',
-	'nhs_gb'		=> 'Algorithm::CheckDigits::M014',
-	'vat_sl'		=> 'Algorithm::CheckDigits::M014',
-	'm015'			=> 'Algorithm::CheckDigits::M015',
-	'pzn'			=> 'Algorithm::CheckDigits::M015',
+	'mbase-001'		=> 'Algorithm::CheckDigits::MBase_001',
+	'upc'			=> 'Algorithm::CheckDigits::MBase_001',
 	'mbase-002'		=> 'Algorithm::CheckDigits::MBase_002',
 	'blutbeutel'		=> 'Algorithm::CheckDigits::MBase_002',
 	'bzue_de'		=> 'Algorithm::CheckDigits::MBase_002',
@@ -85,6 +71,20 @@ my %methods = (
 	'vatrn_de'		=> 'Algorithm::CheckDigits::MBase_002',
 	'mbase-003'		=> 'Algorithm::CheckDigits::MBase_003',
 	'sici'			=> 'Algorithm::CheckDigits::MBase_003',
+	'm10-008'		=> 'Algorithm::CheckDigits::M10_008',
+	'sedol'			=> 'Algorithm::CheckDigits::M10_008',
+	'm10-010'		=> 'Algorithm::CheckDigits::M10_010',
+	'postcheckkonti'	=> 'Algorithm::CheckDigits::M10_010',
+	'm11-001'		=> 'Algorithm::CheckDigits::M11_001',
+	'isbn'			=> 'Algorithm::CheckDigits::M11_001',
+	'issn'			=> 'Algorithm::CheckDigits::M11_001',
+	'ustid_pt'		=> 'Algorithm::CheckDigits::M11_001',
+	'hkid'			=> 'Algorithm::CheckDigits::M11_001',
+	'wagonnr_br'		=> 'Algorithm::CheckDigits::M11_001',
+	'nhs_gb'		=> 'Algorithm::CheckDigits::M11_001',
+	'vat_sl'		=> 'Algorithm::CheckDigits::M11_001',
+	'm11-002'		=> 'Algorithm::CheckDigits::M11_002',
+	'pzn'			=> 'Algorithm::CheckDigits::M11_002',
 	'm11-003'		=> 'Algorithm::CheckDigits::M11_003',
 	'pkz'			=> 'Algorithm::CheckDigits::M11_003',
 	'm11-004'		=> 'Algorithm::CheckDigits::M11_004',
@@ -115,6 +115,8 @@ my %methods = (
 	'm11-016'		=> 'Algorithm::CheckDigits::M11_016',
 	'ustid_pl'		=> 'Algorithm::CheckDigits::M11_016',
 	'vatrn_pl'		=> 'Algorithm::CheckDigits::M11_016',
+	'm16-001'		=> 'Algorithm::CheckDigits::M16_001',
+	'isan'			=> 'Algorithm::CheckDigits::M16_001',
 );
 
 sub CheckDigits {
@@ -183,11 +185,11 @@ CheckDigits - Perl extension to generate and test check digits
   
   Algorithm::CheckDigits->method_list();
 
-=head1 DESCRIPTION
+=head1 ABSTRACT
 
 This module provides a number of methods to test and generate check
 digits. For more information have a look at the web site
-F<www.pruefziffernberechnung.de>.
+F<www.pruefziffernberechnung.de> (german).
 
 =head2 CHECK SUM METHODS
 
@@ -312,13 +314,20 @@ See L<Algorithm::CheckDigits::M11_016>.
 
 None by default.
 
-=head1 AUTHOR
-
-Mathias Weidner, E<lt>mathias@weidner.in-bad-schmiedeberg.deE<gt>
-
 =head1 SEE ALSO
 
 L<perl>,
 F<www.pruefziffernberechnung.de>.
+
+=head1 AUTHOR
+
+Mathias Weidner, E<lt>mathias@weidner.in-bad-schmiedeberg.deE<gt>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2004 by Mathias Weidner
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
 
 =cut

@@ -1,4 +1,4 @@
-package Algorithm::CheckDigits::M014;
+package Algorithm::CheckDigits::M11_002;
 
 use 5.006;
 use strict;
@@ -24,17 +24,6 @@ our @EXPORT_OK = ( 'new', @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = ();
 
-my $cd = {
-	'isbn'		=> [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'X', 0 ],
-	'ustid_pt'	=> [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,  0,  0 ],
-	'hkid'		=> [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 0 ],
-	'wagonnr_br'	=> [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,  0,  1 ],
-	'nhs_gb'	=> [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1,  0 ],
-	'vat_sl'	=> [ 1, 0, 2, 3, 4, 5, 6, 7, 8, 9,  0, -1 ], # ?
-};
-
-$cd->{'issn'} = $cd->{'isbn'};
-
 sub new {
 	my $proto = shift;
 	my $type  = shift;
@@ -54,8 +43,9 @@ sub is_valid {
 
 sub complete {
 	my ($self,$number) = @_;
-	if ($number =~ /^[-0-9A-Za-z]+$/) {
-		return  $number . $self->_compute_checkdigit($number);
+	if ($number =~ /^[0-9]+$/) {
+		my $cd = $self->_compute_checkdigit($number);
+		return $number . $cd unless 0 > $cd;
 	}
 	return '';
 } # complete()
@@ -80,23 +70,21 @@ sub _compute_checkdigit {
 	my $self   = shift;
 	my $number = shift;
 
-	if ($number =~ /^[-0-9A-Za-z]+$/) {
+	if ($number =~ /^[-0-9]+$/) {
 
 		$number =~ s/-//g;
 		my @digits = split(//,$number);
 		my $sum    = 0;
 		my $weight = 2;
 
-		for (my $i = $#digits; $i >= 0; $i--) {
+		for (my $i = 0; $i <= $#digits; $i++) {
 
-			$digits[$i] = 1 + ord(uc($digits[$i])) - ord('A')
-				if ($digits[$i] =~ /[A-Z]/i);
 			$sum += $weight * $digits[$i];
 			++$weight;
 
 		}
 		$sum %= 11;
-		return $cd->{$self->{type}}[11-$sum] if ($cd->{$self->{type}});
+		return 10 == $sum ? -1 : $sum;
 	}
 	return -1;
 } # _compute_checkdigit()
@@ -108,26 +96,26 @@ __END__
 
 =head1 NAME
 
-CheckDigits::M014 - compute check digits method 014
+CheckDigits::M11_002 - compute check digits for PZN (DE)
 
 =head1 SYNOPSIS
 
   use CheckDigits;
 
-  $isbn = CheckDigits('isbn');
+  $pzn = CheckDigits('pzn');
 
-  if ($isbn->is_valid('3-88229-192-3')) {
+  if ($pzn->is_valid('4877800')) {
 	# do something
   }
 
-  $cn = $isbn->complete('3-88229-192-');
-  # $cn = '3-88229-192-3'
+  $cn = $pzn->complete('487780');
+  # $cn = '4877800'
 
-  $cd = $isbn->checkdigit('3-88229-192-3');
-  # $cd = '3'
+  $cd = $pzn->checkdigit('4877800');
+  # $cd = '0'
 
-  $bn = $isbn->basenumber('3-88229-192-3');
-  # $bn = '3-88229-192-'
+  $bn = $pzn->basenumber('4877800');
+  # $bn = '487780'
   
 =head1 DESCRIPTION
 
@@ -137,12 +125,8 @@ CheckDigits::M014 - compute check digits method 014
 
 =item 1
 
-The sequence of digits is processed right to left.
-Every digit is multiplied with their position in the sequence (i.e.
-the digit left to the check digit has the weight 2 then 3 etc.).
-
-With a Hongkong ID (hkid) the leftmost char is replaced with its
-position in the alphabet and then multiplied with 8 (its weight).
+From left to right beginning with the first position all digits are
+multiplied with 2,3,4,...
 
 =item 2
 
@@ -150,46 +134,13 @@ The sum of all products is computed.
 
 =item 3
 
-The sum of step 2 is taken modulo 11.
+The checkdigit ist the sum of step 2 taken modulo 11.
 
 =item 4
 
-The checkdigit is the difference of the sum from step 3 to eleven
-under the following conditions:
+If the checkdigit is '10' the whole number is not taken as a PZN.
 
 =over 8
-
-=item isbn,issn
-
-If the difference is 10, the check digit is 'X'.
-
-If the difference is 11, the check digit is 0.
-
-=item ustid_pt
-
-If the difference is greater then 9, the check digit is '0'.
-
-=item hkid
-
-If the difference is 10, the check digit is 'A'.
-
-If the difference is 11, the check digit is 0.
-
-=item wagonnr_br
-
-If the difference is 10, the check digit is 0.
-
-If the difference is 11, the check digit is 1.
-
-=item nhs_gb
-
-If the difference is 10, the number would not be taken.
-
-If the difference is 11, the check digit is 0.
-
-=item vat_sl
-
-This is a little bit unclear, don't trust on the method for this type.
 
 =back
 

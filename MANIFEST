@@ -9,11 +9,10 @@ CheckDigits/M007.pm
 CheckDigits/M008.pm
 CheckDigits/M009.pm
 CheckDigits/M010.pm
-CheckDigits/M011.pm
-CheckDigits/M012.pm
-CheckDigits/M013.pm
-CheckDigits/M014.pm
-CheckDigits/M015.pm
+CheckDigits/M10_008.pm
+CheckDigits/M10_010.pm
+CheckDigits/M11_001.pm
+CheckDigits/M11_002.pm
 CheckDigits/M11_003.pm
 CheckDigits/M11_004.pm
 CheckDigits/M11_006.pm
@@ -26,6 +25,8 @@ CheckDigits/M11_012.pm
 CheckDigits/M11_013.pm
 CheckDigits/M11_015.pm
 CheckDigits/M11_016.pm
+CheckDigits/M16_001.pm
+CheckDigits/MBase_001.pm
 CheckDigits/MBase_002.pm
 CheckDigits/MBase_003.pm
 CheckDigits.pm

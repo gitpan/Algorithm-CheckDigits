@@ -1,4 +1,4 @@
-package Algorithm::CheckDigits::M013;
+package Algorithm::CheckDigits::M10_008;
 
 use 5.006;
 use strict;
@@ -24,7 +24,7 @@ our @EXPORT_OK = ( 'new', @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = ();
 
-my @items = ( 0,9,4,6,8,2,7,1,3,5 );
+my @weight = ( 1,3,1,7,3,9,1 );
 
 sub new {
 	my $proto = shift;
@@ -37,7 +37,7 @@ sub new {
 
 sub is_valid {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d\d-?\d{8})-?(\d)$/) {
+	if ($number =~ /^(\d{6})(\d)$/) {
 		return $2 == $self->_compute_checkdigit($1);
 	}
 	return ''
@@ -45,7 +45,7 @@ sub is_valid {
 
 sub complete {
 	my ($self,$number) = @_;
-	if ($number =~ /^\d\d-?\d{8}-?$/) {
+	if ($number =~ /^\d{6}$/) {
 		return  $number . $self->_compute_checkdigit($number);
 	}
 	return '';
@@ -53,7 +53,7 @@ sub complete {
 
 sub basenumber {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d\d-?\d{8}-?)(\d)$/) {
+	if ($number =~ /^(\d{6})(\d)$/) {
 		return $1 if ($2 == $self->_compute_checkdigit($1));
 	}
 	return '';
@@ -61,7 +61,7 @@ sub basenumber {
 
 sub checkdigit {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d\d-?\d{8})-?(\d)$/) {
+	if ($number =~ /^(\d{6})(\d)$/) {
 		return $2 if ($2 == $self->_compute_checkdigit($1));
 	}
 	return '';
@@ -71,19 +71,17 @@ sub _compute_checkdigit {
 	my $self   = shift;
 	my $number = shift;
 
-	if ($number =~ /^\d\d-?\d{8}-?$/) {
+	if ($number =~ /^\d{6}$/) {
 
-		$number =~ s/-//g;
 		my @digits = split(//,$number);
 		my $sum    = 0;
-		my $cf     = 0;
 
 		for (my $i = 0; $i <= $#digits; $i++) {
 
-			$cf = $items[($digits[$i] + $cf) % 10];
+			$sum += $weight[$i] * $digits[$i];
 
 		}
-		return (10 - $cf) % 10;
+		return (10 - ($sum % 10) % 10);
 	}
 	return -1;
 } # _compute_checkdigit()
@@ -95,26 +93,26 @@ __END__
 
 =head1 NAME
 
-CheckDigits::M013 - compute check digits method 013
+CheckDigits::M10_008 - compute check digits for Sedol (GB)
 
 =head1 SYNOPSIS
 
   use CheckDigits;
 
-  $pck = CheckDigits('postcheckkonti');
+  $sedol = CheckDigits('sedol');
 
-  if ($pck->is_valid('85-12345678-7')) {
+  if ($sedol->is_valid('0123457')) {
 	# do something
   }
 
-  $cn = $pck->complete('85-12345678');
-  # $cn = '85-12345678-7'
+  $cn = $sedol->complete('012345');
+  # $cn = '0123457'
 
-  $cd = $pck->checkdigit('85-12345678-7');
+  $cd = $sedol->checkdigit('0123457');
   # $cd = '7'
 
-  $bn = $pck->basenumber('85-12345678-7');
-  # $bn = '85-12345678'
+  $bn = $sedol->basenumber('0123457');
+  # $bn = '012345'
   
 =head1 DESCRIPTION
 
@@ -124,14 +122,12 @@ CheckDigits::M013 - compute check digits method 013
 
 =item 1
 
-The sequence of digits is processed left to right. For the first digit
-we assume a carry forward of 0.
+Beginning left all numbers are weighted with 1,3,1,7,3,9 and 1
+(checkdigit)
 
 =item 2
 
-For each digit d(i) the carry forward cf(i) is the digit at the
-the position p in the sequence ( 0, 9, 4, 6, 8, 2, 7, 1, 3, 5 ), where
-p is (d(i) + cf(i-1)) modulo 10.
+The sum of all products is computed.
 
 =item 3
 
