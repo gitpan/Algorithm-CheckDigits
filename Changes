@@ -1,5 +1,9 @@
 Revision history for Perl extension CheckDigits.
 
+0.31  Tue, 11 May 2004 00:26:56 +0200
+	- Method 23-001 (dni_es) implemented
+	- Renamed methods 001..010
+
 0.30  Mon, 10 May 2004 01:00:14 +0200
 	- Method 16-001 (isan) implemented
 	- Renamed methods 011, 012, 013, 014, 015

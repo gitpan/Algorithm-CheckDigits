@@ -1,4 +1,4 @@
-package Algorithm::CheckDigits::M008;
+package Algorithm::CheckDigits::M10_004;
 
 use 5.006;
 use strict;
@@ -93,7 +93,7 @@ __END__
 
 =head1 NAME
 
-CheckDigits::M008 - compute check digits method 008
+CheckDigits::M10_004 - compute check digits for 2aus5, EAN, ILN, NVE
 
 =head1 SYNOPSIS
 

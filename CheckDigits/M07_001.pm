@@ -1,4 +1,4 @@
-package Algorithm::CheckDigits::M001;
+package Algorithm::CheckDigits::M07_001;
 
 use 5.006;
 use strict;
@@ -81,7 +81,7 @@ __END__
 
 =head1 NAME
 
-CheckDigits::M001 - compute check digits method 001
+CheckDigits::M07_001 - compute check digits modulo 7 method 1
 
 =head1 SYNOPSIS
 

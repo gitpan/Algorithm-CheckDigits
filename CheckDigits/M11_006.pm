@@ -98,7 +98,7 @@ __END__
 
 =head1 NAME
 
-CheckDigits::M11_06 - compute check digits for Código de Cuenta Corriente (ES)
+CheckDigits::M11_006 - compute check digits for Código de Cuenta Corriente (ES)
 
 =head1 SYNOPSIS
 

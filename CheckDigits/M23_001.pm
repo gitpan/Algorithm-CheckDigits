@@ -1,4 +1,4 @@
-package Algorithm::CheckDigits::M003;
+package Algorithm::CheckDigits::M23_001;
 
 use 5.006;
 use strict;
@@ -24,26 +24,10 @@ our @EXPORT_OK = ( 'new', @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = ();
 
-my %prefix = (
-	'amex'		=> [ '34', '37' ],
-	'bahncard'	=> [ '70' ],
-	'diners'	=> [ '30[0-5]', '36', '38' ],
-	'discover'	=> [ '6011' ],
-	'enroute'	=> [ '2014', '2149' ],
-	'jcb'		=> [ '1800', '2131', '3088' ],
-	'mastercard'	=> [ '5[1-5]' ],
-	'miles&more'	=> [ '99', '22' ],
-	'visa'		=> [ '4' ],
-);
-
-# Aliases
-$prefix{'eurocard'} = $prefix{'mastercard'};
-
-# omit prefixes doesn't work with the test numbers
-my %omitprefix = (
-	'jcb'		=> 0,
-	'enroute'	=> 0,
-	'discover'	=> 0,
+my @keytable = (
+	'T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F',
+	'P', 'D', 'X', 'B', 'N', 'J', 'Z', 'S',
+	'Q', 'V', 'H', 'L', 'C', 'K', 'E',
 );
 
 sub new {
@@ -57,32 +41,32 @@ sub new {
 
 sub is_valid {
 	my ($self,$number) = @_;
-	if ($number =~ /^([0-9 ]*)([0-9])$/) {
-		return $2 == $self->_compute_checkdigit($1);
+	if ($number =~ /^(\d{8})-?([A-HJ-NP-TV-Z])$/i) {
+		return $2 eq $self->_compute_checkdigit($1);
 	}
 	return ''
 } # is_valid()
 
 sub complete {
 	my ($self,$number) = @_;
-	if ($number =~ /^[0-9 ]*$/) {
-		return  $number . $self->_compute_checkdigit($number);
+	if ($number =~ /^(\d{8})-?$/i) {
+		return $number . $self->_compute_checkdigit($1);
 	}
 	return '';
 } # complete()
 
 sub basenumber {
 	my ($self,$number) = @_;
-	if ($number =~ /^([0-9 ]*)([0-9])$/) {
-		return $1 if ($2 == $self->_compute_checkdigit($1));
+	if ($number =~ /^(\d{8}-?)([A-HJ-NP-TV-Z])$/i) {
+		return $1 if (uc($2) eq $self->_compute_checkdigit($1));
 	}
 	return '';
 } # basenumber()
 
 sub checkdigit {
 	my ($self,$number) = @_;
-	if ($number =~ /^([0-9 ]*)([0-9])$/) {
-		return $2 if ($2 == $self->_compute_checkdigit($1));
+	if ($number =~ /^(\d{8})-?([A-HJ-NP-TV-Z])$/i) {
+		return $2 if (uc($2) eq $self->_compute_checkdigit($1));
 	}
 	return '';
 } # checkdigit()
@@ -90,30 +74,10 @@ sub checkdigit {
 sub _compute_checkdigit {
 	my $self   = shift;
 	my $number = shift;
-	$number =~ s/\s//g;
-	if ($omitprefix{$self->{type}}) {
-		my $pf = $prefix{$self->{type}};
-		for my $p (@{$pf}) {
-			if ($number =~ /^$p([0-9]+)$/) {
-				$number = $1;
-				last;
-			}
-		}
-	}
-	if ($number =~ /^([0-9]*)$/) {
-		my @digits = split(//,$number);
-		my $even = 1;
-		my $sum  = 0;
-		for (my $i = $#digits;$i >= 0;$i--) {
-			if ($even) {
-				my $tmp = 2 * $digits[$i];
-				$sum += $tmp / 10 + $tmp % 10;
-			} else {
-				$sum += $digits[$i];
-			}
-			$even = not $even;
-		}
-		return (10 - $sum % 10) % 10;
+
+	$number =~ s/-//g;
+	if ($number =~ /^\d{8}$/i) {
+		return $keytable[($number % 23)];
 	}
 	return -1;
 } # _compute_checkdigit()
@@ -125,26 +89,26 @@ __END__
 
 =head1 NAME
 
-CheckDigits::M003 - compute check digits method 003
+CheckDigits::M23_001 - compute check digits for DNI (ES)
 
 =head1 SYNOPSIS
 
   use CheckDigits;
 
-  $visa = CheckDigits('visa');
+  $dni = CheckDigits('dni_es');
 
-  if ($visa->is_valid('4111 1111 1111 1111')) {
+  if ($dni->is_valid('54362315K')) {
 	# do something
   }
 
-  $cn = $visa->complete('4111 1111 1111 111');
-  # $cn = '4111 1111 1111 1111'
+  $cn = $dni->complete('54362315');
+  # $cn = '54362315K'
 
-  $cd = $visa->checkdigit('4111 1111 1111 1111');
-  # $cd = '7'
+  $cd = $dni->checkdigit('54362315K');
+  # $cd = 'K'
 
-  $bn = $visa->basenumber('4111 1111 1111 1111');
-  # $bn = '4111 1111 1111 111'
+  $bn = $dni->basenumber('54362315K');
+  # $bn = '54362315'
   
 =head1 DESCRIPTION
 
@@ -154,26 +118,10 @@ CheckDigits::M003 - compute check digits method 003
 
 =item 1
 
-Beginning right all numbers are weighted alternatively 1 and 2 (that
-is the check digit is weighted 1).
-
-=item 2
-
-The total of the digits of all products is computed.
-
-=item 3
-
-The sum of step 3 ist taken modulo 10.
-
-=item 4
-
-The check digit is the difference between 10 and the number from step
-3.
+The checkdigit is the whole number taken modulo 23 and coded according
+to a keytable.
 
 =back
-
-To validate the total of the digits of all numbers inclusive check
-digit taken modulo 10 must be 0.
 
 =head2 METHODS
 

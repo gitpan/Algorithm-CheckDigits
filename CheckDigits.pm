@@ -25,43 +25,9 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = qw( CheckDigits );
 
-our $VERSION = '0.30';
+our $VERSION = '0.31';
 
 my %methods = (
-	'm001'			=> 'Algorithm::CheckDigits::M001',
-	'm002'			=> 'Algorithm::CheckDigits::M002',
-	'euronote'		=> 'Algorithm::CheckDigits::M002',
-	'm003'			=> 'Algorithm::CheckDigits::M003',
-	'amex'			=> 'Algorithm::CheckDigits::M003',
-	'bahncard'		=> 'Algorithm::CheckDigits::M003',
-	'diners'		=> 'Algorithm::CheckDigits::M003',
-	'discover'		=> 'Algorithm::CheckDigits::M003',
-	'enroute'		=> 'Algorithm::CheckDigits::M003',
-	'eurocard'		=> 'Algorithm::CheckDigits::M003',
-	'happydigits'		=> 'Algorithm::CheckDigits::M003',
-	'jcb'			=> 'Algorithm::CheckDigits::M003',
-	'klubkarstadt'		=> 'Algorithm::CheckDigits::M003',
-	'mastercard'		=> 'Algorithm::CheckDigits::M003',
-	'miles&more'		=> 'Algorithm::CheckDigits::M003',
-	'visa'			=> 'Algorithm::CheckDigits::M003',
-	'm004'			=> 'Algorithm::CheckDigits::M004',
-	'siren'			=> 'Algorithm::CheckDigits::M004',
-	'siret'			=> 'Algorithm::CheckDigits::M004',
-	'm005'			=> 'Algorithm::CheckDigits::M005',
-	'ups'			=> 'Algorithm::CheckDigits::M005',
-	'm006'			=> 'Algorithm::CheckDigits::M006',
-	'betriebsnummer'	=> 'Algorithm::CheckDigits::M006',
-	'm007'			=> 'Algorithm::CheckDigits::M007',
-	'ismn'			=> 'Algorithm::CheckDigits::M007',
-	'm008'			=> 'Algorithm::CheckDigits::M008',
-	'ean'			=> 'Algorithm::CheckDigits::M008',
-	'iln'			=> 'Algorithm::CheckDigits::M008',
-	'nve'			=> 'Algorithm::CheckDigits::M008',
-	'2aus5'			=> 'Algorithm::CheckDigits::M008',
-	'm009'			=> 'Algorithm::CheckDigits::M009',
-	'identcode_dp'		=> 'Algorithm::CheckDigits::M009',
-	'm010'			=> 'Algorithm::CheckDigits::M010',
-	'rentenversicherung'	=> 'Algorithm::CheckDigits::M010',
 	'mbase-001'		=> 'Algorithm::CheckDigits::MBase_001',
 	'upc'			=> 'Algorithm::CheckDigits::MBase_001',
 	'mbase-002'		=> 'Algorithm::CheckDigits::MBase_002',
@@ -71,10 +37,45 @@ my %methods = (
 	'vatrn_de'		=> 'Algorithm::CheckDigits::MBase_002',
 	'mbase-003'		=> 'Algorithm::CheckDigits::MBase_003',
 	'sici'			=> 'Algorithm::CheckDigits::MBase_003',
+	'm07-001'		=> 'Algorithm::CheckDigits::M07_001',
+	'm09-001'		=> 'Algorithm::CheckDigits::M09_001',
+	'euronote'		=> 'Algorithm::CheckDigits::M09_001',
+	'm10-001'		=> 'Algorithm::CheckDigits::M10_001',
+	'amex'			=> 'Algorithm::CheckDigits::M10_001',
+	'bahncard'		=> 'Algorithm::CheckDigits::M10_001',
+	'diners'		=> 'Algorithm::CheckDigits::M10_001',
+	'discover'		=> 'Algorithm::CheckDigits::M10_001',
+	'enroute'		=> 'Algorithm::CheckDigits::M10_001',
+	'eurocard'		=> 'Algorithm::CheckDigits::M10_001',
+	'happydigits'		=> 'Algorithm::CheckDigits::M10_001',
+	'jcb'			=> 'Algorithm::CheckDigits::M10_001',
+	'klubkarstadt'		=> 'Algorithm::CheckDigits::M10_001',
+	'mastercard'		=> 'Algorithm::CheckDigits::M10_001',
+	'miles&more'		=> 'Algorithm::CheckDigits::M10_001',
+	'visa'			=> 'Algorithm::CheckDigits::M10_001',
+	'm10-002'		=> 'Algorithm::CheckDigits::M10_002',
+	'siren'			=> 'Algorithm::CheckDigits::M10_002',
+	'siret'			=> 'Algorithm::CheckDigits::M10_002',
+	'm10-003'		=> 'Algorithm::CheckDigits::M10_003',
+	'ismn'			=> 'Algorithm::CheckDigits::M10_003',
+	'm10-004'		=> 'Algorithm::CheckDigits::M10_004',
+	'ean'			=> 'Algorithm::CheckDigits::M10_004',
+	'iln'			=> 'Algorithm::CheckDigits::M10_004',
+	'nve'			=> 'Algorithm::CheckDigits::M10_004',
+	'2aus5'			=> 'Algorithm::CheckDigits::M10_004',
+	'm10-005'		=> 'Algorithm::CheckDigits::M10_005',
+	'identcode_dp'		=> 'Algorithm::CheckDigits::M10_005',
+	'leitcode_dp'		=> 'Algorithm::CheckDigits::M10_005',
+	'm10-006'		=> 'Algorithm::CheckDigits::M10_006',
+	'rentenversicherung'	=> 'Algorithm::CheckDigits::M10_006',
 	'm10-008'		=> 'Algorithm::CheckDigits::M10_008',
 	'sedol'			=> 'Algorithm::CheckDigits::M10_008',
+	'm10-009'		=> 'Algorithm::CheckDigits::M10_009',
+	'betriebsnummer'	=> 'Algorithm::CheckDigits::M10_009',
 	'm10-010'		=> 'Algorithm::CheckDigits::M10_010',
 	'postcheckkonti'	=> 'Algorithm::CheckDigits::M10_010',
+	'm10-011'		=> 'Algorithm::CheckDigits::M10_011',
+	'ups'			=> 'Algorithm::CheckDigits::M10_011',
 	'm11-001'		=> 'Algorithm::CheckDigits::M11_001',
 	'isbn'			=> 'Algorithm::CheckDigits::M11_001',
 	'issn'			=> 'Algorithm::CheckDigits::M11_001',
@@ -117,6 +118,8 @@ my %methods = (
 	'vatrn_pl'		=> 'Algorithm::CheckDigits::M11_016',
 	'm16-001'		=> 'Algorithm::CheckDigits::M16_001',
 	'isan'			=> 'Algorithm::CheckDigits::M16_001',
+	'm23-001'		=> 'Algorithm::CheckDigits::M23_001',
+	'dni_es'		=> 'Algorithm::CheckDigits::M23_001',
 );
 
 sub CheckDigits {
@@ -205,76 +208,76 @@ At the moment these methods to compute check digits are provided:
 
 =item euronote
 
-See L<Algorithm::CheckDigits::M002>.
+See L<Algorithm::CheckDigits::M09_001>.
 
 =item amex, bahncard, diners, discover, enroute, happydigits, jcb,
       klubkarstadt, mastercard, miles&more, visa
 
-See L<Algorithm::CheckDigits::M003>.
+See L<Algorithm::CheckDigits::M10_001>.
 
 =item siren, siret
 
-See L<Algorithm::CheckDigits::M004>.
+See L<Algorithm::CheckDigits::M10_002>.
 
 =item ups
 
-See L<Algorithm::CheckDigits::M005>.
+See L<Algorithm::CheckDigits::M10_011>.
 
 =item betriebsnummer
 
-See L<Algorithm::CheckDigits::M006>.
+See L<Algorithm::CheckDigits::M10_009>.
 
 =item ismn
 
-See L<Algorithm::CheckDigits::M007>.
+See L<Algorithm::CheckDigits::M10_003>.
 
 =item ean, iln, nve, 2aus5
 
-See L<Algorithm::CheckDigits::M008>.
+See L<Algorithm::CheckDigits::M10_004>.
 
 =item identcode_dp
 
-See L<Algorithm::CheckDigits::M009>.
+See L<Algorithm::CheckDigits::M10_005>.
 
 =item rentenversicherung
 
-See L<Algorithm::CheckDigits::M010>.
+See L<Algorithm::CheckDigits::M10_006>.
 
 =item upc
 
-See L<Algorithm::CheckDigits::M011>.
+See L<Algorithm::CheckDigits::MBase_001>.
 
 =item sedol
 
-See L<Algorithm::CheckDigits::M012>.
+See L<Algorithm::CheckDigits::M10_008>.
 
 =item postscheckkonti
 
-See L<Algorithm::CheckDigits::M013>.
+See L<Algorithm::CheckDigits::M10_010>.
 
 =item isbn, issn, ustid_pt, hkid, wagonnr_br, nhs_gb, vat_sl
 
-See L<Algorithm::CheckDigits::M014>.
+See L<Algorithm::CheckDigits::M11_001>.
 
 =item pzn
 
-See L<Algorithm::CheckDigits::M015>.
+See L<Algorithm::CheckDigits::M11_002>.
 
 =item pkz
 
-See L<Algorithm::CheckDigits::M016>.
+See L<Algorithm::CheckDigits::M11_003>.
 
 =item cpf, titulo_eleitor
 
-See L<Algorithm::CheckDigits::M017>.
+See L<Algorithm::CheckDigits::M11_004>.
 
 =item blutbeutel, bzue_de, ustid_de
 
-See L<Algorithm::CheckDigits::M018>.
+See L<Algorithm::CheckDigits::MBase_002>.
 
 =item ccc_es
 
-See L<Algorithm::CheckDigits::M019>.
+See L<Algorithm::CheckDigits::M11_006>.
 
 =item sici
 

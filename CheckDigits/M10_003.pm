@@ -1,4 +1,4 @@
-package Algorithm::CheckDigits::M010;
+package Algorithm::CheckDigits::M10_003;
 
 use 5.006;
 use strict;
@@ -24,8 +24,6 @@ our @EXPORT_OK = ( 'new', @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = ();
 
-my @weight = ( 2,1,2,5,7,1,2,1,2,1,2,1 );
-
 sub new {
 	my $proto = shift;
 	my $type  = shift;
@@ -37,32 +35,32 @@ sub new {
 
 sub is_valid {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d{8}[A-Za-z]\d\d)(\d)$/) {
-		return $2 == $self->_compute_checkdigit($1);
+	if ($number =~ /^M([0-9-]*)([0-9])$/i) {
+		return ($2 == $self->_compute_checkdigit($1));
 	}
 	return ''
 } # is_valid()
 
 sub complete {
 	my ($self,$number) = @_;
-	if ($number =~ /^\d{8}[A-Za-z]\d\d$/) {
-		return  $number . $self->_compute_checkdigit($number);
+	if ($number =~ /^M([0-9-]*[0-9])(-*)$/i) {
+		return  "M$1" . '-' . $self->_compute_checkdigit($1);
 	}
 	return '';
 } # complete()
 
 sub basenumber {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d{8}[A-Za-z]\d\d)(\d)$/) {
-		return $1 if ($2 == $self->_compute_checkdigit($1));
+	if ($number =~ /^M([0-9-]*[0-9])(-*)([0-9])$/i) {
+		return "M$1" if ($self->is_valid($number));
 	}
 	return '';
 } # basenumber()
 
 sub checkdigit {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d{8}[A-Za-z]\d\d)(\d)$/) {
-		return $2 if ($2 == $self->_compute_checkdigit($1));
+	if ($number =~ /^M([0-9-]*)([0-9])$/i) {
+		return $2 if ($self->is_valid($number));
 	}
 	return '';
 } # checkdigit()
@@ -70,21 +68,20 @@ sub checkdigit {
 sub _compute_checkdigit {
 	my $self   = shift;
 	my $number = shift;
-
-	if ($number =~ /^(\d{8})([A-Za-z])(\d\d)$/) {
-
-		my $lv     = sprintf("%2.2d",ord(uc($2)) - ord('A') + 1);
-		my @digits = split(//,"$1$lv$3");
-		my $sum    = 0;
-
+	$number =~ s/-//g;
+	if ($number =~ /^([0-9]*)$/) {
+		my @digits = split(//,$number);
+		my $even = 0;
+		my $sum  = 9;
 		for (my $i = 0; $i <= $#digits; $i++) {
-
-			my $tmp = $weight[$i] * $digits[$i];
-
-			$sum += $tmp / 10;
-			$sum += $tmp % 10
+			if ($even) {
+				$sum += 3 * $digits[$i];
+			} else {
+				$sum += $digits[$i];
+			}
+			$even = not $even;
 		}
-		return $sum % 10;
+		return (10 - ($sum % 10) % 10);
 	}
 	return -1;
 } # _compute_checkdigit()
@@ -96,26 +93,26 @@ __END__
 
 =head1 NAME
 
-CheckDigits::M010 - compute check digits method 010
+CheckDigits::M10_003 - compute check digits for ISMN
 
 =head1 SYNOPSIS
 
   use CheckDigits;
 
-  $rv = CheckDigits('rentenversicherung');
+  $ismn = CheckDigits('ismn');
 
-  if ($rv->is_valid('65180539W001')) {
+  if ($ismn->is_valid('M-345-24680-5')) {
 	# do something
   }
 
-  $cn = $rv->complete('65180539W00');
-  # $cn = '65180539W001'
+  $cn = $ismn->complete('M-345-24680');
+  # $cn = 'M-345-24680-5'
 
-  $cd = $rv->checkdigit('65180539W001');
-  # $cd = '1'
+  $cd = $ismn->checkdigit('M-345-24680-5');
+  # $cd = '5'
 
-  $bn = $rv->basenumber('65180539W001');
-  # $bn = '65180539W00'
+  $bn = $ismn->basenumber('M-345-24680-5');
+  # $bn = 'M-345-24680'
   
 =head1 DESCRIPTION
 
@@ -125,20 +122,21 @@ CheckDigits::M010 - compute check digits method 010
 
 =item 1
 
-The letter is replaced with a two-figure number appropriate to the
-position of the letter in the german alphabet.
+The 'M' as the first number gets the value 3.
+Beginning left all numbers are weighted alternatively 3 and 1.
 
 =item 2
 
-Beginning left all numbers are weighted with 2,1,2,5,7,1,2,1,2,1,2,1.
+The sum of all products is computed.
 
 =item 3
 
-The the total of the digits of all products is computed.
+The sum of step 3 ist taken modulo 10.
 
 =item 4
 
-The check digit is sum from step 3 taken modulo 10.
+The check digit is the difference between 10 and the number from step
+3 taken modulo 10.
 
 =back
 

@@ -1,4 +1,4 @@
-package Algorithm::CheckDigits::M005;
+package Algorithm::CheckDigits::M10_011;
 
 use 5.006;
 use strict;
@@ -93,7 +93,7 @@ __END__
 
 =head1 NAME
 
-CheckDigits::M005 - compute check digits method 005
+CheckDigits::M10_011 - compute check digits UPS (US)
 
 =head1 SYNOPSIS
 

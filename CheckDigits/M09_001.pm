@@ -1,9 +1,8 @@
-package Algorithm::CheckDigits::M004;
+package Algorithm::CheckDigits::M09_001;
 
 use 5.006;
 use strict;
 use warnings;
-use integer;
 
 require Exporter;
 
@@ -26,63 +25,53 @@ our @EXPORT = ();
 
 sub new {
 	my $proto = shift;
-	my $type  = shift;
 	my $class = ref($proto) || $proto;
-	my $self  = bless({}, $class);
-	$self->{type} = lc($type);
-	return $self;
+	return bless({}, $class);
 } # new()
 
 sub is_valid {
 	my ($self,$number) = @_;
-	if ($number =~ /^([0-9 ]*)([0-9])$/) {
-		return $2 == $self->_compute_checkdigit($1);
+	if ($number =~ /^([A-Za-z][0-9]{10})([0-9])$/) {
+		return $2 == _compute_checkdigit($1);
 	}
-	return ''
+	return 0;
 } # is_valid()
 
 sub complete {
 	my ($self,$number) = @_;
-	if ($number =~ /^[0-9 ]*$/) {
-		return  $number . $self->_compute_checkdigit($number);
+	if ($number =~ /^[A-Za-z][0-9]{10}$/) {
+		return  $number . _compute_checkdigit($number);
 	}
 	return '';
 } # complete()
 
 sub basenumber {
 	my ($self,$number) = @_;
-	if ($number =~ /^([0-9 ]*)([0-9])$/) {
-		return $1 if ($2 == $self->_compute_checkdigit($1));
+	if ($number =~ /^([A-Za-z][0-9]{10})([0-9])$/) {
+		return $1 if ($2 == _compute_checkdigit($1));
 	}
 	return '';
 } # basenumber()
 
 sub checkdigit {
 	my ($self,$number) = @_;
-	if ($number =~ /^([0-9 ]*)([0-9])$/) {
-		return $2 if ($2 == $self->_compute_checkdigit($1));
+	if ($number =~ /^([A-Za-z][0-9]{10})([0-9])$/) {
+		return $2 if ($2 == _compute_checkdigit($1));
 	}
 	return '';
 } # checkdigit()
 
 sub _compute_checkdigit {
-	my $self   = shift;
 	my $number = shift;
-	$number =~ s/\s//g;
-	if ($number =~ /^([0-9]*)$/) {
-		my @digits = split(//,$number);
-		my $even = 1;
+	if ($number =~ /^([A-Za-z])([0-9]{10})$/) {
+		my @nums = ();
 		my $sum  = 0;
-		for (my $i = $#digits; $i >= 0; $i--) {
-			if ($even) {
-				my $tmp = 2 * $digits[$i];
-				$sum += $tmp / 10 + $tmp % 10;
-			} else {
-				$sum += $digits[$i];
-			}
-			$even = not $even;
+		push(@nums,ord(uc($1)) - ord('A') +1);
+		push(@nums,split(//,$2));
+		foreach my $num (@nums) {
+			$sum += $num;
 		}
-		return (10 - $sum % 10) % 10;
+		return 8 - ($sum % 9);
 	}
 	return -1;
 } # _compute_checkdigit()
@@ -94,26 +83,23 @@ __END__
 
 =head1 NAME
 
-CheckDigits::M004 - compute check digits method 004
+CheckDigits::M09_001 - compute check digits for Euro notes
 
 =head1 SYNOPSIS
 
   use CheckDigits;
 
-  $siret = CheckDigits('siret');
+  $euro = CheckDigits('euronote');
 
-  if ($siret->is_valid('73282932000074')) {
+  if ($euro->is_valid('X07738250357')) {
 	# do something
   }
 
-  $cn = $siret->complete('7328293200007');
-  # $cn = '73282932000074'
+  $cn = $euro->complete('X0773825035');     # $cn = 'X07738250357'
 
-  $cd = $siret->checkdigit('73282932000074');
-  # $cd = '4'
+  $cd = $euro->checkdigit('X07738250357'); # $cd = '7'
 
-  $bn = $siret->basenumber('73282932000074');
-  # $bn = '7328293200007'
+  $bn = $euro->basenumber('X07738250357'); # $bn = 'X0773825035'
   
 =head1 DESCRIPTION
 
@@ -123,22 +109,24 @@ CheckDigits::M004 - compute check digits method 004
 
 =item 1
 
-Beginning right all numbers are weighted alternatively 1 and 2.
+Letters are replaced with their position in the alphabet ('A' = 1, ...).
 
 =item 2
 
-The total of the digits of all products is computed.
+The total of the digits of all numbers is computed.
 
 =item 3
 
-The sum of step 3 ist taken modulo 10.
+This sum is taken modulo 9.
 
 =item 4
 
-The check digit is the difference between 10 and the number from step
-3 taken modulo 10.
+The check digit is the difference between 8 and the number of step 3.
 
 =back
+
+To validate the last digit of the total of the digits of all numbers
+inclusive check digit must be 8.
 
 =head2 METHODS
 
@@ -157,7 +145,7 @@ The check digit for C<$number> is computed and concatenated to the end
 of C<$number>.
 
 Returns the complete number with check digit or '' if C<$number>
-does not consist solely of digits and spaces.
+does not consist solely of digits.
 
 =item basenumber($number)
 
@@ -188,6 +176,5 @@ Mathias Weidner, E<lt>mathias@weidner.in-bad-schmiedeberg.deE<gt>
 L<perl>,
 L<CheckDigits>,
 F<www.pruefziffernberechnung.de>.
-F<www.dsi.cnrs.fr/bureau_qualite/admindonnees/documents/siren.pdf>
 
 =cut

@@ -1,4 +1,4 @@
-package Algorithm::CheckDigits::M009;
+package Algorithm::CheckDigits::M10_005;
 
 use 5.006;
 use strict;
@@ -93,7 +93,8 @@ __END__
 
 =head1 NAME
 
-CheckDigits::M009 - compute check digits method 009
+CheckDigits::M10_005 - compute check digits for Deutsche Post
+Identcode/Leitcode (DE)
 
 =head1 SYNOPSIS
 

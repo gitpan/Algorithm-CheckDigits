@@ -1,8 +1,9 @@
-package Algorithm::CheckDigits::M002;
+package Algorithm::CheckDigits::M10_006;
 
 use 5.006;
 use strict;
 use warnings;
+use integer;
 
 require Exporter;
 
@@ -23,55 +24,67 @@ our @EXPORT_OK = ( 'new', @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = ();
 
+my @weight = ( 2,1,2,5,7,1,2,1,2,1,2,1 );
+
 sub new {
 	my $proto = shift;
+	my $type  = shift;
 	my $class = ref($proto) || $proto;
-	return bless({}, $class);
+	my $self  = bless({}, $class);
+	$self->{type} = lc($type);
+	return $self;
 } # new()
 
 sub is_valid {
 	my ($self,$number) = @_;
-	if ($number =~ /^([A-Za-z][0-9]{10})([0-9])$/) {
-		return $2 == _compute_checkdigit($1);
+	if ($number =~ /^(\d{8}[A-Za-z]\d\d)(\d)$/) {
+		return $2 == $self->_compute_checkdigit($1);
 	}
-	return 0;
+	return ''
 } # is_valid()
 
 sub complete {
 	my ($self,$number) = @_;
-	if ($number =~ /^[A-Za-z][0-9]{10}$/) {
-		return  $number . _compute_checkdigit($number);
+	if ($number =~ /^\d{8}[A-Za-z]\d\d$/) {
+		return  $number . $self->_compute_checkdigit($number);
 	}
 	return '';
 } # complete()
 
 sub basenumber {
 	my ($self,$number) = @_;
-	if ($number =~ /^([A-Za-z][0-9]{10})([0-9])$/) {
-		return $1 if ($2 == _compute_checkdigit($1));
+	if ($number =~ /^(\d{8}[A-Za-z]\d\d)(\d)$/) {
+		return $1 if ($2 == $self->_compute_checkdigit($1));
 	}
 	return '';
 } # basenumber()
 
 sub checkdigit {
 	my ($self,$number) = @_;
-	if ($number =~ /^([A-Za-z][0-9]{10})([0-9])$/) {
-		return $2 if ($2 == _compute_checkdigit($1));
+	if ($number =~ /^(\d{8}[A-Za-z]\d\d)(\d)$/) {
+		return $2 if ($2 == $self->_compute_checkdigit($1));
 	}
 	return '';
 } # checkdigit()
 
 sub _compute_checkdigit {
+	my $self   = shift;
 	my $number = shift;
-	if ($number =~ /^([A-Za-z])([0-9]{10})$/) {
-		my @nums = ();
-		my $sum  = 0;
-		push(@nums,ord(uc($1)) - ord('A') +1);
-		push(@nums,split(//,$2));
-		foreach my $num (@nums) {
-			$sum += $num;
+
+	if ($number =~ /^(\d{8})([A-Za-z])(\d\d)$/) {
+
+		my $lv     = sprintf("%2.2d",ord(uc($2)) - ord('A') + 1);
+		my @digits = split(//,"$1$lv$3");
+		my $sum    = 0;
+
+		for (my $i = 0; $i <= $#digits; $i++) {
+
+			my $tmp = $weight[$i] * $digits[$i];
+
+			$sum += $tmp / 10;
+			$sum += $tmp % 10
 		}
-		return 8 - ($sum % 9);
+		return $sum % 10;
 	}
 	return -1;
 } # _compute_checkdigit()
@@ -83,23 +96,26 @@ __END__
 
 =head1 NAME
 
-CheckDigits::M002 - compute check digits method 002
+CheckDigits::M10_006 - compute check digits for Rentenversicherung (DE)
 
 =head1 SYNOPSIS
 
   use CheckDigits;
 
-  $euro = CheckDigits('euronote');
+  $rv = CheckDigits('rentenversicherung');
 
-  if ($euro->is_valid('X07738250357')) {
+  if ($rv->is_valid('65180539W001')) {
 	# do something
   }
 
-  $cn = $euro->complete('X0773825035');     # $cn = 'X07738250357'
+  $cn = $rv->complete('65180539W00');
+  # $cn = '65180539W001'
 
-  $cd = $euro->checkdigit('X07738250357'); # $cd = '7'
+  $cd = $rv->checkdigit('65180539W001');
+  # $cd = '1'
 
-  $bn = $euro->basenumber('X07738250357'); # $bn = 'X0773825035'
+  $bn = $rv->basenumber('65180539W001');
+  # $bn = '65180539W00'
   
 =head1 DESCRIPTION
 
@@ -109,24 +125,22 @@ CheckDigits::M002 - compute check digits method 002
 
 =item 1
 
-Letters are replaced with their position in the alphabet ('A' = 1, ...).
+The letter is replaced with a two-figure number appropriate to the
+position of the letter in the german alphabet.
 
 =item 2
 
-The total of the digits of all numbers is computed.
+Beginning left all numbers are weighted with 2,1,2,5,7,1,2,1,2,1,2,1.
 
 =item 3
 
-This sum is taken modulo 9.
+The the total of the digits of all products is computed.
 
 =item 4
 
-The check digit is the difference between 8 and the number of step 3.
+The check digit is sum from step 3 taken modulo 10.
 
 =back
-
-To validate the last digit of the total of the digits of all numbers
-inclusive check digit must be 8.
 
 =head2 METHODS
 
@@ -145,7 +159,7 @@ The check digit for C<$number> is computed and concatenated to the end
 of C<$number>.
 
 Returns the complete number with check digit or '' if C<$number>
-does not consist solely of digits.
+does not consist solely of digits and spaces.
 
 =item basenumber($number)
 

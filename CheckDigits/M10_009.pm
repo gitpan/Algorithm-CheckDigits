@@ -1,4 +1,4 @@
-package Algorithm::CheckDigits::M006;
+package Algorithm::CheckDigits::M10_009;
 
 use 5.006;
 use strict;
@@ -95,7 +95,7 @@ __END__
 
 =head1 NAME
 
-CheckDigits::M006 - compute check digits method 006
+CheckDigits::M10_009 - compute check digits for Betriebsnummer (DE)
 
 =head1 SYNOPSIS
 
