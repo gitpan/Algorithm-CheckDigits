@@ -25,7 +25,7 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = qw( CheckDigits );
 
-our $VERSION = '0.36';
+our $VERSION = '0.37';
 
 my %methods = (
 	'mbase-001'		=> 'Algorithm::CheckDigits::MBase_001',
@@ -53,6 +53,7 @@ my %methods = (
 	'mastercard'		=> 'Algorithm::CheckDigits::M10_001',
 	'miles&more'		=> 'Algorithm::CheckDigits::M10_001',
 	'visa'			=> 'Algorithm::CheckDigits::M10_001',
+	'isin'			=> 'Algorithm::CheckDigits::M10_001',
 	'm10-002'		=> 'Algorithm::CheckDigits::M10_002',
 	'siren'			=> 'Algorithm::CheckDigits::M10_002',
 	'siret'			=> 'Algorithm::CheckDigits::M10_002',
@@ -136,6 +137,10 @@ my %methods = (
 	'cas'			=> 'Algorithm::CheckDigits::MXX_002',
 	'mxx-003'		=> 'Algorithm::CheckDigits::MXX_003',
 	'dem'			=> 'Algorithm::CheckDigits::MXX_003',
+	'mxx-004'		=> 'Algorithm::CheckDigits::MXX_004',
+	'ustid_at'		=> 'Algorithm::CheckDigits::MXX_004',
+	'mxx-005'		=> 'Algorithm::CheckDigits::MXX_005',
+	'esr9_ch'		=> 'Algorithm::CheckDigits::MXX_005',
 );
 
 sub CheckDigits {

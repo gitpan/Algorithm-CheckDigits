@@ -10,7 +10,7 @@ use Test;
 BEGIN {
         do 't/valid.data';
 	plan(tests => ($#testcases + 1) * 5
-	    ,todo => [ 76, 81, 86, ]
+#	    ,todo => [ 76, ]
 	    ); 
 };
 use Algorithm::CheckDigits;
