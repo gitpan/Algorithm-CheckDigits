@@ -1,5 +1,14 @@
 Revision history for Perl extension CheckDigits.
 
+0.35  Sun, 11 Jul 2004 18:59:35 +0200
+	- Method XX-001 (pa_de) implemented
+
+0.34a Fri, 09 Jul 2004 23:57:37 +0200
+	- Method 97-002 (iban) implemented
+
+0.34  Wed, 14 Jun 2004 22:04:38 +0200
+	- Method 97-001 (ustid_be) implemented
+
 0.33  Wed, 09 Jun 2004 22:04:38 +0200
 	- Method 23-002 (ustid_ie) implemented
 	- Method 43-001 (code_39) implemented
