@@ -36,6 +36,8 @@ CheckDigits/MBase_001.pm
 CheckDigits/MBase_002.pm
 CheckDigits/MBase_003.pm
 CheckDigits/MXX_001.pm
+CheckDigits/MXX_002.pm
+CheckDigits/MXX_003.pm
 CheckDigits.pm
 Makefile.PL
 MANIFEST

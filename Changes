@@ -1,5 +1,9 @@
 Revision history for Perl extension CheckDigits.
 
+0.36  Tue, 13 Jul 2004 23:45:02 +0200
+	- Method XX-003 (dem) implemented
+	- Method XX-002 (cas) implemented
+
 0.35  Sun, 11 Jul 2004 18:59:35 +0200
 	- Method XX-001 (pa_de) implemented
 
