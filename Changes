@@ -1,5 +1,9 @@
 Revision history for Perl extension CheckDigits.
 
+0.38  Wed, 26 Jan 2005 22:48:10 +0100
+	- Refined Method M11-011 (now accepts full vatrn)
+	- provided basic tests for above change
+
 0.37  Wed, 14 Jul 2004 20:38:31 +0200
 	- Method 10-001: Added Support for ISIN
 	- Method XX-004 (ustid_at) implemented

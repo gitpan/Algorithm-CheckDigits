@@ -25,7 +25,7 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = qw( CheckDigits );
 
-our $VERSION = '0.37';
+our $VERSION = '0.38';
 
 my %methods = (
 	'mbase-001'		=> 'Algorithm::CheckDigits::MBase_001',
@@ -349,7 +349,7 @@ Mathias Weidner, E<lt>mathias@weidner.in-bad-schmiedeberg.deE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2004 by Mathias Weidner
+Copyright 2004,2005 by Mathias Weidner
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
