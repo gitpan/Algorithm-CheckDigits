@@ -84,7 +84,7 @@ sub _compute_checkdigit {
 			}
 			$even = not $even;
 		}
-		return (10 - ($sum % 10) % 10);
+		return (10 - ($sum % 10)) % 10;
 	}
 	return -1;
 } # _compute_checkdigit()
@@ -188,6 +188,11 @@ None by default.
 =head1 AUTHOR
 
 Mathias Weidner, E<lt>mathias@weidner.in-bad-schmiedeberg.deE<gt>
+
+=head1 THANKS
+
+Aaron W. West pointed me to a fault in the computing of the check
+digit.
 
 =head1 SEE ALSO
 

@@ -35,6 +35,7 @@ Makefile.PL
 MANIFEST
 README
 t/checkdigits.t
+t/upc.t
 t/valid.t
 t/valid.data
 META.yml                                 Module meta-data (added by MakeMaker)
