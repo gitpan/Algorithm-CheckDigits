@@ -1,4 +1,4 @@
-package Algorithm::CheckDigits::MBase_001;
+package Algorithm::CheckDigits::M89_001;
 
 use 5.006;
 use strict;
@@ -24,6 +24,12 @@ our @EXPORT_OK = ( 'new', @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = ();
 
+my @keytable = (
+	'T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F',
+	'P', 'D', 'X', 'B', 'N', 'J', 'Z', 'S',
+	'Q', 'V', 'H', 'L', 'C', 'K', 'E',
+);
+
 sub new {
 	my $proto = shift;
 	my $type  = shift;
@@ -35,32 +41,32 @@ sub new {
 
 sub is_valid {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d+)(\d)$/) {
-		return $2 == $self->_compute_checkdigit($1);
+	if ($number =~ /^(\d{6})?(\d\d)$/i) {
+		return $2 eq $self->_compute_checkdigit($1);
 	}
 	return ''
 } # is_valid()
 
 sub complete {
 	my ($self,$number) = @_;
-	if ($number =~ /^\d+$/) {
-		return  $number . $self->_compute_checkdigit($number);
+	if ($number =~ /^(\d{6})$/i) {
+		return $number . $self->_compute_checkdigit($1);
 	}
 	return '';
 } # complete()
 
 sub basenumber {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d+)(\d)$/) {
-		return $1 if ($2 == $self->_compute_checkdigit($1));
+	if ($number =~ /^(\d{6})(\d\d)$/i) {
+		return $1 if ($2 eq $self->_compute_checkdigit($1));
 	}
 	return '';
 } # basenumber()
 
 sub checkdigit {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d+)(\d)$/) {
-		return $2 if ($2 == $self->_compute_checkdigit($1));
+	if ($number =~ /^(\d{6})(\d\d)$/i) {
+		return $2 if (uc($2) eq $self->_compute_checkdigit($1));
 	}
 	return '';
 } # checkdigit()
@@ -69,22 +75,8 @@ sub _compute_checkdigit {
 	my $self   = shift;
 	my $number = shift;
 
-	if ($number =~ /^\d+$/) {
-
-		my @digits = split(//,$number);
-		my $sum    = 0;
-		my $even   = 0;
-
-		for (my $i = 0; $i <= $#digits; $i++) {
-
-			if ($even) {
-				$sum += $digits[$i];
-			} else {
-				$sum += 3 * $digits[$i];
-			}
-			$even = not $even;
-		}
-		return (10 - ($sum % 10)) % 10;
+	if ($number =~ /^\d{6}$/i) {
+		return sprintf("%2.2d",($number % 89));
 	}
 	return -1;
 } # _compute_checkdigit()
@@ -96,26 +88,26 @@ __END__
 
 =head1 NAME
 
-CheckDigits::MBase_001 - compute check digits for UPC (US)
+CheckDigits::M89_001 - compute check digits for VAT Registration Number (LU)
 
 =head1 SYNOPSIS
 
   use CheckDigits;
 
-  $rv = CheckDigits('upc');
+  $ustid = CheckDigits('ustid_lu');
 
-  if ($rv->is_valid('012345678905')) {
+  if ($ustid->is_valid('13669580')) {
 	# do something
   }
 
-  $cn = $rv->complete('01234567890');
-  # $cn = '012345678905'
+  $cn = $ustid->complete('136695');
+  # $cn = '13669580'
 
-  $cd = $rv->checkdigit('012345678905');
-  # $cd = '5'
+  $cd = $ustid->checkdigit('13669580');
+  # $cd = '80'
 
-  $bn = $rv->basenumber('012345678905');
-  # $bn = '01234567890'
+  $bn = $ustid->basenumber('13669580');
+  # $bn = '136695'
   
 =head1 DESCRIPTION
 
@@ -125,24 +117,7 @@ CheckDigits::MBase_001 - compute check digits for UPC (US)
 
 =item 1
 
-Add all digits in odd-numbered positions.
-
-=item 2
-
-Multiply the sum from step 1 with 3.
-
-=item 3
-
-Add all digits in even-numbered positions.
-
-=item 4
-
-Add the product from step 2 and the sum from step 3.
-
-=item 5
-
-If the sum from step 4 is 0 modulo 10, the check digit is 0. Else the
-check digit is 10 minus the sum from step 4 taken modulo 10.
+The checksum is the whole number taken modulo 89.
 
 =back
 
@@ -189,18 +164,10 @@ None by default.
 
 Mathias Weidner, E<lt>mathias@weidner.in-bad-schmiedeberg.deE<gt>
 
-=head1 THANKS
-
-Aaron W. West pointed me to a fault in the computing of the check
-digit.
-
 =head1 SEE ALSO
 
 L<perl>,
 L<CheckDigits>,
-F<www.pruefziffernberechnung.de>,
-F<www.export911.com/e911/coding/upcChar.htm>,
-F<www.adams1.com/pub/russadam/upccode.html>,
-F<http://www.upcdatabase.com>.
+F<www.pruefziffernberechnung.de>.
 
 =cut

@@ -1,4 +1,4 @@
-package Algorithm::CheckDigits::MBase_001;
+package Algorithm::CheckDigits::M23_002;
 
 use 5.006;
 use strict;
@@ -24,6 +24,12 @@ our @EXPORT_OK = ( 'new', @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = ();
 
+my @keytable = (
+	'W', 'A', 'B', 'C', 'D', 'E', 'F', 'G',
+	'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
+	'P', 'Q', 'R', 'S', 'T', 'U', 'V', 
+);
+
 sub new {
 	my $proto = shift;
 	my $type  = shift;
@@ -35,32 +41,32 @@ sub new {
 
 sub is_valid {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d+)(\d)$/) {
-		return $2 == $self->_compute_checkdigit($1);
+	if ($number =~ /^(\d{7})([A-W])$/i) {
+		return $2 eq $self->_compute_checkdigit($1);
 	}
 	return ''
 } # is_valid()
 
 sub complete {
 	my ($self,$number) = @_;
-	if ($number =~ /^\d+$/) {
-		return  $number . $self->_compute_checkdigit($number);
+	if ($number =~ /^(\d{7})$/i) {
+		return $number . $self->_compute_checkdigit($1);
 	}
 	return '';
 } # complete()
 
 sub basenumber {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d+)(\d)$/) {
-		return $1 if ($2 == $self->_compute_checkdigit($1));
+	if ($number =~ /^(\d{7})([A-W])$/i) {
+		return $1 if (uc($2) eq $self->_compute_checkdigit($1));
 	}
 	return '';
 } # basenumber()
 
 sub checkdigit {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d+)(\d)$/) {
-		return $2 if ($2 == $self->_compute_checkdigit($1));
+	if ($number =~ /^(\d{7})([A-W])$/i) {
+		return $2 if (uc($2) eq $self->_compute_checkdigit($1));
 	}
 	return '';
 } # checkdigit()
@@ -68,25 +74,15 @@ sub checkdigit {
 sub _compute_checkdigit {
 	my $self   = shift;
 	my $number = shift;
+	my $sum    = 0;
 
-	if ($number =~ /^\d+$/) {
+	my @digits = split(//,$number);
 
-		my @digits = split(//,$number);
-		my $sum    = 0;
-		my $even   = 0;
-
-		for (my $i = 0; $i <= $#digits; $i++) {
-
-			if ($even) {
-				$sum += $digits[$i];
-			} else {
-				$sum += 3 * $digits[$i];
-			}
-			$even = not $even;
-		}
-		return (10 - ($sum % 10)) % 10;
+	for (my $i = 0; $i < 7; $i++) {
+		$sum += $digits[$i] * (8-$i);
 	}
-	return -1;
+	return $keytable[$sum % 23];
+
 } # _compute_checkdigit()
 
 # Preloaded methods go here.
@@ -96,26 +92,26 @@ __END__
 
 =head1 NAME
 
-CheckDigits::MBase_001 - compute check digits for UPC (US)
+CheckDigits::M23_002 - compute check digits for VAT Registration Number (IE)
 
 =head1 SYNOPSIS
 
   use CheckDigits;
 
-  $rv = CheckDigits('upc');
+  $dni = CheckDigits('ustid_ie');
 
-  if ($rv->is_valid('012345678905')) {
+  if ($dni->is_valid('8473625E')) {
 	# do something
   }
 
-  $cn = $rv->complete('01234567890');
-  # $cn = '012345678905'
+  $cn = $dni->complete('8473625');
+  # $cn = '8473625E'
 
-  $cd = $rv->checkdigit('012345678905');
-  # $cd = '5'
+  $cd = $dni->checkdigit('8473625E');
+  # $cd = 'E'
 
-  $bn = $rv->basenumber('012345678905');
-  # $bn = '01234567890'
+  $bn = $dni->basenumber('8473625E');
+  # $bn = '8473625'
   
 =head1 DESCRIPTION
 
@@ -125,24 +121,19 @@ CheckDigits::MBase_001 - compute check digits for UPC (US)
 
 =item 1
 
-Add all digits in odd-numbered positions.
+Beginning right all digits are weighted with their position in the
+number (i.e. the number left from the check digit is multiplied with
+2, the next with 3 and so on).
 
 =item 2
 
-Multiply the sum from step 1 with 3.
+All products are added.
 
 =item 3
 
-Add all digits in even-numbered positions.
-
-=item 4
-
-Add the product from step 2 and the sum from step 3.
-
-=item 5
-
-If the sum from step 4 is 0 modulo 10, the check digit is 0. Else the
-check digit is 10 minus the sum from step 4 taken modulo 10.
+The check digit is the sum from step 2 modulo 23. This number is
+expressed as the corresponding letter from the alphabet where A-V
+correspond to 1-22 and W stands for check digit 0.
 
 =back
 
@@ -189,18 +180,10 @@ None by default.
 
 Mathias Weidner, E<lt>mathias@weidner.in-bad-schmiedeberg.deE<gt>
 
-=head1 THANKS
-
-Aaron W. West pointed me to a fault in the computing of the check
-digit.
-
 =head1 SEE ALSO
 
 L<perl>,
 L<CheckDigits>,
-F<www.pruefziffernberechnung.de>,
-F<www.export911.com/e911/coding/upcChar.htm>,
-F<www.adams1.com/pub/russadam/upccode.html>,
-F<http://www.upcdatabase.com>.
+F<www.pruefziffernberechnung.de>.
 
 =cut

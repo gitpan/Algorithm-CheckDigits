@@ -27,6 +27,9 @@ CheckDigits/M11_015.pm
 CheckDigits/M11_016.pm
 CheckDigits/M16_001.pm
 CheckDigits/M23_001.pm
+CheckDigits/M23_002.pm
+CheckDigits/M43_001.pm
+CheckDigits/M89_001.pm
 CheckDigits/MBase_001.pm
 CheckDigits/MBase_002.pm
 CheckDigits/MBase_003.pm

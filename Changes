@@ -1,5 +1,10 @@
 Revision history for Perl extension CheckDigits.
 
+0.33  Wed, 09 Jun 2004 22:04:38 +0200
+	- Method 23-002 (ustid_ie) implemented
+	- Method 43-001 (code_39) implemented
+	- Method 89-001 (ustid_lu) implemented
+
 0.32  Fri, 14 May 2004 17:22:15 +0200
 	- Aaron W. West made me aware of a fault in MBase_001.pm (the
 	  code providing UPC check digits) and sent me a fix

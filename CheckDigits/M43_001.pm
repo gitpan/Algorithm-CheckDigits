@@ -1,4 +1,4 @@
-package Algorithm::CheckDigits::MBase_001;
+package Algorithm::CheckDigits::M43_001;
 
 use 5.006;
 use strict;
@@ -24,6 +24,22 @@ our @EXPORT_OK = ( 'new', @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = ();
 
+my %keytable = (
+	'0' =>  0, '1' =>  1, '2' =>  2, '3' =>  3,
+	'4' =>  4, '5' =>  5, '6' =>  6, '7' =>  7,
+	'8' =>  8, '9' =>  9, 'A' => 10, 'B' => 11,
+	'C' => 12, 'D' => 13, 'E' => 14, 'F' => 15,
+	'G' => 16, 'H' => 17, 'I' => 18, 'J' => 19,
+	'K' => 20, 'L' => 21, 'M' => 22, 'N' => 23,
+	'O' => 24, 'P' => 25, 'Q' => 26, 'R' => 27,
+	'S' => 28, 'T' => 29, 'U' => 30, 'V' => 31,
+	'W' => 32, 'X' => 33, 'Y' => 34, 'Z' => 35,
+	'-' => 36, '.' => 37, ' ' => 38, '$' => 39,
+	'/' => 40, '+' => 41, '%' => 42,
+);
+
+my %keymap = reverse %keytable;
+
 sub new {
 	my $proto = shift;
 	my $type  = shift;
@@ -35,32 +51,32 @@ sub new {
 
 sub is_valid {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d+)(\d)$/) {
-		return $2 == $self->_compute_checkdigit($1);
+	if ($number =~ /^(.*)(.)$/i) {
+		return $2 eq $self->_compute_checkdigit($1);
 	}
 	return ''
 } # is_valid()
 
 sub complete {
 	my ($self,$number) = @_;
-	if ($number =~ /^\d+$/) {
-		return  $number . $self->_compute_checkdigit($number);
+	if ($number =~ /^(.*)$/i) {
+		return $number . $self->_compute_checkdigit($1);
 	}
 	return '';
 } # complete()
 
 sub basenumber {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d+)(\d)$/) {
-		return $1 if ($2 == $self->_compute_checkdigit($1));
+	if ($number =~ /^(.*)(.)$/i) {
+		return $1 if (uc($2) eq $self->_compute_checkdigit($1));
 	}
 	return '';
 } # basenumber()
 
 sub checkdigit {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d+)(\d)$/) {
-		return $2 if ($2 == $self->_compute_checkdigit($1));
+	if ($number =~ /^(.*)(.)$/i) {
+		return $2 if (uc($2) eq $self->_compute_checkdigit($1));
 	}
 	return '';
 } # checkdigit()
@@ -68,25 +84,15 @@ sub checkdigit {
 sub _compute_checkdigit {
 	my $self   = shift;
 	my $number = shift;
+	my $sum    = 0;
 
-	if ($number =~ /^\d+$/) {
+	my @digits = split(//,$number);
 
-		my @digits = split(//,$number);
-		my $sum    = 0;
-		my $even   = 0;
-
-		for (my $i = 0; $i <= $#digits; $i++) {
-
-			if ($even) {
-				$sum += $digits[$i];
-			} else {
-				$sum += 3 * $digits[$i];
-			}
-			$even = not $even;
-		}
-		return (10 - ($sum % 10)) % 10;
+	for (my $i = 0; $i < length($number); $i++) {
+		$sum += $keytable{$digits[$i]};
 	}
-	return -1;
+	$sum %= 43;
+	return $keymap{$sum};
 } # _compute_checkdigit()
 
 # Preloaded methods go here.
@@ -96,26 +102,26 @@ __END__
 
 =head1 NAME
 
-CheckDigits::MBase_001 - compute check digits for UPC (US)
+CheckDigits::M43_001 - compute check digits for Code-39
 
 =head1 SYNOPSIS
 
   use CheckDigits;
 
-  $rv = CheckDigits('upc');
+  $c39 = CheckDigits('code_39');
 
-  if ($rv->is_valid('012345678905')) {
+  if ($c39->is_valid('AB-123K')) {
 	# do something
   }
 
-  $cn = $rv->complete('01234567890');
-  # $cn = '012345678905'
+  $cn = $c39->complete('AB-123');
+  # $cn = 'AB-123K'
 
-  $cd = $rv->checkdigit('012345678905');
-  # $cd = '5'
+  $cd = $c39->checkdigit('AB-123K');
+  # $cd = 'K'
 
-  $bn = $rv->basenumber('012345678905');
-  # $bn = '01234567890'
+  $bn = $c39->basenumber('AB-123K');
+  # $bn = 'AB-123'
   
 =head1 DESCRIPTION
 
@@ -125,24 +131,12 @@ CheckDigits::MBase_001 - compute check digits for UPC (US)
 
 =item 1
 
-Add all digits in odd-numbered positions.
+After replacing all non numeric letters with their respective values,
+the sum of all numbers is computers
 
 =item 2
 
-Multiply the sum from step 1 with 3.
-
-=item 3
-
-Add all digits in even-numbered positions.
-
-=item 4
-
-Add the product from step 2 and the sum from step 3.
-
-=item 5
-
-If the sum from step 4 is 0 modulo 10, the check digit is 0. Else the
-check digit is 10 minus the sum from step 4 taken modulo 10.
+The checkdigit is the sum from step 1 taken modulo 43.
 
 =back
 
@@ -189,18 +183,10 @@ None by default.
 
 Mathias Weidner, E<lt>mathias@weidner.in-bad-schmiedeberg.deE<gt>
 
-=head1 THANKS
-
-Aaron W. West pointed me to a fault in the computing of the check
-digit.
-
 =head1 SEE ALSO
 
 L<perl>,
 L<CheckDigits>,
-F<www.pruefziffernberechnung.de>,
-F<www.export911.com/e911/coding/upcChar.htm>,
-F<www.adams1.com/pub/russadam/upccode.html>,
-F<http://www.upcdatabase.com>.
+F<www.pruefziffernberechnung.de>.
 
 =cut
