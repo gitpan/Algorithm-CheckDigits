@@ -1,0 +1,91 @@
+Revision history for Perl extension CheckDigits.
+
+0.27  Wed, 28 Apr 2004 23:22:41 +0200
+	- Method 11-012 implemented
+	- Man page in CheckDigits.pm changed
+	- Packages changed from CheckDigits... to Algorithm::CheckDigits...
+
+0.26  Sun, 25 Apr 2004 22:43:39 +0200
+	- Method 11-011 implemented
+	- Man page in CheckDigits.pm changed
+
+0.25  Mon, 19 Apr 2004 22:54:56 +0200
+	- Method 11-016 implemented
+	- Method 11-010 implemented
+
+0.23  Sun, 18 Apr 2004 23:09:58 +0200
+	- Method 11-009 implemented
+
+0.22  Sat, 17 Apr 2004 21:35:35 +0200
+	- Method 11-008 implemented
+
+0.21  Thu, 15 Apr 2004 23:09:40 +0200
+	- Method 11-007 implemented
+	- documented algorithm from Method M019 in the man page
+
+0.20  Mon, 12 Apr 2004 23:28:05 +0200
+	- added tests with invalid data
+	- Method Base-003 implemented
+
+0.19  Thu, 26 Feb 2004 00:27:47 +0100
+	- took all test cases from www.pruefziffernberechnung.de into
+	  t/valid.data and inserted plan(... todo => ...) into
+	  t/valid.t
+	- Method 019 implemented (algorithm not documented in man
+	  page!)
+
+0.18  Thu, 25 Dec 2003 18:17:56 +0100
+	- Method 018 implemented
+
+0.17  Fri, 28 Nov 2003 21:00:18 +0100
+	- Method 017 implemented
+	- all tests for valid checkdigits into one testscript
+	  (valid.t) using one datafile (valid.data)
+
+0.16  Die Nov 11 23:15:27 CET 2003
+	- Method 016 implemented
+	- Typo in POD of M013.pm corrected
+
+0.15  Mon Nov 10 23:23:10 CET 2003
+	- Method 015 implemented
+	- Typo in POD of M014.pm corrected
+
+0.14  Fre Okt 24 23:53:28 CEST 2003
+	- Method 014 implemented
+
+0.13  Son Okt 19 23:25:09 CEST 2003
+	- Method 013 implemented
+
+0.12  Die Okt  7 22:43:36 CEST 2003
+	- Method 012 implemented
+
+0.11  Mon Okt  6 22:21:12 CEST 2003
+	- Method 011 implemented
+	- Typo in POD of M010.pm corrected
+
+0.10  Sam Sep 27 14:03:11 CEST 2003
+	- Method 010 implemented
+
+0.09  Fre Sep 26 18:49:22 CEST 2003
+	- Method 009 implemented
+
+0.08  Don Sep 25 21:41:26 CEST 2003
+	- Method 008 implemented
+
+0.07  Mit Sep 24 22:06:44 CEST 2003
+	- Method 006, 007 implemented
+
+0.05  Son Sep 21 15:17:46 CEST 2003
+	- Method 004, 005 implemented inclusive test routines and data
+	- cleaned up code and doc for all methods so far
+
+0.04  Sam Sep 20 23:54:09 CEST 2003
+	- Method 002, 003 implemented inclusive test routines and data
+
+0.03  Fre Sep 19 23:15:04 CEST 2003
+	- Method 001 implemented inclusive test routines and data
+
+0.01  Tue Sep 16 23:03:45 2003
+	- original version; created by h2xs 1.21 with options
+		-A -X CheckDigits
+
