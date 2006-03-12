@@ -115,7 +115,7 @@ The whole number (without checksum) is taken modulo 97.
 
 =item 2
 
-The checksum is difference of the rest from step 1 to 97.
+The checksum is difference of the remainder from step 1 to 97.
 
 =back
 

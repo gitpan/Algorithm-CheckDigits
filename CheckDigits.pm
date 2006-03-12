@@ -25,7 +25,7 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = qw( CheckDigits );
 
-our $VERSION = '0.38';
+our $VERSION = '0.39';
 
 my %methods = (
 	'mbase-001'		=> 'Algorithm::CheckDigits::MBase_001',
@@ -81,6 +81,7 @@ my %methods = (
 	'isbn'			=> 'Algorithm::CheckDigits::M11_001',
 	'issn'			=> 'Algorithm::CheckDigits::M11_001',
 	'ustid_pt'		=> 'Algorithm::CheckDigits::M11_001',
+	'vatrn_pt'		=> 'Algorithm::CheckDigits::M11_001',
 	'hkid'			=> 'Algorithm::CheckDigits::M11_001',
 	'wagonnr_br'		=> 'Algorithm::CheckDigits::M11_001',
 	'nhs_gb'		=> 'Algorithm::CheckDigits::M11_001',
@@ -123,12 +124,15 @@ my %methods = (
 	'dni_es'		=> 'Algorithm::CheckDigits::M23_001',
 	'm23-002'		=> 'Algorithm::CheckDigits::M23_002',
 	'ustid_ie'		=> 'Algorithm::CheckDigits::M23_002',
+	'vatrn_ie'		=> 'Algorithm::CheckDigits::M23_002',
 	'm43-001'		=> 'Algorithm::CheckDigits::M43_001',
 	'code_39'		=> 'Algorithm::CheckDigits::M43_001',
 	'm89-001'		=> 'Algorithm::CheckDigits::M89_001',
 	'ustid_lu'		=> 'Algorithm::CheckDigits::M89_001',
+	'vatrn_lu'		=> 'Algorithm::CheckDigits::M89_001',
 	'm97-001'		=> 'Algorithm::CheckDigits::M97_001',
 	'ustid_be'		=> 'Algorithm::CheckDigits::M97_001',
+	'vatrn_be'		=> 'Algorithm::CheckDigits::M97_001',
 	'm97-002'		=> 'Algorithm::CheckDigits::M97_002',
 	'iban'			=> 'Algorithm::CheckDigits::M97_002',
 	'mxx-001'		=> 'Algorithm::CheckDigits::MXX_001',
@@ -139,8 +143,10 @@ my %methods = (
 	'dem'			=> 'Algorithm::CheckDigits::MXX_003',
 	'mxx-004'		=> 'Algorithm::CheckDigits::MXX_004',
 	'ustid_at'		=> 'Algorithm::CheckDigits::MXX_004',
+	'vatrn_at'		=> 'Algorithm::CheckDigits::MXX_004',
 	'mxx-005'		=> 'Algorithm::CheckDigits::MXX_005',
 	'esr9_ch'		=> 'Algorithm::CheckDigits::MXX_005',
+	'verhoeff'		=> 'Algorithm::CheckDigits::MXX_006',
 );
 
 sub CheckDigits {
@@ -224,113 +230,179 @@ information.
  perl -MAlgorithm::CheckDigits -e Algorithm::CheckDigits::print_methods
 
 At the moment these methods to compute check digits are provided:
+(vatrn - VAT Return Number, in german ustid UmsatzSTeuer-ID)
 
 =over 4
 
-=item euronote
+=item m07-001
 
-See L<Algorithm::CheckDigits::M09_001>.
+See L<Algorithm::CheckDigits::M07_001>.
 
-=item amex, bahncard, diners, discover, enroute, happydigits, jcb,
-      klubkarstadt, mastercard, miles&more, visa
+=item euronote, m09-001
+
+European bank notes, see L<Algorithm::CheckDigits::M09_001>.
+
+=item amex, bahncard, diners, discover, enroute, eurocard, happydigits,
+      isin, jcb, klubkarstadt, mastercard, miles&more, visa, m09-001
 
 See L<Algorithm::CheckDigits::M10_001>.
 
-=item siren, siret
+=item siren, siret, m10-002
 
 See L<Algorithm::CheckDigits::M10_002>.
 
-=item ups
-
-See L<Algorithm::CheckDigits::M10_011>.
-
-=item betriebsnummer
-
-See L<Algorithm::CheckDigits::M10_009>.
-
-=item ismn
+=item ismn, m10-003
 
 See L<Algorithm::CheckDigits::M10_003>.
 
-=item ean, iln, nve, 2aus5
+=item ean, iln, nve, 2aus5, m10-004
 
 See L<Algorithm::CheckDigits::M10_004>.
 
-=item identcode_dp
+=item identcode_dp, leitcode_dp, m10-005
 
 See L<Algorithm::CheckDigits::M10_005>.
 
-=item rentenversicherung
+=item rentenversicherung, m10-006
 
 See L<Algorithm::CheckDigits::M10_006>.
 
-=item upc
-
-See L<Algorithm::CheckDigits::MBase_001>.
-
-=item sedol
+=item sedol, m10-008
 
 See L<Algorithm::CheckDigits::M10_008>.
 
-=item postscheckkonti
+=item betriebsnummer, m10-009
+
+See L<Algorithm::CheckDigits::M10_009>.
+
+=item postscheckkonti, m10-010
 
 See L<Algorithm::CheckDigits::M10_010>.
 
-=item isbn, issn, ustid_pt, hkid, wagonnr_br, nhs_gb, vat_sl
+=item ups, m10-011
+
+See L<Algorithm::CheckDigits::M10_011>.
+
+=item hkid, isbn, issn, nhs_gb, ustid_pt, vat_sl, wagonnr_br, m11-001
 
 See L<Algorithm::CheckDigits::M11_001>.
 
-=item pzn
+=item pzn, m11-002
 
 See L<Algorithm::CheckDigits::M11_002>.
 
-=item pkz
+=item pkz, m11-003
 
 See L<Algorithm::CheckDigits::M11_003>.
 
-=item cpf, titulo_eleitor
+=item cpf, titulo_eleitor, m11-004
 
 See L<Algorithm::CheckDigits::M11_004>.
 
-=item blutbeutel, bzue_de, ustid_de
-
-See L<Algorithm::CheckDigits::MBase_002>.
-
-=item ccc_es
+=item ccc_es, m11-006
 
 See L<Algorithm::CheckDigits::M11_006>.
 
-=item sici
-
-See L<Algorithm::CheckDigits::MBase_003>.
-
-=item ustid_fi
+=item ustid_fi, vatrn_fi, m11-007
 
 See L<Algorithm::CheckDigits::M11_007>.
 
-=item ustid_dk
+=item ustid_dk, vatrn_dk, m11-008
 
 See L<Algorithm::CheckDigits::M11_008>.
 
-=item nric_sg
+=item nric_sg, m11-009
 
 See L<Algorithm::CheckDigits::M11_009>.
 
-=item ahv_ch
+=item ahv_ch, m11-010
 
 See L<Algorithm::CheckDigits::M11_010>.
 
-=item ustid_nl
+=item ustid_nl, vatrn_nl, m11-011
 
 See L<Algorithm::CheckDigits::M11_011>.
 
-=item bwpk_de
+=item bwpk_de, m11-012
 
 See L<Algorithm::CheckDigits::M11_012>.
 
-=item ustid_pl
+=item ustid_gr, vatrn_gr, m11-013
+
+See L<Algorithm::CheckDigits::M11_013>.
+
+=item esr5_ch, m11-015
+
+See L<Algorithm::CheckDigits::M11_015>.
+
+=item ustid_pl, vatrn_pl, m11-016
 
 See L<Algorithm::CheckDigits::M11_016>.
+
+=item isan, m16-001
+
+See L<Algorithm::CheckDigits::M16_001>.
+
+=item dni_es, m23-001
+
+See L<Algorithm::CheckDigits::M23_001>.
+
+=item ustid_ie, vatrn_ie, m23-002
+
+See L<Algorithm::CheckDigits::M23_002>.
+
+=item code_39, m43-001
+
+See L<Algorithm::CheckDigits::M43_001>.
+
+=item ustid_lu, vatrn_lu, m89-001
+
+See L<Algorithm::CheckDigits::M89_001>.
+
+=item ustid_be, vatrn_be, m97-001
+
+See L<Algorithm::CheckDigits::M97_001>.
+
+=item iban, m97-002
+
+See L<Algorithm::CheckDigits::M97_002>.
+
+=item upc, mbase-001
+
+See L<Algorithm::CheckDigits::MBase_001>.
+
+=item blutbeutel, bzue_de, ustid_de, vatrn_de, mbase-002
+
+See L<Algorithm::CheckDigits::MBase_002>.
+
+=item sici, mbase-003
+
+See L<Algorithm::CheckDigits::MBase_003>.
+
+=item pa_de, mxx-001
+
+See L<Algorithm::CheckDigits::MXX_001>.
+
+=item cas, mxx-002
+
+See L<Algorithm::CheckDigits::MXX_002>.
+
+=item dem, mxx-003
+
+Old german bank notes (DEM), see L<Algorithm::CheckDigits::MXX_003>.
+
+=item ustid_at, vatrn_at, mxx-004
+
+See L<Algorithm::CheckDigits::MXX_004>.
+
+=item esr9_ch, mxx-005
+
+See L<Algorithm::CheckDigits::MXX_005>.
+
+=item verhoeff, mxx-006
+
+Verhoeff scheme, see L<Algorithm::CheckDigits::MXX_006> or
+L<Algorithm::Verhoeff>
 
 =back
 
@@ -349,7 +421,7 @@ Mathias Weidner, E<lt>mathias@weidner.in-bad-schmiedeberg.deE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2004,2005 by Mathias Weidner
+Copyright 2004-2006 by Mathias Weidner
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

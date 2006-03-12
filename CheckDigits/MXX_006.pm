@@ -1,4 +1,4 @@
-package Algorithm::CheckDigits::MXX_003;
+package Algorithm::CheckDigits::MXX_006;
 
 use 5.006;
 use strict;
@@ -6,6 +6,8 @@ use warnings;
 use integer;
 
 require Exporter;
+
+use Data::Dumper;
 
 our @ISA = qw(Exporter Algorithm::CheckDigits);
 
@@ -23,6 +25,8 @@ our %EXPORT_TAGS = ( 'all' => [ qw(
 our @EXPORT_OK = ( 'new', @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = ();
+
+our @inverted =  (0, 4, 3, 2, 1, 5, 6, 7, 8, 9 );
 
 my $perm = [
 	[ 1, 5, 7, 6, 2, 8, 3, 0, 9, 4, ],
@@ -63,7 +67,7 @@ sub new {
 
 sub is_valid {
 	my ($self,$number) = @_;
-	if ($number =~ /^([ADGKLNSUYZ]{2}\d{7}[ADGKLNSUYZ])(\d)$/i) {
+	if ($number =~ /^(\d+)(\d)$/i) {
 		return 1 if ($2 == $self->_compute_checkdigit(uc($1)));
 	}
 	return ''
@@ -71,7 +75,7 @@ sub is_valid {
 
 sub complete {
 	my ($self,$number) = @_;
-	if ($number =~ /^[ADGKLNSUYZ]{2}\d{7}[ADGKLNSUYZ]$/i) {
+	if ($number =~ /^\d+$/i) {
 		return $number .  $self->_compute_checkdigit(uc($number));
 	}
 	return '';
@@ -79,7 +83,7 @@ sub complete {
 
 sub basenumber {
 	my ($self,$number) = @_;
-	if ($number =~ /^([ADGKLNSUYZ]{2}\d{7}[ADGKLNSUYZ])(\d)$/i) {
+	if ($number =~ /^(\d+)(\d)$/i) {
 		return $1 if ($2 == $self->_compute_checkdigit(uc($1)));
 	}
 	return '';
@@ -87,7 +91,7 @@ sub basenumber {
 
 sub checkdigit {
 	my ($self,$number) = @_;
-	if ($number =~ /^([ADGKLNSUYZ]{2}\d{7}[ADGKLNSUYZ])(\d)$/i) {
+	if ($number =~ /^(\d+)(\d)$/i) {
 		return $2 if ($2 == $self->_compute_checkdigit(uc($1)));
 	}
 	return '';
@@ -97,20 +101,16 @@ sub _compute_checkdigit {
 	my $self   = shift;
 	my $number = shift;
 
-	$number =~ tr/ADGKLNSUYZ/0-9/;
-	my @digits = split(//,$number);
-	my $p0 = $perm->[0]->[$digits[0]];
-	my $rd = $p0;
-
-	for (my $i = 1; $i <= $#digits; $i++) {
-		my $pi = $perm->[$i % 8]->[$digits[$i]];
-		$rd = $dieder->[$rd]->[$pi];
-	}
-	for (my $j = 0; $j <= 9; $j++) {
-		return $j unless($dieder->[$rd]->[$j]);
-	}
-
-	return -1;
+	my $input = shift;
+	my $c = 0; # initialize check at 0
+	my $digit = 0;
+	my $i = 0; my $r;
+	foreach $digit (reverse split(//, $number)) {
+#		$c = $di->[$c]->[$f->[($i+1) % 8]->[$digit]]; # this was jonathans implementation
+		$c = $dieder->[$c]->[$perm->[$i % 8]->[$digit]];
+	        $i++;
+        }
+	return $inverted[$c];
 } # _compute_checkdigit()
 
 # Preloaded methods go here.
@@ -120,42 +120,36 @@ __END__
 
 =head1 NAME
 
-CheckDigits::MXX_003 - compute check digits for DEM
+CheckDigits::MXX_006 - compute check digits with Verhoeff scheme
 
 =head1 SYNOPSIS
 
   use CheckDigits;
 
-  $dem = CheckDigits('dem');
+  $dem = CheckDigits('vehoeff');
 
-  if ($dem->is_valid('GD0645027K1')) {
+  if ($pa->is_valid('14567894')) {
 	# do something
   }
 
-  $cn = $dem->complete('GD0645027K');
-  # $cn = 'GD0645027K1'
+  $cn = $dem->complete('1456789');
+  # $cn = '14567894'
 
-  $cd = $dem->checkdigit('GD0645027K1');
-  # $cd = '1'
+  $cd = $dem->checkdigit('14567894');
+  # $cd = '4'
 
-  $bn = $dem->basenumber('GD0645027K1');
-  # $bn = 'GD0645027K'
+  $bn = $dem->basenumber('14567894');
+  # $bn = '1456789'
   
 =head1 DESCRIPTION
 
 =head2 ALGORITHM
 
-The algorithm is a variation of the Verhoeff scheme.
-
 =over 4
-
-=item 0
-
-All letters are changed to numbers.
 
 =item 1
 
-All digits are permutated according to a permutation table.
+Right to left all digits are permutated according to a permutation table.
 
 =item 2
 
@@ -190,7 +184,7 @@ The check digit for C<$number> is computed and concatenated to the end
 of C<$number>.
 
 Returns the complete number with check digit or '' if C<$number>
-does not consist solely of digits and spaces.
+does not consist solely of digits.
 
 =item basenumber($number)
 
@@ -218,10 +212,14 @@ Mathias Weidner, E<lt>mathias@weidner.in-bad-schmiedeberg.deE<gt>
 
 =head1 THANKS
 
+Jonathan Peters wrote L<Algorithm::Verhoeff> from which I took the
+routine to compute the checkdigits.
+
 =head1 SEE ALSO
 
 L<perl>,
 L<CheckDigits>,
-F<www.pruefziffernberechnung.de>,
+L<http://www.cs.utsa.edu/~wagner/laws/verhoeff.html>,
+L<http://www.cs.nmsu.edu/~cssem/Dickcheckdoc.pdf>
 
 =cut

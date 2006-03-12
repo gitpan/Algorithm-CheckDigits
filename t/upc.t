@@ -11,4 +11,4 @@ my $upc = CheckDigits('upc');
 #
 # Thanks to Aaron W. West
 #
-ok($upc->is_valid("724358016420"))
+ok($upc->is_valid("724358016420"));

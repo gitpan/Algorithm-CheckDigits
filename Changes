@@ -1,5 +1,10 @@
 Revision history for Perl extension CheckDigits.
 
+0.39  Sun, 12 Mar 2006 17:50:13 +0100
+	- Added Verhoeff scheme (Method XX-006) taking some code from
+	  Algorithm::Verhoeff.
+	- Refined POD for CheckDigits.pm
+
 0.38  Wed, 26 Jan 2005 22:48:10 +0100
 	- Refined Method M11-011 (now accepts full vatrn)
 	- provided basic tests for above change
