@@ -1,5 +1,9 @@
 Revision history for Perl extension CheckDigits.
 
+0.41  Do Jun 29 00:34:04 CEST 2006
+	- added t/pod-coverage.t
+	- added missing documentation
+
 0.40  Mi Jun 28 23:31:00 CEST 2006
 	- fixed code examples in POD according to
 	  http://annocpan.org/~MAMAWE/Algorithm-CheckDigits-0.39/CheckDigits/MXX_002.pm

@@ -132,6 +132,11 @@ digit.
 
 Return undef otherwise.
 
+=item checkdigit($number)
+
+Returns the check digit belonging to C<$number> or undef if C<$number> does
+not consist solely of digits.
+
 =back
 
 =head2 EXPORT

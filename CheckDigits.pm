@@ -25,7 +25,7 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = qw( CheckDigits );
 
-our $VERSION = '0.40';
+our $VERSION = '0.41';
 
 my %methods = (
 	'mbase-001'		=> 'Algorithm::CheckDigits::MBase_001',
@@ -199,7 +199,13 @@ Algorithm::CheckDigits - Perl extension to generate and test check digits
 
 =head1 SYNOPSIS
 
+  perl -MAlgorithm::CheckDigits -e Algorithm::CheckDigits::print_methods
+
+or
+
   use Algorithm::CheckDigits;
+  
+  @ml = Algorithm::CheckDigits->method_list();
 
   $isbn = CheckDigits('ISBN');
 
@@ -212,8 +218,6 @@ Algorithm::CheckDigits - Perl extension to generate and test check digits
   $cd = $isbn->checkdigit('3-930673-48-7'); # $cd = '7'
 
   $bn = $isbn->basenumber('3-930673-48-7'); # $bn = '3-930673-48'
-  
-  Algorithm::CheckDigits->method_list();
 
 =head1 ABSTRACT
 
@@ -221,13 +225,52 @@ This module provides a number of methods to test and generate check
 digits. For more information have a look at the web site
 F<www.pruefziffernberechnung.de> (german).
 
-=head2 CHECK SUM METHODS
+=head1 SUBROUTINES/METHODS
 
-Use the following to find out which methods your version of
+=head2 CheckDigits($method)
+
+Returns an object of an appropriate Algorithm::CheckDigits class for the
+given algorithm. See below for the available algorithms. Every object
+understands the following methods:
+
+=over 4
+
+=item is_valid($number)
+
+Returns true or false if C<$number> contains/contains no valid check digit.
+
+=item complete($number)
+
+Returns a string representation of C<$number> completed with the appropriate
+check digit.
+
+=item checkdigit($number)
+
+Extracts the check digit from C<$number> if C<$number> contains a valid check
+digit.
+
+=item basenumber($number)
+
+Extracts the basenumber from C<$number> if C<$number> contains a valid check
+digit.
+
+=back
+
+=head2 Algorithm::CheckDigits::method_list()
+
+Returns a list of known methods for check digit computation.
+
+=head2 Algorithm::CheckDigits::print_methods()
+
+Returns a list of known methods for check digit computation.
+
+You may use the following to find out which methods your version of
 Algorithm::CheckDigits provides and where to look for further
 information.
 
  perl -MAlgorithm::CheckDigits -e Algorithm::CheckDigits::print_methods
+
+=head2 CHECK SUM METHODS
 
 At the moment these methods to compute check digits are provided:
 (vatrn - VAT Return Number, in german ustid UmsatzSTeuer-ID)
