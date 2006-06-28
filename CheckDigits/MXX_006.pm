@@ -5,26 +5,9 @@ use strict;
 use warnings;
 use integer;
 
-require Exporter;
-
 use Data::Dumper;
 
-our @ISA = qw(Exporter Algorithm::CheckDigits);
-
-# Items to export into callers namespace by default. Note: do not export
-# names by default without a very good reason. Use EXPORT_OK instead.
-# Do not simply export all your public functions/methods/constants.
-
-# This allows declaration	use CheckDigits ':all';
-# If you do not need this, moving things directly into @EXPORT or @EXPORT_OK
-# will save memory.
-our %EXPORT_TAGS = ( 'all' => [ qw(
-	
-) ] );
-
-our @EXPORT_OK = ( 'new', @{ $EXPORT_TAGS{'all'} } );
-
-our @EXPORT = ();
+our @ISA = qw(Algorithm::CheckDigits);
 
 our @inverted =  (0, 4, 3, 2, 1, 5, 6, 7, 8, 9 );
 
@@ -106,7 +89,10 @@ sub _compute_checkdigit {
 	my $digit = 0;
 	my $i = 0; my $r;
 	foreach $digit (reverse split(//, $number)) {
-#		$c = $di->[$c]->[$f->[($i+1) % 8]->[$digit]]; # this was jonathans implementation
+#		This was jonathans implementation, his permutation
+#		table is offset by one compared to the one I already
+#		took in MXX_003.pm and reused here
+#		$c = $di->[$c]->[$f->[($i+1) % 8]->[$digit]];
 		$c = $dieder->[$c]->[$perm->[$i % 8]->[$digit]];
 	        $i++;
         }
@@ -124,21 +110,21 @@ CheckDigits::MXX_006 - compute check digits with Verhoeff scheme
 
 =head1 SYNOPSIS
 
-  use CheckDigits;
+  use Algorithm::CheckDigits;
 
-  $dem = CheckDigits('vehoeff');
+  $verhoeff = CheckDigits('verhoeff');
 
-  if ($pa->is_valid('14567894')) {
+  if ($verhoeff->is_valid('14567894')) {
 	# do something
   }
 
-  $cn = $dem->complete('1456789');
+  $cn = $verhoeff->complete('1456789');
   # $cn = '14567894'
 
-  $cd = $dem->checkdigit('14567894');
+  $cd = $verhoeff->checkdigit('14567894');
   # $cd = '4'
 
-  $bn = $dem->basenumber('14567894');
+  $bn = $verhoeff->basenumber('14567894');
   # $bn = '1456789'
   
 =head1 DESCRIPTION

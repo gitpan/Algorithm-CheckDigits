@@ -25,7 +25,7 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = qw( CheckDigits );
 
-our $VERSION = '0.39';
+our $VERSION = '0.40';
 
 my %methods = (
 	'mbase-001'		=> 'Algorithm::CheckDigits::MBase_001',
@@ -195,7 +195,7 @@ __END__
 
 =head1 NAME
 
-CheckDigits - Perl extension to generate and test check digits
+Algorithm::CheckDigits - Perl extension to generate and test check digits
 
 =head1 SYNOPSIS
 

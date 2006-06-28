@@ -1,5 +1,13 @@
 Revision history for Perl extension CheckDigits.
 
+0.40  Mi Jun 28 23:31:00 CEST 2006
+	- fixed code examples in POD according to
+	  http://annocpan.org/~MAMAWE/Algorithm-CheckDigits-0.39/CheckDigits/MXX_002.pm
+	- CheckDigits.pm: POD: corrected ABSTRACT
+	- added t/pod.t to check for POD errors
+	- fixed POD according to t/pod.t
+	- Clarified POD for Algorithm/CheckDigits/MXX_006.pm
+
 0.39  Sun, 12 Mar 2006 17:50:13 +0100
 	- Added Verhoeff scheme (Method XX-006) taking some code from
 	  Algorithm::Verhoeff.

@@ -5,24 +5,7 @@ use strict;
 use warnings;
 use integer;
 
-require Exporter;
-
-our @ISA = qw(Exporter Algorithm::CheckDigits);
-
-# Items to export into callers namespace by default. Note: do not export
-# names by default without a very good reason. Use EXPORT_OK instead.
-# Do not simply export all your public functions/methods/constants.
-
-# This allows declaration	use CheckDigits ':all';
-# If you do not need this, moving things directly into @EXPORT or @EXPORT_OK
-# will save memory.
-our %EXPORT_TAGS = ( 'all' => [ qw(
-	
-) ] );
-
-our @EXPORT_OK = ( 'new', @{ $EXPORT_TAGS{'all'} } );
-
-our @EXPORT = ();
+our @ISA = qw(Algorithm::CheckDigits);
 
 my $cd = {
 	'isbn'		=> [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'X', 0 ],
@@ -113,7 +96,7 @@ CheckDigits::M11_001 - compute check digits for ISBN, ISSN, VAT RN
 
 =head1 SYNOPSIS
 
-  use CheckDigits;
+  use Algorithm::CheckDigits;
 
   $isbn = CheckDigits('isbn');
 
@@ -191,6 +174,8 @@ If the difference is 11, the check digit is 0.
 =item vat_sl
 
 This is a little bit unclear, don't trust on the method for this type.
+
+=back
 
 =back
 

@@ -5,24 +5,7 @@ use strict;
 use warnings;
 use integer;
 
-require Exporter;
-
-our @ISA = qw(Exporter Algorithm::CheckDigits);
-
-# Items to export into callers namespace by default. Note: do not export
-# names by default without a very good reason. Use EXPORT_OK instead.
-# Do not simply export all your public functions/methods/constants.
-
-# This allows declaration	use CheckDigits ':all';
-# If you do not need this, moving things directly into @EXPORT or @EXPORT_OK
-# will save memory.
-our %EXPORT_TAGS = ( 'all' => [ qw(
-	
-) ] );
-
-our @EXPORT_OK = ( 'new', @{ $EXPORT_TAGS{'all'} } );
-
-our @EXPORT = ();
+our @ISA = qw(Algorithm::CheckDigits);
 
 my @weight = ( 7, 9, 10, 5, 8, 4, 2 );
 
@@ -90,7 +73,7 @@ CheckDigits::M11_007 - compute check digits for VAT Registration Number (FI)
 
 =head1 SYNOPSIS
 
-  use CheckDigits;
+  use Algorithm::CheckDigits;
 
   $ustid = CheckDigits('ustid_fi');
 

@@ -5,24 +5,7 @@ use strict;
 use warnings;
 use integer;
 
-require Exporter;
-
-our @ISA = qw(Exporter Algorithm::CheckDigits);
-
-# Items to export into callers namespace by default. Note: do not export
-# names by default without a very good reason. Use EXPORT_OK instead.
-# Do not simply export all your public functions/methods/constants.
-
-# This allows declaration	use CheckDigits ':all';
-# If you do not need this, moving things directly into @EXPORT or @EXPORT_OK
-# will save memory.
-our %EXPORT_TAGS = ( 'all' => [ qw(
-	
-) ] );
-
-our @EXPORT_OK = ( 'new', @{ $EXPORT_TAGS{'all'} } );
-
-our @EXPORT = ();
+our @ISA = qw(Algorithm::CheckDigits);
 
 sub new {
 	my $proto = shift;
@@ -100,7 +83,7 @@ CheckDigits::M11_002 - compute check digits for PZN (DE)
 
 =head1 SYNOPSIS
 
-  use CheckDigits;
+  use Algorithm::CheckDigits;
 
   $pzn = CheckDigits('pzn');
 
@@ -139,8 +122,6 @@ The checkdigit ist the sum of step 2 taken modulo 11.
 =item 4
 
 If the checkdigit is '10' the whole number is not taken as a PZN.
-
-=over 8
 
 =back
 
