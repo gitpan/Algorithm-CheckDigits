@@ -1,5 +1,12 @@
 Revision history for Perl extension CheckDigits.
 
+0.42  Fr Dez  1 22:02:57 CET 2006
+	- Method 10-004: added code to handle ISBN-13 (mainly check whether
+	  first three digits are 978 or 979 and cope with hyphens)
+	- CheckDigits.pm: Invocation as CheckDigits('isbn13') returns an
+	  Algorithm::CheckDigits::M10_004 object.
+	- added tests for isbn13
+
 0.41  Do Jun 29 00:34:04 CEST 2006
 	- added t/pod-coverage.t
 	- added missing documentation
