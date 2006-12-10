@@ -1,5 +1,9 @@
 Revision history for Perl extension CheckDigits.
 
+0.43  So Dez 10 23:35:31 CET 2006
+	- Method 97-002 (IBAN): allowed for more letters than just the country
+	  code and eliminated Math::BigInt (Thanks to Detlef Pilzecker).
+
 0.42  Fr Dez  1 22:02:57 CET 2006
 	- Method 10-004: added code to handle ISBN-13 (mainly check whether
 	  first three digits are 978 or 979 and cope with hyphens)

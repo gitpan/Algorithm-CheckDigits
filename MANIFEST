@@ -47,6 +47,7 @@ MANIFEST
 META.yml                                 Module meta-data (added by MakeMaker)
 README
 t/checkdigits.t
+t/iban.t
 t/isbn13.t
 t/pod-coverage.t
 t/pod.t
