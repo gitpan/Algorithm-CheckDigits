@@ -101,10 +101,11 @@ sub _compute_checkdigit {
 sub _prepare_number {
     my $number = uc(shift);
 
-    if ($number =~ /^([A-Z]{2})(\d\d)([A-Z\d ]+)$/) {
+    $number        =~ s/\s//g;
+
+    if ($number =~ /^([A-Z]{2})(\d\d)([A-Z\d]{2,30})$/) {
         my $checkdigit = $2;
         $number        = $3 . $1 . '00';
-        $number        =~ s/\s//g;
         $number        =~ s/([A-Z])/$subst{$1}/g;
         return ($checkdigit,$number);
     }

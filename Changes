@@ -1,5 +1,8 @@
 Revision history for Perl extension CheckDigits.
 
+0.44  Mo Dez 11 00:46:30 CET 2006
+	- Method 97-002 (IBAN): allow min. 2, max. 30 digits/letters for BBAN
+
 0.43  So Dez 10 23:35:31 CET 2006
 	- Method 97-002 (IBAN): allowed for more letters than just the country
 	  code and eliminated Math::BigInt (Thanks to Detlef Pilzecker).
