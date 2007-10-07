@@ -1,5 +1,12 @@
 Revision history for Perl extension CheckDigits.
 
+0.45  So 7. Okt 12:00:25 CEST 2007
+	- CheckDigits.pm: CheckDigits() dies on unknown algorithm/method
+	- CheckDigits.pm: IMEI and IMEISV are recognized (M10_001.pm)
+	- CheckDigits/M10_001.pm recognizes that with IMEISV only the 14 most
+	  significant digits are taken for the computation of the checkdigit
+	- reformatted CheckDigits.pm, CheckDigits/M10_001.pm
+
 0.44  Mo Dez 11 00:46:30 CET 2006
 	- Method 97-002 (IBAN): allow min. 2, max. 30 digits/letters for BBAN
 

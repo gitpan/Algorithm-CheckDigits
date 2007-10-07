@@ -1,3 +1,4 @@
+# vim: set ts=4 sw=4 tw=78 si et:
 package Algorithm::CheckDigits::M10_001;
 
 use 5.006;
@@ -8,24 +9,44 @@ use integer;
 our @ISA = qw(Algorithm::CheckDigits);
 
 my %prefix = (
-	'amex'		=> [ '34', '37' ],
-	'bahncard'	=> [ '70' ],
-	'diners'	=> [ '30[0-5]', '36', '38' ],
-	'discover'	=> [ '6011' ],
-	'enroute'	=> [ '2014', '2149' ],
-	'jcb'		=> [ '1800', '2131', '3088' ],
-	'mastercard'	=> [ '5[1-5]' ],
-	'miles&more'	=> [ '99', '22' ],
-	'visa'		=> [ '4' ],
+    'amex'     => [ '34', '37', ],
+    'bahncard' => [ '70', ],
+    'diners'   => [ '30[0-5]', '36', '38', ],
+    'discover' => [ '6011', ],
+    'enroute' => [ '2014', '2149', ],
+    'jcb'     => [ '1800', '2131', '3088', ],
+    'mastercard' => [ '5[1-5]', ],
+    'miles&more' => [ '99', '22', ],
+    'visa'       => [ '4', ],
 );
 
 my %ctable = (
-	'A' => 10, 'B' => 11, 'C' => 12, 'D' => 13, 'E' => 14,
-	'F' => 15, 'G' => 16, 'H' => 17, 'I' => 18, 'J' => 19,
-	'K' => 20, 'L' => 21, 'M' => 22, 'N' => 23, 'O' => 24,
-	'P' => 25, 'Q' => 26, 'R' => 27, 'S' => 28, 'T' => 29,
-	'U' => 30, 'V' => 31, 'W' => 32, 'X' => 33, 'Y' => 34,
-	'Z' => 35,
+    'A' => 10,
+    'B' => 11,
+    'C' => 12,
+    'D' => 13,
+    'E' => 14,
+    'F' => 15,
+    'G' => 16,
+    'H' => 17,
+    'I' => 18,
+    'J' => 19,
+    'K' => 20,
+    'L' => 21,
+    'M' => 22,
+    'N' => 23,
+    'O' => 24,
+    'P' => 25,
+    'Q' => 26,
+    'R' => 27,
+    'S' => 28,
+    'T' => 29,
+    'U' => 30,
+    'V' => 31,
+    'W' => 32,
+    'X' => 33,
+    'Y' => 34,
+    'Z' => 35,
 );
 
 # Aliases
@@ -33,83 +54,89 @@ $prefix{'eurocard'} = $prefix{'mastercard'};
 
 # omit prefixes doesn't work with the test numbers
 my %omitprefix = (
-	'jcb'		=> 0,
-	'enroute'	=> 0,
-	'discover'	=> 0,
+    'jcb'      => 0,
+    'enroute'  => 0,
+    'discover' => 0,
 );
 
 sub new {
-	my $proto = shift;
-	my $type  = shift;
-	my $class = ref($proto) || $proto;
-	my $self  = bless({}, $class);
-	$self->{type} = lc($type);
-	return $self;
-} # new()
+    my $proto = shift;
+    my $type  = shift;
+    my $class = ref($proto) || $proto;
+    my $self  = bless( {}, $class );
+    $self->{type} = lc($type);
+    return $self;
+}    # new()
 
 sub is_valid {
-	my ($self,$number) = @_;
-	if ($number =~ /^([0-9A-Z ]*)([0-9])$/i) {
-		return $2 == $self->_compute_checkdigit(uc($1));
-	}
-	return ''
-} # is_valid()
+    my ( $self, $number ) = @_;
+    if ( $number =~ /^([0-9A-Z ]*)([0-9])$/i ) {
+        return $2 == $self->_compute_checkdigit( uc($1) );
+    }
+    return '';
+}    # is_valid()
 
 sub complete {
-	my ($self,$number) = @_;
-	if ($number =~ /^[0-9A-Z ]*$/i) {
-		return  $number .  $self->_compute_checkdigit(uc($number));
-	}
-	return '';
-} # complete()
+    my ( $self, $number ) = @_;
+    if ( $number =~ /^[0-9A-Z ]*$/i ) {
+        return $number . $self->_compute_checkdigit( uc($number) );
+    }
+    return '';
+}    # complete()
 
 sub basenumber {
-	my ($self,$number) = @_;
-	if ($number =~ /^([0-9A-Z ]*)([0-9])$/i) {
-		return $1 if ($2 == $self->_compute_checkdigit(uc($1)));
-	}
-	return '';
-} # basenumber()
+    my ( $self, $number ) = @_;
+    if ( $number =~ /^([0-9A-Z ]*)([0-9])$/i ) {
+        return $1 if ( $2 == $self->_compute_checkdigit( uc($1) ) );
+    }
+    return '';
+}    # basenumber()
 
 sub checkdigit {
-	my ($self,$number) = @_;
-	if ($number =~ /^([0-9A-Z ]*)([0-9])$/i) {
-		return $2 if ($2 == $self->_compute_checkdigit(uc($1)));
-	}
-	return '';
-} # checkdigit()
+    my ( $self, $number ) = @_;
+    if ( $number =~ /^([0-9A-Z ]*)([0-9])$/i ) {
+        return $2 if ( $2 == $self->_compute_checkdigit( uc($1) ) );
+    }
+    return '';
+}    # checkdigit()
 
 sub _compute_checkdigit {
-	my $self   = shift;
-	my $number = shift;
-	$number =~ s/\s//g;
-	if ($omitprefix{$self->{type}}) {
-		my $pf = $prefix{$self->{type}};
-		for my $p (@{$pf}) {
-			if ($number =~ /^$p([0-9]+)$/) {
-				$number = $1;
-				last;
-			}
-		}
-	}
-	$number =~ s/([A-Z])/$ctable{$1}/ge;
-	if ($number =~ /^([0-9]*)$/) {
-		my @digits = split(//,$number);
-		my $even = 1;
-		my $sum  = 0;
-		for (my $i = $#digits;$i >= 0;$i--) {
-			if ($even) {
-				my $tmp = 2 * $digits[$i];
-				$sum += $tmp / 10 + $tmp % 10;
-			} else {
-				$sum += $digits[$i];
-			}
-			$even = not $even;
-		}
-		return (10 - $sum % 10) % 10;
-	}
-	return -1;
-} # _compute_checkdigit()
+    my $self   = shift;
+    my $number = shift;
+    $number =~ s/\s//g;
+    if ( $omitprefix{ $self->{type} } ) {
+        my $pf = $prefix{ $self->{type} };
+        for my $p ( @{$pf} ) {
+            if ( $number =~ /^$p([0-9]+)$/ ) {
+                $number = $1;
+                last;
+            }
+        }
+    }
+    $number =~ s/([A-Z])/$ctable{$1}/ge;
+
+    # With IMEISV the SV (software version) is left out from the computation
+    # of the checkdigit
+    $number = substr( $number, 0, 14 ) if ( 'imeisv' eq $self->{type} );
+
+    if ( $number =~ /^([0-9]*)$/ ) {
+        my @digits = split( //, $number );
+        my $even   = 1;
+        my $sum    = 0;
+        for ( my $i = $#digits; $i >= 0; $i-- ) {
+            if ($even) {
+                my $tmp = 2 * $digits[$i];
+                $sum += $tmp / 10 + $tmp % 10;
+            }
+            else {
+                $sum += $digits[$i];
+            }
+            $even = not $even;
+        }
+        return ( 10 - $sum % 10 ) % 10;
+    }
+    return -1;
+}    # _compute_checkdigit()
 
 # Preloaded methods go here.
 
@@ -220,5 +247,7 @@ Mathias Weidner, E<lt>mathias@weidner.in-bad-schmiedeberg.deE<gt>
 L<perl>,
 L<CheckDigits>,
 F<www.pruefziffernberechnung.de>.
+
+For IMEI, IMEISV: ETSI Technical Specification TS 100 508 (v6.2.0)
 
 =cut

@@ -44,13 +44,15 @@ CheckDigits/MXX_006.pm
 CheckDigits.pm
 Makefile.PL
 MANIFEST
-META.yml                                 Module meta-data (added by MakeMaker)
+.perltidyrc
 README
 t/checkdigits.t
 t/iban.t
+t/imei.t
 t/isbn13.t
 t/pod-coverage.t
 t/pod.t
 t/upc.t
 t/valid.data
 t/valid.t
+META.yml                                 Module meta-data (added by MakeMaker)

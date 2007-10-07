@@ -1,3 +1,4 @@
+# vim: ts=4 sw=4 tw=78 et si:
 package Algorithm::CheckDigits;
 
 use 5.006;
@@ -17,174 +18,179 @@ our @ISA = qw(Exporter);
 # This allows declaration	use CheckDigits ':all';
 # If you do not need this, moving things directly into @EXPORT or @EXPORT_OK
 # will save memory.
-our %EXPORT_TAGS = ( 'all' => [ qw(
-	CheckDigits method_list print_methods
-) ] );
+our %EXPORT_TAGS = (
+    'all' => [
+        qw(
+          CheckDigits method_list print_methods
+          ) ] );
 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = qw( CheckDigits );
 
-our $VERSION = '0.44';
+our $VERSION = '0.45';
 
 my %methods = (
-	'mbase-001'		=> 'Algorithm::CheckDigits::MBase_001',
-	'upc'			=> 'Algorithm::CheckDigits::MBase_001',
-	'mbase-002'		=> 'Algorithm::CheckDigits::MBase_002',
-	'blutbeutel'		=> 'Algorithm::CheckDigits::MBase_002',
-	'bzue_de'		=> 'Algorithm::CheckDigits::MBase_002',
-	'ustid_de'		=> 'Algorithm::CheckDigits::MBase_002',
-	'vatrn_de'		=> 'Algorithm::CheckDigits::MBase_002',
-	'mbase-003'		=> 'Algorithm::CheckDigits::MBase_003',
-	'sici'			=> 'Algorithm::CheckDigits::MBase_003',
-	'm07-001'		=> 'Algorithm::CheckDigits::M07_001',
-	'm09-001'		=> 'Algorithm::CheckDigits::M09_001',
-	'euronote'		=> 'Algorithm::CheckDigits::M09_001',
-	'm10-001'		=> 'Algorithm::CheckDigits::M10_001',
-	'amex'			=> 'Algorithm::CheckDigits::M10_001',
-	'bahncard'		=> 'Algorithm::CheckDigits::M10_001',
-	'diners'		=> 'Algorithm::CheckDigits::M10_001',
-	'discover'		=> 'Algorithm::CheckDigits::M10_001',
-	'enroute'		=> 'Algorithm::CheckDigits::M10_001',
-	'eurocard'		=> 'Algorithm::CheckDigits::M10_001',
-	'happydigits'		=> 'Algorithm::CheckDigits::M10_001',
-	'jcb'			=> 'Algorithm::CheckDigits::M10_001',
-	'klubkarstadt'		=> 'Algorithm::CheckDigits::M10_001',
-	'mastercard'		=> 'Algorithm::CheckDigits::M10_001',
-	'miles&more'		=> 'Algorithm::CheckDigits::M10_001',
-	'visa'			=> 'Algorithm::CheckDigits::M10_001',
-	'isin'			=> 'Algorithm::CheckDigits::M10_001',
-	'm10-002'		=> 'Algorithm::CheckDigits::M10_002',
-	'siren'			=> 'Algorithm::CheckDigits::M10_002',
-	'siret'			=> 'Algorithm::CheckDigits::M10_002',
-	'm10-003'		=> 'Algorithm::CheckDigits::M10_003',
-	'ismn'			=> 'Algorithm::CheckDigits::M10_003',
-	'm10-004'		=> 'Algorithm::CheckDigits::M10_004',
-	'ean'			=> 'Algorithm::CheckDigits::M10_004',
-	'iln'			=> 'Algorithm::CheckDigits::M10_004',
-	'nve'			=> 'Algorithm::CheckDigits::M10_004',
-	'2aus5'			=> 'Algorithm::CheckDigits::M10_004',
-	'isbn13'		=> 'Algorithm::CheckDigits::M10_004',
-	'm10-005'		=> 'Algorithm::CheckDigits::M10_005',
-	'identcode_dp'		=> 'Algorithm::CheckDigits::M10_005',
-	'leitcode_dp'		=> 'Algorithm::CheckDigits::M10_005',
-	'm10-006'		=> 'Algorithm::CheckDigits::M10_006',
-	'rentenversicherung'	=> 'Algorithm::CheckDigits::M10_006',
-	'm10-008'		=> 'Algorithm::CheckDigits::M10_008',
-	'sedol'			=> 'Algorithm::CheckDigits::M10_008',
-	'm10-009'		=> 'Algorithm::CheckDigits::M10_009',
-	'betriebsnummer'	=> 'Algorithm::CheckDigits::M10_009',
-	'm10-010'		=> 'Algorithm::CheckDigits::M10_010',
-	'postcheckkonti'	=> 'Algorithm::CheckDigits::M10_010',
-	'm10-011'		=> 'Algorithm::CheckDigits::M10_011',
-	'ups'			=> 'Algorithm::CheckDigits::M10_011',
-	'm11-001'		=> 'Algorithm::CheckDigits::M11_001',
-	'isbn'			=> 'Algorithm::CheckDigits::M11_001',
-	'issn'			=> 'Algorithm::CheckDigits::M11_001',
-	'ustid_pt'		=> 'Algorithm::CheckDigits::M11_001',
-	'vatrn_pt'		=> 'Algorithm::CheckDigits::M11_001',
-	'hkid'			=> 'Algorithm::CheckDigits::M11_001',
-	'wagonnr_br'		=> 'Algorithm::CheckDigits::M11_001',
-	'nhs_gb'		=> 'Algorithm::CheckDigits::M11_001',
-	'vat_sl'		=> 'Algorithm::CheckDigits::M11_001',
-	'm11-002'		=> 'Algorithm::CheckDigits::M11_002',
-	'pzn'			=> 'Algorithm::CheckDigits::M11_002',
-	'm11-003'		=> 'Algorithm::CheckDigits::M11_003',
-	'pkz'			=> 'Algorithm::CheckDigits::M11_003',
-	'm11-004'		=> 'Algorithm::CheckDigits::M11_004',
-	'cpf'			=> 'Algorithm::CheckDigits::M11_004',
-	'titulo_eleitor'	=> 'Algorithm::CheckDigits::M11_004',
-	'm11-006'		=> 'Algorithm::CheckDigits::M11_006',
-	'ccc_es'		=> 'Algorithm::CheckDigits::M11_006',
-	'm11-007'		=> 'Algorithm::CheckDigits::M11_007',
-	'ustid_fi'		=> 'Algorithm::CheckDigits::M11_007',
-	'vatrn_fi'		=> 'Algorithm::CheckDigits::M11_007',
-	'm11-008'		=> 'Algorithm::CheckDigits::M11_008',
-	'ustid_dk'		=> 'Algorithm::CheckDigits::M11_008',
-	'vatrn_dk'		=> 'Algorithm::CheckDigits::M11_008',
-	'm11-009'		=> 'Algorithm::CheckDigits::M11_009',
-	'nric_sg'		=> 'Algorithm::CheckDigits::M11_009',
-	'm11-010'		=> 'Algorithm::CheckDigits::M11_010',
-	'ahv_ch'		=> 'Algorithm::CheckDigits::M11_010',
-	'm11-011'		=> 'Algorithm::CheckDigits::M11_011',
-	'ustid_nl'		=> 'Algorithm::CheckDigits::M11_011',
-	'vatrn_nl'		=> 'Algorithm::CheckDigits::M11_011',
-	'm11-012'		=> 'Algorithm::CheckDigits::M11_012',
-	'bwpk_de'		=> 'Algorithm::CheckDigits::M11_012',
-	'm11-013'		=> 'Algorithm::CheckDigits::M11_013',
-	'ustid_gr'		=> 'Algorithm::CheckDigits::M11_013',
-	'vatrn_gr'		=> 'Algorithm::CheckDigits::M11_013',
-	'm11-015'		=> 'Algorithm::CheckDigits::M11_015',
-	'esr5_ch'		=> 'Algorithm::CheckDigits::M11_015',
-	'm11-016'		=> 'Algorithm::CheckDigits::M11_016',
-	'ustid_pl'		=> 'Algorithm::CheckDigits::M11_016',
-	'vatrn_pl'		=> 'Algorithm::CheckDigits::M11_016',
-	'm16-001'		=> 'Algorithm::CheckDigits::M16_001',
-	'isan'			=> 'Algorithm::CheckDigits::M16_001',
-	'm23-001'		=> 'Algorithm::CheckDigits::M23_001',
-	'dni_es'		=> 'Algorithm::CheckDigits::M23_001',
-	'm23-002'		=> 'Algorithm::CheckDigits::M23_002',
-	'ustid_ie'		=> 'Algorithm::CheckDigits::M23_002',
-	'vatrn_ie'		=> 'Algorithm::CheckDigits::M23_002',
-	'm43-001'		=> 'Algorithm::CheckDigits::M43_001',
-	'code_39'		=> 'Algorithm::CheckDigits::M43_001',
-	'm89-001'		=> 'Algorithm::CheckDigits::M89_001',
-	'ustid_lu'		=> 'Algorithm::CheckDigits::M89_001',
-	'vatrn_lu'		=> 'Algorithm::CheckDigits::M89_001',
-	'm97-001'		=> 'Algorithm::CheckDigits::M97_001',
-	'ustid_be'		=> 'Algorithm::CheckDigits::M97_001',
-	'vatrn_be'		=> 'Algorithm::CheckDigits::M97_001',
-	'm97-002'		=> 'Algorithm::CheckDigits::M97_002',
-	'iban'			=> 'Algorithm::CheckDigits::M97_002',
-	'mxx-001'		=> 'Algorithm::CheckDigits::MXX_001',
-	'pa_de'			=> 'Algorithm::CheckDigits::MXX_001',
-	'mxx-002'		=> 'Algorithm::CheckDigits::MXX_002',
-	'cas'			=> 'Algorithm::CheckDigits::MXX_002',
-	'mxx-003'		=> 'Algorithm::CheckDigits::MXX_003',
-	'dem'			=> 'Algorithm::CheckDigits::MXX_003',
-	'mxx-004'		=> 'Algorithm::CheckDigits::MXX_004',
-	'ustid_at'		=> 'Algorithm::CheckDigits::MXX_004',
-	'vatrn_at'		=> 'Algorithm::CheckDigits::MXX_004',
-	'mxx-005'		=> 'Algorithm::CheckDigits::MXX_005',
-	'esr9_ch'		=> 'Algorithm::CheckDigits::MXX_005',
-	'verhoeff'		=> 'Algorithm::CheckDigits::MXX_006',
+    'mbase-001'          => 'Algorithm::CheckDigits::MBase_001',
+    'upc'                => 'Algorithm::CheckDigits::MBase_001',
+    'mbase-002'          => 'Algorithm::CheckDigits::MBase_002',
+    'blutbeutel'         => 'Algorithm::CheckDigits::MBase_002',
+    'bzue_de'            => 'Algorithm::CheckDigits::MBase_002',
+    'ustid_de'           => 'Algorithm::CheckDigits::MBase_002',
+    'vatrn_de'           => 'Algorithm::CheckDigits::MBase_002',
+    'mbase-003'          => 'Algorithm::CheckDigits::MBase_003',
+    'sici'               => 'Algorithm::CheckDigits::MBase_003',
+    'm07-001'            => 'Algorithm::CheckDigits::M07_001',
+    'm09-001'            => 'Algorithm::CheckDigits::M09_001',
+    'euronote'           => 'Algorithm::CheckDigits::M09_001',
+    'm10-001'            => 'Algorithm::CheckDigits::M10_001',
+    'amex'               => 'Algorithm::CheckDigits::M10_001',
+    'bahncard'           => 'Algorithm::CheckDigits::M10_001',
+    'diners'             => 'Algorithm::CheckDigits::M10_001',
+    'discover'           => 'Algorithm::CheckDigits::M10_001',
+    'enroute'            => 'Algorithm::CheckDigits::M10_001',
+    'eurocard'           => 'Algorithm::CheckDigits::M10_001',
+    'happydigits'        => 'Algorithm::CheckDigits::M10_001',
+    'jcb'                => 'Algorithm::CheckDigits::M10_001',
+    'klubkarstadt'       => 'Algorithm::CheckDigits::M10_001',
+    'mastercard'         => 'Algorithm::CheckDigits::M10_001',
+    'miles&more'         => 'Algorithm::CheckDigits::M10_001',
+    'visa'               => 'Algorithm::CheckDigits::M10_001',
+    'isin'               => 'Algorithm::CheckDigits::M10_001',
+    'imei'               => 'Algorithm::CheckDigits::M10_001',
+    'imeisv'             => 'Algorithm::CheckDigits::M10_001',
+    'm10-002'            => 'Algorithm::CheckDigits::M10_002',
+    'siren'              => 'Algorithm::CheckDigits::M10_002',
+    'siret'              => 'Algorithm::CheckDigits::M10_002',
+    'm10-003'            => 'Algorithm::CheckDigits::M10_003',
+    'ismn'               => 'Algorithm::CheckDigits::M10_003',
+    'm10-004'            => 'Algorithm::CheckDigits::M10_004',
+    'ean'                => 'Algorithm::CheckDigits::M10_004',
+    'iln'                => 'Algorithm::CheckDigits::M10_004',
+    'nve'                => 'Algorithm::CheckDigits::M10_004',
+    '2aus5'              => 'Algorithm::CheckDigits::M10_004',
+    'isbn13'             => 'Algorithm::CheckDigits::M10_004',
+    'm10-005'            => 'Algorithm::CheckDigits::M10_005',
+    'identcode_dp'       => 'Algorithm::CheckDigits::M10_005',
+    'leitcode_dp'        => 'Algorithm::CheckDigits::M10_005',
+    'm10-006'            => 'Algorithm::CheckDigits::M10_006',
+    'rentenversicherung' => 'Algorithm::CheckDigits::M10_006',
+    'm10-008'            => 'Algorithm::CheckDigits::M10_008',
+    'sedol'              => 'Algorithm::CheckDigits::M10_008',
+    'm10-009'            => 'Algorithm::CheckDigits::M10_009',
+    'betriebsnummer'     => 'Algorithm::CheckDigits::M10_009',
+    'm10-010'            => 'Algorithm::CheckDigits::M10_010',
+    'postcheckkonti'     => 'Algorithm::CheckDigits::M10_010',
+    'm10-011'            => 'Algorithm::CheckDigits::M10_011',
+    'ups'                => 'Algorithm::CheckDigits::M10_011',
+    'm11-001'            => 'Algorithm::CheckDigits::M11_001',
+    'isbn'               => 'Algorithm::CheckDigits::M11_001',
+    'issn'               => 'Algorithm::CheckDigits::M11_001',
+    'ustid_pt'           => 'Algorithm::CheckDigits::M11_001',
+    'vatrn_pt'           => 'Algorithm::CheckDigits::M11_001',
+    'hkid'               => 'Algorithm::CheckDigits::M11_001',
+    'wagonnr_br'         => 'Algorithm::CheckDigits::M11_001',
+    'nhs_gb'             => 'Algorithm::CheckDigits::M11_001',
+    'vat_sl'             => 'Algorithm::CheckDigits::M11_001',
+    'm11-002'            => 'Algorithm::CheckDigits::M11_002',
+    'pzn'                => 'Algorithm::CheckDigits::M11_002',
+    'm11-003'            => 'Algorithm::CheckDigits::M11_003',
+    'pkz'                => 'Algorithm::CheckDigits::M11_003',
+    'm11-004'            => 'Algorithm::CheckDigits::M11_004',
+    'cpf'                => 'Algorithm::CheckDigits::M11_004',
+    'titulo_eleitor'     => 'Algorithm::CheckDigits::M11_004',
+    'm11-006'            => 'Algorithm::CheckDigits::M11_006',
+    'ccc_es'             => 'Algorithm::CheckDigits::M11_006',
+    'm11-007'            => 'Algorithm::CheckDigits::M11_007',
+    'ustid_fi'           => 'Algorithm::CheckDigits::M11_007',
+    'vatrn_fi'           => 'Algorithm::CheckDigits::M11_007',
+    'm11-008'            => 'Algorithm::CheckDigits::M11_008',
+    'ustid_dk'           => 'Algorithm::CheckDigits::M11_008',
+    'vatrn_dk'           => 'Algorithm::CheckDigits::M11_008',
+    'm11-009'            => 'Algorithm::CheckDigits::M11_009',
+    'nric_sg'            => 'Algorithm::CheckDigits::M11_009',
+    'm11-010'            => 'Algorithm::CheckDigits::M11_010',
+    'ahv_ch'             => 'Algorithm::CheckDigits::M11_010',
+    'm11-011'            => 'Algorithm::CheckDigits::M11_011',
+    'ustid_nl'           => 'Algorithm::CheckDigits::M11_011',
+    'vatrn_nl'           => 'Algorithm::CheckDigits::M11_011',
+    'm11-012'            => 'Algorithm::CheckDigits::M11_012',
+    'bwpk_de'            => 'Algorithm::CheckDigits::M11_012',
+    'm11-013'            => 'Algorithm::CheckDigits::M11_013',
+    'ustid_gr'           => 'Algorithm::CheckDigits::M11_013',
+    'vatrn_gr'           => 'Algorithm::CheckDigits::M11_013',
+    'm11-015'            => 'Algorithm::CheckDigits::M11_015',
+    'esr5_ch'            => 'Algorithm::CheckDigits::M11_015',
+    'm11-016'            => 'Algorithm::CheckDigits::M11_016',
+    'ustid_pl'           => 'Algorithm::CheckDigits::M11_016',
+    'vatrn_pl'           => 'Algorithm::CheckDigits::M11_016',
+    'm16-001'            => 'Algorithm::CheckDigits::M16_001',
+    'isan'               => 'Algorithm::CheckDigits::M16_001',
+    'm23-001'            => 'Algorithm::CheckDigits::M23_001',
+    'dni_es'             => 'Algorithm::CheckDigits::M23_001',
+    'm23-002'            => 'Algorithm::CheckDigits::M23_002',
+    'ustid_ie'           => 'Algorithm::CheckDigits::M23_002',
+    'vatrn_ie'           => 'Algorithm::CheckDigits::M23_002',
+    'm43-001'            => 'Algorithm::CheckDigits::M43_001',
+    'code_39'            => 'Algorithm::CheckDigits::M43_001',
+    'm89-001'            => 'Algorithm::CheckDigits::M89_001',
+    'ustid_lu'           => 'Algorithm::CheckDigits::M89_001',
+    'vatrn_lu'           => 'Algorithm::CheckDigits::M89_001',
+    'm97-001'            => 'Algorithm::CheckDigits::M97_001',
+    'ustid_be'           => 'Algorithm::CheckDigits::M97_001',
+    'vatrn_be'           => 'Algorithm::CheckDigits::M97_001',
+    'm97-002'            => 'Algorithm::CheckDigits::M97_002',
+    'iban'               => 'Algorithm::CheckDigits::M97_002',
+    'mxx-001'            => 'Algorithm::CheckDigits::MXX_001',
+    'pa_de'              => 'Algorithm::CheckDigits::MXX_001',
+    'mxx-002'            => 'Algorithm::CheckDigits::MXX_002',
+    'cas'                => 'Algorithm::CheckDigits::MXX_002',
+    'mxx-003'            => 'Algorithm::CheckDigits::MXX_003',
+    'dem'                => 'Algorithm::CheckDigits::MXX_003',
+    'mxx-004'            => 'Algorithm::CheckDigits::MXX_004',
+    'ustid_at'           => 'Algorithm::CheckDigits::MXX_004',
+    'vatrn_at'           => 'Algorithm::CheckDigits::MXX_004',
+    'mxx-005'            => 'Algorithm::CheckDigits::MXX_005',
+    'esr9_ch'            => 'Algorithm::CheckDigits::MXX_005',
+    'verhoeff'           => 'Algorithm::CheckDigits::MXX_006',
 );
 
 sub CheckDigits {
-	my $method = shift || '';
+    my $method = shift || '';
 
-	if (my $pkg = $methods{lc($method)}) {
-		my $file = $pkg;
-		$file =~ s{::}{/}g;
-		require "$file.pm";
-		return new $pkg($method);
-	} else {
-		return bless {};
-	}
-} # CheckDigits()
+    if ( my $pkg = $methods{ lc($method) } ) {
+        my $file = $pkg;
+        $file =~ s{::}{/}g;
+        require "$file.pm";
+        return new $pkg($method);
+    }
+    else {
+        die "Don't know checkdigit algorithm for '$method'!";
+    }
+}    # CheckDigits()
 
 sub method_list {
-	my @methods = ();
-	foreach my $method (sort keys %methods) {
-		push @methods,$method;
-	}
-	return wantarray ? @methods : \@methods;
-} # method_list()
+    my @methods = ();
+    foreach my $method ( sort keys %methods ) {
+        push @methods, $method;
+    }
+    return wantarray ? @methods : \@methods;
+}    # method_list()
 
 sub print_methods {
-	foreach my $method (sort keys %methods) {
-		print "$method => $methods{$method}\n";
-	}
-} # print_methods()
+    foreach my $method ( sort keys %methods ) {
+        print "$method => $methods{$method}\n";
+    }
+}    # print_methods()
 
 sub AUTOLOAD {
-	my $self = shift;
-	my $attr = $AUTOLOAD;
-	unless ($attr =~ /^Algorithm::CheckDigits::[A-Za-z_0-9]*$/) {
-		croak "$attr is not defined";
-	}
-	return '';
-} # AUTOLOAD()
+    my $self = shift;
+    my $attr = $AUTOLOAD;
+    unless ( $attr =~ /^Algorithm::CheckDigits::[A-Za-z_0-9]*$/ ) {
+        croak "$attr is not defined";
+    }
+    return '';
+}    # AUTOLOAD()
 
 sub DESTROY {
 }
@@ -231,8 +237,12 @@ F<www.pruefziffernberechnung.de> (german).
 =head2 CheckDigits($method)
 
 Returns an object of an appropriate Algorithm::CheckDigits class for the
-given algorithm. See below for the available algorithms. Every object
-understands the following methods:
+given algorithm.
+
+Dies with an error message if called with an unknown algorithm.
+
+See below for the available algorithms. Every object understands the following
+methods:
 
 =over 4
 
@@ -287,7 +297,8 @@ See L<Algorithm::CheckDigits::M07_001>.
 European bank notes, see L<Algorithm::CheckDigits::M09_001>.
 
 =item amex, bahncard, diners, discover, enroute, eurocard, happydigits,
-      isin, jcb, klubkarstadt, mastercard, miles&more, visa, m09-001
+      isin, jcb, klubkarstadt, mastercard, miles&more, visa, m09-001,
+      imei, imeisv
 
 See L<Algorithm::CheckDigits::M10_001>.
 
@@ -462,6 +473,11 @@ F<www.pruefziffernberechnung.de>.
 =head1 AUTHOR
 
 Mathias Weidner, E<lt>mathias@weidner.in-bad-schmiedeberg.deE<gt>
+
+=head1 THANKS
+
+Petri Oksanen made me aware that CheckDigits('IMEI') would invoke no test at
+all since there was no entry for this in the methods hash.
 
 =head1 COPYRIGHT AND LICENSE
 
