@@ -1,11 +1,17 @@
 Revision history for Perl extension CheckDigits.
 
+0.47  Di 9. Okt 00:45:07 CEST 2007
+	- provide Version in file VERSION
+	- Makefile.PL: indicate minimum perl version
+	  (thanks to Slaven Rezic)
+
 0.46  Mo 8. Okt 23:46:32 CEST 2007
 	- CheckDigits/M11_017.pm computes EC-No (EINECS, ELINCS) check digits.
 
 0.45  So 7. Okt 12:00:25 CEST 2007
 	- CheckDigits.pm: CheckDigits() dies on unknown algorithm/method
 	- CheckDigits.pm: IMEI and IMEISV are recognized (M10_001.pm)
+	  (Petri Oksanen made me aware that this wasn't so before)
 	- CheckDigits/M10_001.pm recognizes that with IMEISV only the 14 most
 	  significant digits are taken for the computation of the checkdigit
 	- reformatted CheckDigits.pm, CheckDigits/M10_001.pm

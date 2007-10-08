@@ -1,8 +1,8 @@
 # http://module-build.sourceforge.net/META-spec.html
 #XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
 name:         Algorithm-CheckDigits
-version:      0.46
-version_from: CheckDigits.pm
+version:      0.47
+version_from: VERSION
 installdirs:  site
 requires:
 
