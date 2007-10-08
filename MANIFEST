@@ -25,6 +25,7 @@ CheckDigits/M11_012.pm
 CheckDigits/M11_013.pm
 CheckDigits/M11_015.pm
 CheckDigits/M11_016.pm
+CheckDigits/M11_017.pm
 CheckDigits/M16_001.pm
 CheckDigits/M23_001.pm
 CheckDigits/M23_002.pm
@@ -47,6 +48,7 @@ MANIFEST
 .perltidyrc
 README
 t/checkdigits.t
+t/ecno.t
 t/iban.t
 t/imei.t
 t/isbn13.t
