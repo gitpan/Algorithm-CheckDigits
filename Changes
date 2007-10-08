@@ -1,5 +1,8 @@
 Revision history for Perl extension CheckDigits.
 
+0.48  Di 9. Okt 01:07:02 CEST 2007
+	- keep VERSION in Makefile.PL
+
 0.47  Di 9. Okt 00:45:07 CEST 2007
 	- provide Version in file VERSION
 	- Makefile.PL: indicate minimum perl version

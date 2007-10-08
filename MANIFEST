@@ -57,5 +57,4 @@ t/pod.t
 t/upc.t
 t/valid.data
 t/valid.t
-VERSION
 META.yml                                 Module meta-data (added by MakeMaker)
