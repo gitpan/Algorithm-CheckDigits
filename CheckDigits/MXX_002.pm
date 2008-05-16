@@ -1,3 +1,4 @@
+# vim: set ts=4 sw=4 tw=78 et si:
 package Algorithm::CheckDigits::MXX_002;
 
 use 5.006;
@@ -8,61 +9,61 @@ use integer;
 our @ISA = qw(Algorithm::CheckDigits);
 
 sub new {
-	my $proto = shift;
-	my $type  = shift;
-	my $class = ref($proto) || $proto;
-	my $self  = bless({}, $class);
-	$self->{type} = lc($type);
-	return $self;
-} # new()
+    my $proto = shift;
+    my $type  = shift;
+    my $class = ref($proto) || $proto;
+    my $self  = bless( {}, $class );
+    $self->{type} = lc($type);
+    return $self;
+}    # new()
 
 sub is_valid {
-	my ($self,$number) = @_;
-	if ($number =~ /^(\d{1,6}-?\d{2}-?)(\d)$/) {
-		return 1 if ($2 == $self->_compute_checkdigit($1));
-	}
-	return ''
-} # is_valid()
+    my ( $self, $number ) = @_;
+    if ( $number =~ /^(\d{1,7}-?\d{2}-?)(\d)$/ ) {
+        return 1 if ( $2 == $self->_compute_checkdigit($1) );
+    }
+    return '';
+}    # is_valid()
 
 sub complete {
-	my ($self,$number) = @_;
-	if ($number =~ /^\d{1,6}-?\d{2}-?$/) {
-		return $number .  $self->_compute_checkdigit($number);
-	}
-	return '';
-} # complete()
+    my ( $self, $number ) = @_;
+    if ( $number =~ /^\d{1,7}-?\d{2}-?$/ ) {
+        return $number . $self->_compute_checkdigit($number);
+    }
+    return '';
+}    # complete()
 
 sub basenumber {
-	my ($self,$number) = @_;
-	if ($number =~ /^(\d{1,6}-?\d{2}-?)(\d)$/) {
-		return $1 if ($2 == $self->_compute_checkdigit($1));
-	}
-	return '';
-} # basenumber()
+    my ( $self, $number ) = @_;
+    if ( $number =~ /^(\d{1,7}-?\d{2}-?)(\d)$/ ) {
+        return $1 if ( $2 == $self->_compute_checkdigit($1) );
+    }
+    return '';
+}    # basenumber()
 
 sub checkdigit {
-	my ($self,$number) = @_;
-	if ($number =~ /^(\d{1,6}-?\d{2}-?)(\d)$/) {
-		return $2 if ($2 == $self->_compute_checkdigit($1));
-	}
-	return '';
-} # checkdigit()
+    my ( $self, $number ) = @_;
+    if ( $number =~ /^(\d{1,7}-?\d{2}-?)(\d)$/ ) {
+        return $2 if ( $2 == $self->_compute_checkdigit($1) );
+    }
+    return '';
+}    # checkdigit()
 
 sub _compute_checkdigit {
-	my $self   = shift;
-	my $number = shift;
+    my $self   = shift;
+    my $number = shift;
 
-	$number =~ s/-//g;
-	my @digits = split(//,$number);
-	my $weight = 1;
-	my $sum    = 0;
+    $number =~ s/-//g;
+    my @digits = split( //, $number );
+    my $weight = 1;
+    my $sum    = 0;
 
-	for (my $i = $#digits; $i >= 0; $i--) {
-		$sum += $digits[$i] * $weight++;
-	}
+    for ( my $i = $#digits; $i >= 0; $i-- ) {
+        $sum += $digits[$i] * $weight++;
+    }
 
-	return $sum % 10;
-} # _compute_checkdigit()
+    return $sum % 10;
+}    # _compute_checkdigit()
 
 # Preloaded methods go here.
 
@@ -161,11 +162,15 @@ Mathias Weidner, E<lt>mathias@weidner.in-bad-schmiedeberg.deE<gt>
 Aaron W. West pointed me to a fault in the computing of the check
 digit.
 
+HERMIER Christophe made me aware that CAS is now assigning 10-digit CAS
+Registry Numbers (F<http://www.cas.org/newsevents/10digitrn.html>)
+
 =head1 SEE ALSO
 
 L<perl>,
 L<CheckDigits>,
 F<www.pruefziffernberechnung.de>,
 F<www.cas.org>
+F<http://www.cas.org/expertise/cascontent/registry/checkdig.html>
 
 =cut
