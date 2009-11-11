@@ -166,6 +166,7 @@ L<perl>,
 L<CheckDigits>,
 F<www.pruefziffernberechnung.de>,
 F<http://www.pruefziffernberechnung.de/U/USt-IdNr.shtml#PZPL> (German),
+F<http://wipos.p.lodz.pl/zylla/ut/translation.html#PZPL> (English),
 F<http://wipos.p.lodz.pl/zylla/ut/nip-rego.html> (Polish)
 
 =cut

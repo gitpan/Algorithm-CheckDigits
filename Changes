@@ -1,5 +1,8 @@
 Revision history for Perl extension CheckDigits.
 
+0.52  Mi 11. Nov 10:31:18 CET 2009
+       - added link to english description for ustid_pl
+
 0.51  Mi 11. Nov 10:01:36 CET 2009
        - corrected documentation for ustid_pl/vatnr_pl
 	 (thanks to Romuald Żyłła for pointing me to the error)
