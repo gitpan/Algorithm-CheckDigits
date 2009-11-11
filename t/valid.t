@@ -1,24 +1,17 @@
 # Before `make install' is performed this script should be runnable with
 # `make test'. After `make install' it should work as `perl test.pl'
 
-#########################
-
-# change 'tests => 1' to 'tests => last_test_to_print';
-
 use vars qw(@testcases);
 use Test;
 BEGIN {
         do 't/valid.data';
-	plan(tests => ($#testcases + 1) * 5
-#	    ,todo => [ 76, ]
-	    ); 
+	plan(tests => ($#testcases + 1) * 5); 
 };
 use Algorithm::CheckDigits;
 
 my $checkdigit;
 
 foreach my $tcase (@testcases) {
-#foreach my $tcase ($testcases[$#testcases]) {
 	if ($checkdigit = CheckDigits($tcase->[0])) {
 		my $is_valid = $checkdigit->is_valid($tcase->[1]);
 		ok($is_valid
@@ -48,9 +41,3 @@ foreach my $tcase (@testcases) {
 		    );
 	}
 }
-
-#########################
-
-# Insert your test code below, the Test module is use()ed here so read
-# its man page ( perldoc Test ) for help writing this test script.
-

@@ -75,20 +75,20 @@ CheckDigits::M11_016 - compute check digits vor VAT Registration Number (PL)
 
   use Algorithm::CheckDigits;
 
-  $ustid = CheckDigits('ustid_pl');
+  $nip = CheckDigits('nip');
 
-  if ($ustid->is_valid('13669598')) {
+  if ($nip->is_valid('8567346215')) {
 	# do something
   }
 
-  $cn = $ustid->complete('1366959');
-  # $cn = '13669598'
+  $cn = $nip->complete('856734621');
+  # $cn = '8567346215'
 
-  $cd = $ustid->checkdigit('13669598');
-  # $cd = '8'
+  $cd = $nip->checkdigit('856734621');
+  # $cd = '5'
 
-  $bn = $ustid->basenumber('13669598');
-  # $bn = '1366959';
+  $bn = $nip->basenumber('8567346215');
+  # $bn = '856734621';
   
 =head1 DESCRIPTION
 
@@ -98,7 +98,7 @@ CheckDigits::M11_016 - compute check digits vor VAT Registration Number (PL)
 
 =item 1
 
-Beginning left every digit is weighted with 7,9,10,5,8,4,2.
+Beginning left every digit is weighted with 6, 5, 7, 2, 3, 4, 5, 6, 7
 
 =item 2
 
@@ -165,5 +165,7 @@ Mathias Weidner, E<lt>mathias@weidner.in-bad-schmiedeberg.deE<gt>
 L<perl>,
 L<CheckDigits>,
 F<www.pruefziffernberechnung.de>,
+F<http://www.pruefziffernberechnung.de/U/USt-IdNr.shtml#PZPL> (German),
+F<http://wipos.p.lodz.pl/zylla/ut/nip-rego.html> (Polish)
 
 =cut

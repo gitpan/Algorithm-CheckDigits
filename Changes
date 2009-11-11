@@ -1,5 +1,12 @@
 Revision history for Perl extension CheckDigits.
 
+0.51  Mi 11. Nov 10:01:36 CET 2009
+       - corrected documentation for ustid_pl/vatnr_pl
+	 (thanks to Romuald Żyłła for pointing me to the error)
+       - reworked algorithm and documentation for esr5_ch according to
+         http://www.sic.ch/de/dl_tkicch_dta.pdf
+	 (thanks to Romuald Żyłła for pointing me to the error)
+
 0.50  Fr 6. Jun 21:45:04 CEST 2008
        - put $VERSION back into CheckDigits.pm
 

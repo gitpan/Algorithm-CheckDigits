@@ -20,46 +20,47 @@ sub new {
 
 sub is_valid {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d+)(\d)$/) {
-		return $2 == $self->_compute_checkdigits($1);
+	if ($number =~ /^(\d\d)([\d ]+)$/) {
+		return $1 == $self->_compute_checkdigits($2);
 	}
 	return ''
 } # is_valid()
 
 sub complete {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d+)$/) {
-		return "$1" . $self->_compute_checkdigits($1);
+	if ($number =~ /^([\d ]+)$/) {
+		return $self->_compute_checkdigits($1) . $1;
 	}
 	return '';
 } # complete()
 
 sub basenumber {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d+)(\d)$/) {
-		return $1 if ($2 == $self->_compute_checkdigits($1));
+	if ($number =~ /^(\d\d)([\d ]+)$/) {
+		return $2 if ($1 == $self->_compute_checkdigits($2));
 	}
 	return '';
 } # basenumber()
 
 sub checkdigit {
 	my ($self,$number) = @_;
-	if ($number =~ /^(\d+)(\d)$/) {
-		return $2 if ($2 == $self->_compute_checkdigits($1));
+	if ($number =~ /^(\d\d)([\d ]+)$/) {
+		return $1 if ($1 == $self->_compute_checkdigits($2));
 	}
 	return '';
 } # checkdigit()
 
 sub _compute_checkdigits {
-	my $self    = shift;
+	my ($self,$number) = @_;
 
-	my @digits = split(//,shift);
+	$number =~ s/\s//g;
+	my @digits = split(//,$number);
 	my $sum = 0;
 	for (my $i = $#digits; $i >= 0; $i--) {
 		$sum += $weight[($#digits - $i) % 6] * $digits[$i];
 	}
 	$sum %= 11;
-	my $retval = (0 == $sum) ? '00' : (11 - $sum);
+	my $retval = (0 == $sum) ? '00' : sprintf("%02d",(11 - $sum));
 	$retval;
 } # _compute_checkdigit()
 
@@ -78,18 +79,18 @@ CheckDigits::M11_015 - compute check digits for ESR5 (CH)
 
   $ustid = CheckDigits('esr5_ch');
 
-  if ($ustid->is_valid('123456786')) {
+  if ($ustid->is_valid('050001000012000 241170032660178 10304')) {
 	# do something
   }
 
-  $cn = $ustid->complete('12345678');
-  # $cn = '123456786'
+  $cn = $ustid->complete('0001000012000 241170032660178 10304');
+  # $cn = '050001000012000 241170032660178 10304'
 
-  $cd = $ustid->checkdigit('123456786');
-  # $cd = '6'
+  $cd = $ustid->checkdigit('0001000012000 241170032660178 10304');
+  # $cd = '05'
 
-  $bn = $ustid->basenumber('123456786');
-  # $bn = '12345678';
+  $bn = $ustid->basenumber('050001000012000 241170032660178 10304');
+  # $bn = '0001000012000 241170032660178 10304';
   
 =head1 DESCRIPTION
 
@@ -99,7 +100,8 @@ CheckDigits::M11_015 - compute check digits for ESR5 (CH)
 
 =item 1
 
-Beginning left every digit is weighted with 7,9,10,5,8,4,2.
+Beginning right all digits are weighted with the repeating
+sequence 2, 3, 4, 5, 6, 7.
 
 =item 2
 
@@ -111,9 +113,8 @@ The sum from step 2 is taken modulo 11.
 
 =item 4
 
-The checkdigit is 11 minus the sum from step 3. Is the difference 10,
-the number won't be taken. If the difference is 11, the checkdigit is
-0.
+The checkdigit is 11 minus the sum from step 3.
+If the difference is 11, the checkdigit is 00.
 
 =back
 
@@ -131,11 +132,11 @@ Returns false otherwise,
 
 =item complete($number)
 
-The check digit for C<$number> is computed and inserted into the
-middle of C<$number>.
+The check digit for C<$number> is computed and inserted before the
+C<$number>.
 
 Returns the complete number with check digit or '' if C<$number>
-does not consist solely of digits, hyphens and spaces.
+does not consist solely of digits, spaces.
 
 =item basenumber($number)
 
@@ -165,6 +166,7 @@ Mathias Weidner, E<lt>mathias@weidner.in-bad-schmiedeberg.deE<gt>
 
 L<perl>,
 L<CheckDigits>,
-F<www.pruefziffernberechnung.de>,
+F<http://www.pruefziffernberechnung.de/E/Einzahlungsschein-CH.shtml> (german),
+F<http://www.sic.ch/de/dl_tkicch_dta.pdf>, page 52 (german)
 
 =cut

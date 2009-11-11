@@ -28,7 +28,7 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = qw( CheckDigits );
 
-our $VERSION = '0.50';
+our $VERSION = '0.51';
 
 my %methods = (
     'mbase-001'          => 'Algorithm::CheckDigits::MBase_001',
@@ -124,6 +124,7 @@ my %methods = (
     'm11-016'            => 'Algorithm::CheckDigits::M11_016',
     'ustid_pl'           => 'Algorithm::CheckDigits::M11_016',
     'vatrn_pl'           => 'Algorithm::CheckDigits::M11_016',
+    'nip'                => 'Algorithm::CheckDigits::M11_016',
     'm11-017'            => 'Algorithm::CheckDigits::M11_017',
     'ecno'               => 'Algorithm::CheckDigits::M11_017',
     'ec-no'              => 'Algorithm::CheckDigits::M11_017',

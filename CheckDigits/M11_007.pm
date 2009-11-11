@@ -164,6 +164,6 @@ Mathias Weidner, E<lt>mathias@weidner.in-bad-schmiedeberg.deE<gt>
 
 L<perl>,
 L<CheckDigits>,
-F<www.pruefziffernberechnung.de>,
+F<http://www.pruefziffernberechnung.de/U/USt-IdNr.shtml#PZFI> (german)
 
 =cut
