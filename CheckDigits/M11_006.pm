@@ -5,6 +5,8 @@ use strict;
 use warnings;
 use integer;
 
+our $VERSION = '0.53';
+
 our @ISA = qw(Algorithm::CheckDigits);
 
 my @weight = ( 6, 3, 7, 9, 10, 5, 8, 4, 2, 1 );

@@ -5,6 +5,8 @@ use strict;
 use warnings;
 use integer;
 
+our $VERSION = '0.53';
+
 our @ISA = qw(Algorithm::CheckDigits);
 
 sub new {
@@ -143,19 +145,21 @@ If the sum from step 3 is 10, the number is discarded.
 
 =item is_valid($number)
 
-Returns true only if C<$number> consists solely of numbers and hyphens
-and the two digits in the middle
-are valid check digits according to the algorithm given above.
+Returns true only if the first eight positions of C<$number> consist
+solely of digits (maybe followed by 'B' and to further digits)
+and the eighth digit is a valid check digit according to the algorithm
+given above.
 
 Returns false otherwise,
 
 =item complete($number)
 
-The check digit for C<$number> is computed and inserted into the
-middle of C<$number>.
+The check digit for C<$number> is computed and inserted at position
+eight of C<$number>.
 
 Returns the complete number with check digit or '' if C<$number>
-does not consist solely of digits, hyphens and spaces.
+does not consist solely of digits a dot and maybe 'B' at the ninth
+position.
 
 =item basenumber($number)
 

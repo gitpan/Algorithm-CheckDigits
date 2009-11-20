@@ -5,6 +5,8 @@ use strict;
 use warnings;
 use integer;
 
+our $VERSION = '0.53';
+
 our @ISA = qw(Algorithm::CheckDigits);
 
 my @weight = ( 2, 7, 6, 5, 4, 3, 2 );
@@ -22,7 +24,7 @@ sub new {
 
 sub is_valid {
 	my ($self,$number) = @_;
-	if ($number =~ /^([fgst])(\d{7})([a-jz])$/i) {
+	if ($number =~ /^([fgst])?(\d{7})([a-jz])$/i) {
 		return (uc($3) eq $self->_compute_checkdigits($2));
 	}
 	return ''
@@ -30,22 +32,26 @@ sub is_valid {
 
 sub complete {
 	my ($self,$number) = @_;
-	if($number =~ /^([fgst])(\d{7})$/i) {
-		return $1 . $2 . $self->_compute_checkdigits($2);
+	if($number =~ /^([fgst])?(\d{7})$/i) {
+		my $prefix = $1 || '';
+		return $prefix . $2 . $self->_compute_checkdigits($2);
 	}
 	return '';
 } # complete()
 
 sub basenumber {
 	my ($self,$number) = @_;
-	return "$1$2" if(   $number =~ /^([fgst])(\d{7})([a-jz])$/i
-	              and uc($3) eq $self->_compute_checkdigits($2));
+	if(   $number =~ /^([fgst])?(\d{7})([a-jz])$/i
+	  and uc($3) eq $self->_compute_checkdigits($2)) {
+		my $prefix = $1 || '';
+		return $prefix . $2;
+	}
 	return '';
 } # basenumber()
 
 sub checkdigit {
 	my ($self,$number) = @_;
-	if ($number =~ /^([fgst])(\d{7})([a-jz])$/i) {
+	if ($number =~ /^([fgst])?(\d{7})([a-jz])$/i) {
 		return $self->_compute_checkdigits($2);
 	}
 	return undef;
@@ -124,19 +130,19 @@ character according to the following table:
 
 =item is_valid($number)
 
-Returns true only if C<$number> consists solely of numbers and hyphens
-and the two digits in the middle
-are valid check digits according to the algorithm given above.
+Returns true only if C<$number> consists of seven digits
+(optional preceded by a letter out of 'F', 'G', 'S', 'T')
+followed by a valid letter according to the algorithm given above.
 
 Returns false otherwise,
 
 =item complete($number)
 
-The check digit for C<$number> is computed and inserted into the
-middle of C<$number>.
+The check letter for C<$number> is computed and appended to the
+end of C<$number>.
 
 Returns the complete number with check digit or '' if C<$number>
-does not consist solely of digits, hyphens and spaces.
+does not consist solely of digits and letters.
 
 =item basenumber($number)
 

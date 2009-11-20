@@ -5,6 +5,8 @@ use strict;
 use warnings;
 use integer;
 
+our $VERSION = '0.53';
+
 our @ISA = qw(Algorithm::CheckDigits);
 
 my @weight = ( 2, 3, 4, 5, 6, 7 );
@@ -124,9 +126,9 @@ If the difference is 11, the checkdigit is 00.
 
 =item is_valid($number)
 
-Returns true only if C<$number> consists solely of numbers and hyphens
-and the two digits in the middle
-are valid check digits according to the algorithm given above.
+Returns true only if C<$number> consists solely of numbers (with or
+without space between them) and the first two digits are valid check
+digits according to the algorithm given above.
 
 Returns false otherwise,
 

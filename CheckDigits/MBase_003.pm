@@ -5,6 +5,8 @@ use strict;
 use warnings;
 use integer;
 
+our $VERSION = '0.53';
+
 our @ISA = qw(Algorithm::CheckDigits);
 
 my @weight = ( 6, 3, 7, 9, 10, 5, 8, 4, 2, 1 );
@@ -175,19 +177,17 @@ The checksum is 37 minus the sum from step 5 where numbers from 10 to
 
 =item is_valid($number)
 
-Returns true only if C<$number> consists solely of numbers and hyphens
-and the two digits in the middle
-are valid check digits according to the algorithm given above.
+Returns true only if the last letter is a valid check letter according
+to the algorithm given above.
 
 Returns false otherwise,
 
 =item complete($number)
 
-The check digit for C<$number> is computed and inserted into the
-middle of C<$number>.
+The check letter for C<$number> is computed and appended the
+end of C<$number>.
 
-Returns the complete number with check digit or '' if C<$number>
-does not consist solely of digits, hyphens and spaces.
+Returns the complete number with check letter or ''.
 
 =item basenumber($number)
 
@@ -198,7 +198,7 @@ Return '' otherwise.
 
 =item checkdigit($number)
 
-Returns the check digits of C<$number> if C<$number> has valid check
+Returns the check letter of C<$number> if C<$number> has valid check
 digits.
 
 Return '' otherwise.

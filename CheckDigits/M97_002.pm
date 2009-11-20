@@ -8,6 +8,8 @@ use integer;
 
 #use Math::BigInt;
 
+our $VERSION = '0.53';
+
 our @ISA = qw(Algorithm::CheckDigits);
 
 my %subst = (

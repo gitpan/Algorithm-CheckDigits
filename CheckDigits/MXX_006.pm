@@ -7,6 +7,8 @@ use integer;
 
 use Data::Dumper;
 
+our $VERSION = '0.53';
+
 our @ISA = qw(Algorithm::CheckDigits);
 
 our @inverted =  (0, 4, 3, 2, 1, 5, 6, 7, 8, 9 );

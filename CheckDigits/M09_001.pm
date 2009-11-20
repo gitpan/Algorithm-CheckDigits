@@ -4,6 +4,8 @@ use 5.006;
 use strict;
 use warnings;
 
+our $VERSION = '0.53';
+
 our @ISA = qw(Algorithm::CheckDigits);
 
 sub new {

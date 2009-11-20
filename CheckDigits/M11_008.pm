@@ -5,6 +5,8 @@ use strict;
 use warnings;
 use integer;
 
+our $VERSION = '0.53';
+
 our @ISA = qw(Algorithm::CheckDigits);
 
 my @weight = ( 2, 7, 6, 5, 4, 3, 2, 1 );
@@ -117,24 +119,22 @@ The number is valid if the sum from step 3 is zero (0).
 
 =item is_valid($number)
 
-Returns true only if C<$number> consists solely of numbers and hyphens
-and the two digits in the middle
-are valid check digits according to the algorithm given above.
+Returns true only if C<$number> consists solely of numbers and the sum
+computed according to the algorithm given above is 0.
 
 Returns false otherwise,
 
 =item complete($number)
 
-The check digit for C<$number> is computed and inserted into the
-middle of C<$number>.
+Returns C<$number> if C<$number> is valid according to the algorithm
+given above.
 
-Returns the complete number with check digit or '' if C<$number>
-does not consist solely of digits, hyphens and spaces.
+Return '' otherwise.
 
 =item basenumber($number)
 
-Returns the basenumber of C<$number> if C<$number> has a valid check
-digit.
+Returns C<$number> if C<$number> is valid according to the algorithm
+given above.
 
 Return '' otherwise.
 
