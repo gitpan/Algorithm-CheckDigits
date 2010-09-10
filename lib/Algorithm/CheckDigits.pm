@@ -28,7 +28,7 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = qw( CheckDigits );
 
-our $VERSION = '0.53';
+use version; our $VERSION = qv('0.90.0');
 
 my %methods = (
     'mbase-001'          => 'Algorithm::CheckDigits::MBase_001',
@@ -480,9 +480,15 @@ None by default.
 L<perl>,
 F<www.pruefziffernberechnung.de>.
 
+=head1 BUGS AND LIMITATIONS
+
+Please report any bugs or feature requests to
+C<bug-algorithm-checkdigits@rt.cpan.org>, or through the web interface at
+L<http://rt.cpan.org>.
+
 =head1 AUTHOR
 
-Mathias Weidner, E<lt>mathias@weidner.in-bad-schmiedeberg.deE<gt>
+Mathias Weidner, C<< mamawe@cpan.org >>
 
 =head1 THANKS
 
@@ -491,9 +497,9 @@ all since there was no entry for this in the methods hash.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2004-2006 by Mathias Weidner
+Copyright 2004-2010 by Mathias Weidner
 
 This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+it under the same terms as Perl itself. See L<perlartistic>.
 
 =cut
