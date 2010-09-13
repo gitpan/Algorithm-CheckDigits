@@ -6,6 +6,9 @@ use Module::Build;
 
 my $builder = Module::Build->new(
     add_to_cleanup      => [ 'Algorithm-CheckDigits-*' ],
+    build_requires      => {
+        'Probe::Perl'   => 0,
+    },
     create_makefile_pl  => 'passthrough',
     dist_author         => 'Mathias Weidner <mamawe@cpan.org>',
     dist_version_from   => 'lib/Algorithm/CheckDigits.pm',
