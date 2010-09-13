@@ -1,5 +1,8 @@
 Revision history for Perl extension CheckDigits.
 
+1.0.0 Mo 13. Sep 21:27:23 CEST 2010
+	- reworked Algorithm::CheckDigits::MXX_001
+
 0.90.0 Fr 10. Sep 15:52:51 CEST 2010
 	- added scripts/checkdigits.pl as sample script
 

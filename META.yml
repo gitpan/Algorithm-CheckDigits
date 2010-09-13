@@ -1,6 +1,6 @@
 ---
 name: Algorithm-CheckDigits
-version: 0.90.1
+version: 1.0.0
 author:
   - 'Mathias Weidner <mamawe@cpan.org>'
 abstract: Perl extension to generate and test check digits
@@ -15,7 +15,7 @@ build_requires:
 provides:
   Algorithm::CheckDigits:
     file: lib/Algorithm/CheckDigits.pm
-    version: 0.90.1
+    version: 1.0.0
   Algorithm::CheckDigits::M07_001:
     file: lib/Algorithm/CheckDigits/M07_001.pm
     version: 0.53

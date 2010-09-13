@@ -189,7 +189,7 @@ F<www.pruefziffernberechnung.de>,
 
 =head1 AUTHOR
 
-Mathias Weidner, E<lt>mathias@weidner.in-bad-schmiedeberg.deE<gt>
+Mathias Weidner, C<< <mamawe@cpan.org> >>
 
 =head1 COPYRIGHT AND LICENSE
 
