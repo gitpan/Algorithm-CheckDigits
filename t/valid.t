@@ -16,7 +16,7 @@ foreach my $tcase (@testcases) {
 		my $is_valid = $checkdigit->is_valid($tcase->[1]);
 		ok($is_valid
 		  ,1
-		  ,"is_valid $tcase->[0]"
+		  ,"is_valid $tcase->[0] $tcase->[1]"
 		  );
 		my $skip = not $is_valid;
 		skip($skip

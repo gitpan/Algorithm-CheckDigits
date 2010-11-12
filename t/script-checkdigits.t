@@ -6,7 +6,7 @@ use Test::More;
 plan tests => 5;
 
 my $perl = Probe::Perl->find_perl_interpreter;
-my $script = File::Spec->catfile(qw/scripts checkdigits.pl/); 
+my $script = File::Spec->catfile(qw/bin checkdigits.pl/); 
 
 # first check whether script with option -help or -man runs
 #

@@ -1,21 +1,22 @@
 ---
-name: Algorithm-CheckDigits
-version: 1.0.0
+abstract: 'Perl extension to generate and test check digits'
 author:
   - 'Mathias Weidner <mamawe@cpan.org>'
-abstract: Perl extension to generate and test check digits
-license: perl
-resources:
-  license: http://dev.perl.org/licenses/
-requires:
-  Test::More: 0
-  version: 0
 build_requires:
   Probe::Perl: 0
+  Test::More: 0
+configure_requires:
+  Module::Build: 0.36
+generated_by: 'Module::Build version 0.3603'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Algorithm-CheckDigits
 provides:
   Algorithm::CheckDigits:
     file: lib/Algorithm/CheckDigits.pm
-    version: 1.0.0
+    version: v1.1.0
   Algorithm::CheckDigits::M07_001:
     file: lib/Algorithm/CheckDigits/M07_001.pm
     version: 0.53
@@ -24,7 +25,7 @@ provides:
     version: 0.53
   Algorithm::CheckDigits::M10_001:
     file: lib/Algorithm/CheckDigits/M10_001.pm
-    version: 0.53
+    version: v1.1.0
   Algorithm::CheckDigits::M10_002:
     file: lib/Algorithm/CheckDigits/M10_002.pm
     version: 0.53
@@ -145,7 +146,8 @@ provides:
   Algorithm::CheckDigits::MXX_006:
     file: lib/Algorithm/CheckDigits/MXX_006.pm
     version: 0.53
-generated_by: Module::Build version 0.2808
-meta-spec:
-  url: http://module-build.sourceforge.net/META-spec-v1.2.html
-  version: 1.2
+requires:
+  version: 0
+resources:
+  license: http://dev.perl.org/licenses/
+version: v1.1.0

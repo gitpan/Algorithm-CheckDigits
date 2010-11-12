@@ -1,8 +1,14 @@
 CheckDigits version 0.01
 ========================
 
-This module provides several procedures to compute or validate check
+This library provides several modules to compute or validate check
 digits.
+
+There is a executable script that may be used at the command line to
+compute or validate check digits.
+
+Further there is a sample CGI script that may be used to setup a web
+service to validate check digits in your webbrowser.
 
 INSTALLATION
 
@@ -17,8 +23,9 @@ DEPENDENCIES
 
 This module requires no other modules and libraries.
 
+
 COPYRIGHT AND LICENCE
 
-Copyright (C) 2003 Mathias Weidner
+Copyright (C) 2003-2010 Mathias Weidner
 
 This module may be distributed under the same license as perl itself.

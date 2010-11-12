@@ -1,5 +1,7 @@
 .perltidyrc
+bin/checkdigits.pl
 Build.PL
+cgi-bin/checkdigits.cgi
 Changes
 lib/Algorithm/CheckDigits.pm
 lib/Algorithm/CheckDigits/M07_001.pm
@@ -49,7 +51,6 @@ Makefile.PL
 MANIFEST
 META.yml
 README
-scripts/checkdigits.pl
 t/checkdigits.t
 t/ecno.t
 t/esr5_ch.t
