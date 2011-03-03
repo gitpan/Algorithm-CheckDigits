@@ -5,11 +5,18 @@ use strict;
 use warnings;
 use integer;
 
-our $VERSION = '0.53';
+our $VERSION = '0.54';
 
 our @ISA = qw(Algorithm::CheckDigits);
 
 my @weight = ( 1,3,1,7,3,9,1 );
+
+my $value = 0;
+my %ctable = map { $_, $value++ } ( '0'..'9', 'A'..'Z' );
+
+my $re_alpha = qr/[B-DF-HJ-NP-TV-Z]/;
+my $re_alnum = qr/[0-9B-DF-HJ-NP-TV-Z]/;
+my $re_sedol = qr/(\d{6}|$re_alpha$re_alnum{5})(\d)?/;
 
 sub new {
 	my $proto = shift;
@@ -21,32 +28,42 @@ sub new {
 } # new()
 
 sub is_valid {
-	my ($self,$number) = @_;
-	if ($number =~ /^(\d{6})(\d)$/) {
+	my $self = shift;
+	my $number = uc shift;
+
+	if ($number =~ /^$re_sedol$/o) {
 		return $2 == $self->_compute_checkdigit($1);
 	}
 	return ''
 } # is_valid()
 
 sub complete {
-	my ($self,$number) = @_;
-	if ($number =~ /^\d{6}$/) {
+	my $self = shift;
+	my $number = uc shift;
+
+	if ($number =~ /^$re_sedol$/o) {
 		return  $number . $self->_compute_checkdigit($number);
 	}
-	return '';
+	else {
+		return '';
+	}
 } # complete()
 
 sub basenumber {
-	my ($self,$number) = @_;
-	if ($number =~ /^(\d{6})(\d)$/) {
+	my $self = shift;
+	my $number = uc shift;
+
+	if ($number =~ /^$re_sedol$/o) {
 		return $1 if ($2 == $self->_compute_checkdigit($1));
 	}
 	return '';
 } # basenumber()
 
 sub checkdigit {
-	my ($self,$number) = @_;
-	if ($number =~ /^(\d{6})(\d)$/) {
+	my $self = shift;
+	my $number = uc shift;
+
+	if ($number =~ /^$re_sedol$/o) {
 		return $2 if ($2 == $self->_compute_checkdigit($1));
 	}
 	return '';
@@ -56,19 +73,16 @@ sub _compute_checkdigit {
 	my $self   = shift;
 	my $number = shift;
 
-	if ($number =~ /^\d{6}$/) {
 
-		my @digits = split(//,$number);
-		my $sum    = 0;
+	my @digits = map { $ctable{$_} } split(//,$number);
+	my $sum    = 0;
 
-		for (my $i = 0; $i <= $#digits; $i++) {
+	for (my $i = 0; $i <= $#digits; $i++) {
 
-			$sum += $weight[$i] * $digits[$i];
+		$sum += $weight[$i] * $digits[$i];
 
-		}
-		return (10 - ($sum % 10) % 10);
 	}
-	return -1;
+	return (10 - ($sum % 10)) % 10;
 } # _compute_checkdigit()
 
 # Preloaded methods go here.
@@ -101,9 +115,36 @@ CheckDigits::M10_008 - compute check digits for Sedol (GB)
   
 =head1 DESCRIPTION
 
+Prior to March 2004 SEDOL codes solely consisted of numbers. Since March
+2004 SEDOL codes are a 7 character alphanumeric code.
+
+The structure of the alphanumeric SEDOL codes is one alpha character
+followed by 5 alphanumeric characters followed by the numerical check
+digit.
+
+=over 4
+
+=item Alpha characters are B-Z excluding vowels.
+
+=item Alphanumerical characters are 0-9, B-Z excluding vowels.
+
+=item Numerical Characters are 0-9.
+
+=back
+
+No SEDOL code will be issued without the first alpha character. Active
+numerical SEDOL codes issued prior to March 2004 remain valid.
+
 =head2 ALGORITHM
 
 =over 4
+
+=item 0
+
+All characters are assigned a numerical value from 0 to 35 where the
+characters '0' to '9' get 0 to 9, 'B' to 'Z' get 11 to 35 with the
+position of the vowels kept empty (for instance 'D' gets 13, 'F' gets
+15). 
 
 =item 1
 
@@ -140,12 +181,16 @@ of C<$number>.
 Returns the complete number with check digit or '' if C<$number>
 does not consist solely of digits and spaces.
 
+This function always returns the SEDOL code in upper case.
+
 =item basenumber($number)
 
 Returns the basenumber of C<$number> if C<$number> has a valid check
 digit.
 
 Return '' otherwise.
+
+This function always returns the SEDOL base number in upper case.
 
 =item checkdigit($number)
 
@@ -168,6 +213,6 @@ Mathias Weidner, C<< <mamawe@cpan.org> >>
 
 L<perl>,
 L<CheckDigits>,
-F<www.pruefziffernberechnung.de>.
+F<www.londonstockexchange.com> Masterfile technical specifications V7.0.
 
 =cut

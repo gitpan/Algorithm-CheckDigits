@@ -16,7 +16,7 @@ name: Algorithm-CheckDigits
 provides:
   Algorithm::CheckDigits:
     file: lib/Algorithm/CheckDigits.pm
-    version: v1.1.0
+    version: v1.1.1
   Algorithm::CheckDigits::M07_001:
     file: lib/Algorithm/CheckDigits/M07_001.pm
     version: 0.53
@@ -43,7 +43,7 @@ provides:
     version: 0.53
   Algorithm::CheckDigits::M10_008:
     file: lib/Algorithm/CheckDigits/M10_008.pm
-    version: 0.53
+    version: 0.54
   Algorithm::CheckDigits::M10_009:
     file: lib/Algorithm/CheckDigits/M10_009.pm
     version: 0.53
@@ -150,4 +150,4 @@ requires:
   version: 0
 resources:
   license: http://dev.perl.org/licenses/
-version: v1.1.0
+version: v1.1.1

@@ -61,6 +61,7 @@ t/nip.t
 t/pod-coverage.t
 t/pod.t
 t/script-checkdigits.t
+t/sedol.t
 t/upc.t
 t/valid.data
 t/valid.t

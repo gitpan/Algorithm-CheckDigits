@@ -1,5 +1,12 @@
 Revision history for Perl extension CheckDigits.
 
+1.1.1 Do 3. Mar 10:16:59 CET 2011
+	- Reworked Algorithm::CheckDigits::M10_008 (sedol) to cop with
+	  alphanumerical SEDOL codes that are in use since March 2004.
+	- There was also a flaw in the computation of the checksum that
+	  provided 10 instead of 0.
+	- This closes bug number #66340 on CPAN.
+
 1.1.0 Fr 12. Nov 19:10:39 CET 2010
 	- reworked Algorithm::CheckDigits::M10_001, added CUSIP
 	- moved scripts/checkdigits.pl to bin/checkdigits.pl
