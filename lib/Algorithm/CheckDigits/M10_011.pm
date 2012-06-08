@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use integer;
 
-our $VERSION = '0.53';
+our $VERSION = '1.1.2';
 
 our @ISA = qw(Algorithm::CheckDigits);
 
@@ -56,7 +56,7 @@ sub _compute_checkdigit {
 	my $number = shift;
 	$number =~ s/\s//g;
 	$number =~ s/^1z//i;
-	$number =~ y/[A-Za-z]/[2-9][0-9][0-7][2-9][0-9][0-7]/;
+	$number =~ y/A-Za-z/2-90-90-72-90-90-7/;
 	if ($number =~ /^([0-9]*)$/) {
 		my @digits = split(//,$number);
 		my $even = 0;

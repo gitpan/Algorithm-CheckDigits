@@ -65,3 +65,4 @@ t/sedol.t
 t/upc.t
 t/valid.data
 t/valid.t
+META.json

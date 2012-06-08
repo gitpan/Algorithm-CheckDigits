@@ -10,6 +10,7 @@ my $builder = Module::Build->new(
         'Probe::Perl'   => 0,
         'Test::More'    => 0,
     },
+    configure_requires  => { 'Module::Build' => 0.38 },
     create_makefile_pl  => 'small',
     dist_author         => 'Mathias Weidner <mamawe@cpan.org>',
     dist_version_from   => 'lib/Algorithm/CheckDigits.pm',

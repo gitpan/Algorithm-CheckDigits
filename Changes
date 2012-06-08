@@ -1,5 +1,12 @@
 Revision history for Perl extension CheckDigits.
 
+1.1.2 Fr 8. Jun 09:22:35 CEST 2012
+	- added '=encoding iso-8859-1' to M11_004.pm, M11_006.pm,
+	  MBase_002.pm, MXX_003.pm, MXX_006.pm. This should prevent
+	  failures in the processing of the POD that contain non-ASCII
+	  characters.
+	- corrected search and replacement lists in M10_011.pm
+
 1.1.1 Do 3. Mar 10:16:59 CET 2011
 	- Reworked Algorithm::CheckDigits::M10_008 (sedol) to cop with
 	  alphanumerical SEDOL codes that are in use since March 2004.

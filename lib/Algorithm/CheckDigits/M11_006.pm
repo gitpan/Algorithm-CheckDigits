@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use integer;
 
-our $VERSION = '0.53';
+our $VERSION = '1.1.2';
 
 our @ISA = qw(Algorithm::CheckDigits);
 
@@ -80,6 +80,8 @@ sub _compute_checkdigits {
 
 1;
 __END__
+
+=encoding iso-8859-1
 
 =head1 NAME
 
