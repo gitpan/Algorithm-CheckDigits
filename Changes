@@ -1,5 +1,9 @@
 Revision history for Perl extension CheckDigits.
 
+1.2.0 Fr 8. Jun 11:19:25 CEST 2012
+	- reworked Algorithm::CheckDigits::MXX_001.pm, added ABA routing
+	  numbers
+
 1.1.2 Fr 8. Jun 09:22:35 CEST 2012
 	- added '=encoding iso-8859-1' to M11_004.pm, M11_006.pm,
 	  MBase_002.pm, MXX_003.pm, MXX_006.pm. This should prevent

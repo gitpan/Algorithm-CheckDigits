@@ -34,7 +34,7 @@
    "provides" : {
       "Algorithm::CheckDigits" : {
          "file" : "lib/Algorithm/CheckDigits.pm",
-         "version" : "v1.1.2"
+         "version" : "v1.2.0"
       },
       "Algorithm::CheckDigits::M07_001" : {
          "file" : "lib/Algorithm/CheckDigits/M07_001.pm",
@@ -186,7 +186,7 @@
       },
       "Algorithm::CheckDigits::MXX_001" : {
          "file" : "lib/Algorithm/CheckDigits/MXX_001.pm",
-         "version" : "0.53"
+         "version" : "v1.2.0"
       },
       "Algorithm::CheckDigits::MXX_002" : {
          "file" : "lib/Algorithm/CheckDigits/MXX_002.pm",
@@ -215,5 +215,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "v1.1.2"
+   "version" : "v1.2.0"
 }

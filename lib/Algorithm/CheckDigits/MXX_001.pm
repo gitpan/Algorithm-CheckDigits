@@ -5,31 +5,48 @@ use strict;
 use warnings;
 use integer;
 
-our $VERSION = '0.53';
+our $VERSION = '1.2.0';
 
 our @ISA = qw(Algorithm::CheckDigits);
 
-my @weight = ( 7,3,1,7,3,1,7,3,1,7,3,1,7,3,1,7,3,1,7,3,1,7,3,1, );
+my %weight = (
+	'aba_rn'  => [ 3,7,1,3,7,1,3,7,1, ],
+	'mxx-001' => [ 7,3,1,7,3,1,7,3,1,7,3,1,7,3,1,7,3,1,7,3,1,7,3,1, ],
+	'pa_de'   => [ 7,3,1,7,3,1,7,3,1,7,3,1,7,3,1,7,3,1,7,3,1,7,3,1, ],
+);
 
 sub new {
-	my $proto = shift;
-	my $type  = shift;
+	my ($proto, $type) = @_;
 	my $class = ref($proto) || $proto;
 	my $self  = bless({}, $class);
-	$self->{type} = lc($type);
+	$self->{type}   = lc($type);
+	$self->{weight} = $weight{$type};
+	if ('aba_rn' eq $type) {
+		$self->{complement} = 1;
+	}
 	return $self;
 } # new()
 
 sub is_valid {
 	my ($self,$number) = @_;
-	if ($number =~ /^\d{9}(\d).<+\d{6}(\d)<+\d{6}(\d)<+(\d)$/) {
-		my @cd = _compute_checkdigit($number);
-		return 1 if (   $cd[0] == $1 and $cd[1] == $2
-		            and $cd[2] == $3 and $cd[3] == $4
-			    );
+	if ('aba_rn' eq $self->{type}) {
+		$number =~ y/[0-9]//cd;
+		if ($number =~ /^(\d{8})(\d)$/) {
+			my $ccd = $self->_compute($1);
+			my $pcd = $2;
+			return 1 if ($ccd == $pcd);
+		}
 	}
-	elsif ($number =~ /^(\d+)(\d)$/) {
-		return 1 if $2 == _compute($1);
+	else {
+		if ($number =~ /^\d{9}(\d).<+\d{6}(\d)<+\d{6}(\d)<+(\d)$/) {
+			my @cd = $self->_compute_checkdigit($number);
+			return 1 if (   $cd[0] == $1 and $cd[1] == $2
+		            	and $cd[2] == $3 and $cd[3] == $4
+			    	);
+		}
+		elsif ($number =~ /^(\d+)(\d)$/) {
+			return 1 if $2 == $self->_compute($1);
+		}
 	}
 	return 0;
 } # is_valid()
@@ -37,11 +54,11 @@ sub is_valid {
 sub complete {
 	my ($self,$number) = @_;
 	if ($number =~ /^(\d{9}).(.<+\d{6}).(<+\d{6}).(<+).$/) {
-		my @cd = _compute_checkdigit($number);
+		my @cd = $self->_compute_checkdigit($number);
 		return $1 . $cd[0] . $2 . $cd[1] . $3 . $cd[2] . $4 .  $cd[3];
 	}
 	elsif ($number =~ /^(\d+)$/) {
-		return $number . _compute($number);
+		return $number . $self->_compute($number);
 	}
 	return '';
 } # complete()
@@ -49,14 +66,14 @@ sub complete {
 sub basenumber {
 	my ($self,$number) = @_;
 	if ($number =~ /^(\d{9})(\d)(.<+\d{6})(\d)(<+\d{6})(\d)(<+)(\d)$/) {
-		my @cd = _compute_checkdigit($number);
+		my @cd = $self->_compute_checkdigit($number);
 		return $1 . '_' . $3 . '_' . $5 . '_' . $7 . '_'
 			if (   $cd[0] == $2 and $cd[1] == $4
 		           and $cd[2] == $6 and $cd[3] == $8
 			   );
 	}
 	elsif ($number =~ /^(\d+)(\d)$/) {
-		return $1 if $2 == _compute($1);
+		return $1 if $2 == $self->_compute($1);
 	}
 	return '';
 } # basenumber()
@@ -64,36 +81,40 @@ sub basenumber {
 sub checkdigit {
 	my ($self,$number) = @_;
 	if ($number =~ /^\d{9}(\d).<+\d{6}(\d)<+\d{6}(\d)<+(\d)$/) {
-		my @cd = _compute_checkdigit($number);
+		my @cd = $self->_compute_checkdigit($number);
 		return join('<',@cd)
 			if (   $cd[0] == $1 and $cd[1] == $2
 		           and $cd[2] == $3 and $cd[3] == $4
 			   );
 	}
 	elsif ($number =~ /^(\d+)(\d)$/) {
-		return _compute($1);
+		return $self->_compute($1);
 	}
 	return '';
 } # checkdigit()
 
 sub _compute {
-	my $digits = shift;
+	my ($self,$digits) = @_;
 	my ($sum,$i) = (0,0);
+	my @w = @{$self->{weight}};
 	while ($digits =~ /(\d)/g) {
-	        $sum += $1 * $weight[$i++];
+	        $sum += $1 * $w[$i++];
+	}
+	if ($self->{complement}) {
+		return (10 - $sum % 10) % 10;
 	}
 	return $sum % 10;
 } # _compute()
 
 sub _compute_checkdigit {
-	my $number = shift;
+	my ($self,$number) = @_;
 
 	if ($number =~ /^(\d{9})..<+(\d{6}).<+(\d{6}).<+.$/) {
 		my @cd;
-		$cd[0] = _compute($1);
-		$cd[1] = _compute($2);
-		$cd[2] = _compute($3);
-		$cd[3] = _compute($1 . $cd[0] . $2 . $cd[1] . $3 . $cd[2]);
+		$cd[0] = $self->_compute($1);
+		$cd[1] = $self->_compute($2);
+		$cd[2] = $self->_compute($3);
+		$cd[3] = $self->_compute($1 . $cd[0] . $2 . $cd[1] . $3 . $cd[2]);
 		return @cd;
 	}
 	return ();
@@ -106,7 +127,8 @@ __END__
 
 =head1 NAME
 
-CheckDigits::MXX_001 - compute check digits for Personalausweis (DE)
+CheckDigits::MXX_001 - compute check digits for german Personalausweis
+(pa_de) or ABA routing numbers (aba_rn)
 
 =head1 SYNOPSIS
 
@@ -130,6 +152,11 @@ CheckDigits::MXX_001 - compute check digits for Personalausweis (DE)
 
   $bn = $pa->basenumber('2406055684D<<6810203<0705109<6');
   # $bn = '240605568_D<<681020_<070510_<_'
+
+  $aba = CheckDigits('aba_rn');
+  if ($aba->is_valid('789456124')) {
+       # do something
+  }
   
 =head1 DESCRIPTION
 
@@ -139,7 +166,8 @@ CheckDigits::MXX_001 - compute check digits for Personalausweis (DE)
 
 =item 1
 
-Beginning left all digits are weighted with 7,3,1,7,3,1,...
+Beginning left all digits are weighted with 7,3,1,7,3,1,... for I<pa_de>
+or 3,7,1,3,7,1,3,7,1 for I<aba_rn>.
 
 =item 2
 
@@ -147,16 +175,20 @@ The sum of those products is computed.
 
 =item 3
 
-The checksum is the last digit of the sum from step 2 (modulo 10).
+For I<pa_de> the checksum is the last digit of the sum from step 2 (modulo 10).
+
+For I<aba_rn> the checksum is the difference of the sum from step 2 to the
+next multiple of 10.
 
 =item 4
 
-Step 1 to 3 is performed for every part of the number and for all 3
+For the german Personalausweis step 1 to 3 is performed for every part of
+the number and for all 3
 parts including the particular checkdigit to compute the total
 checksum.
 
 If the number solely consists of digits, the checksum is just computed
-once according to algorithm above given.
+once according to algorithm given above.
 
 =back
 
@@ -206,15 +238,14 @@ Mathias Weidner, C<< <mamawe@cpan.org> >>
 =head1 THANKS
 
 Aaron W. West pointed me to a fault in the computing of the check
-digit.
+digit. Jim Hickstein made me aware of the ABA routing numbers.
 
 =head1 SEE ALSO
 
 L<perl>,
 L<CheckDigits>,
 F<www.pruefziffernberechnung.de>,
-F<www.export911.com/e911/coding/upcChar.htm>,
-F<www.adams1.com/pub/russadam/upccode.html>,
-F<http://www.upcdatabase.com>.
+F<http://answers.google.com/answers/threadview/id/43619.html>,
+F<http://www.brainjar.com/js/validation/>
 
 =cut
