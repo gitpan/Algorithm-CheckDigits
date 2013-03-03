@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use integer;
 
-our $VERSION = '0.53';
+use version; our $VERSION = qv('1.2.1');
 
 our @ISA = qw(Algorithm::CheckDigits);
 
@@ -137,33 +137,33 @@ and Contribution Identifier)
 
 =over 4
 
-=item 0
+=item S<0>
 
 In the string describing the number all letters (A-Z) are replaced
 with numbers 10-35 accordingly. All other non-numbers are replaced by
 36.
 
-=item 1
+=item S<1>
 
 Beginning right the numbers at all odd positions are added.
 
-=item 2
+=item S<2>
 
 The sum from step 1 is multiplied by 3.
 
-=item 3
+=item S<3>
 
 Beginning right the numbers at all even positions are added.
 
-=item 4
+=item S<4>
 
 The sums from step 2 and 3 are added.
 
-=item 5
+=item S<5>
 
 The sum from step 4 is taken modulo 37.
 
-=item 6
+=item S<6>
 
 The checksum is 37 minus the sum from step 5 where numbers from 10 to
 35 are represented by 'A' to 'Z' accordingly and 36 is represented by

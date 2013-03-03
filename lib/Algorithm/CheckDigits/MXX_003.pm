@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use integer;
 
-our $VERSION = '1.1.2';
+use version; our $VERSION = qv('1.2.1');
 
 our @ISA = qw(Algorithm::CheckDigits);
 
@@ -136,21 +136,21 @@ The algorithm is a variation of the Verhoeff scheme.
 
 =over 4
 
-=item 0
+=item S<0>
 
 All letters are changed to numbers.
 
-=item 1
+=item S<1>
 
 All digits are permutated according to a permutation table.
 
-=item 2
+=item S<2>
 
 The permutated digits are combined using a diëder table. The first
 with the second, the result with the third, this result with the
 fourth and so on.
 
-=item 3
+=item S<3>
 
 The result of the last combination in the diëder table is in such a
 way combined that the result is 0 (zero). The number used for this

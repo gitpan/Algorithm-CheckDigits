@@ -8,7 +8,7 @@ build_requires:
 configure_requires:
   Module::Build: 0.38
 dynamic_config: 1
-generated_by: 'Module::Build version 0.38, CPAN::Meta::Converter version 2.110440'
+generated_by: 'Module::Build version 0.4003, CPAN::Meta::Converter version 2.120921'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -17,7 +17,7 @@ name: Algorithm-CheckDigits
 provides:
   Algorithm::CheckDigits:
     file: lib/Algorithm/CheckDigits.pm
-    version: v1.2.0
+    version: v1.2.1
   Algorithm::CheckDigits::M07_001:
     file: lib/Algorithm/CheckDigits/M07_001.pm
     version: 0.53
@@ -44,7 +44,7 @@ provides:
     version: 0.53
   Algorithm::CheckDigits::M10_008:
     file: lib/Algorithm/CheckDigits/M10_008.pm
-    version: v1.1.1
+    version: v1.2.1
   Algorithm::CheckDigits::M10_009:
     file: lib/Algorithm/CheckDigits/M10_009.pm
     version: 0.53
@@ -119,7 +119,7 @@ provides:
     version: 0.53
   Algorithm::CheckDigits::M97_002:
     file: lib/Algorithm/CheckDigits/M97_002.pm
-    version: 0.53
+    version: v1.2.1
   Algorithm::CheckDigits::MBase_001:
     file: lib/Algorithm/CheckDigits/MBase_001.pm
     version: 0.53
@@ -128,7 +128,7 @@ provides:
     version: v1.1.2
   Algorithm::CheckDigits::MBase_003:
     file: lib/Algorithm/CheckDigits/MBase_003.pm
-    version: 0.53
+    version: v1.2.1
   Algorithm::CheckDigits::MXX_001:
     file: lib/Algorithm/CheckDigits/MXX_001.pm
     version: v1.2.0
@@ -137,7 +137,7 @@ provides:
     version: 0.53
   Algorithm::CheckDigits::MXX_003:
     file: lib/Algorithm/CheckDigits/MXX_003.pm
-    version: v1.1.2
+    version: v1.2.1
   Algorithm::CheckDigits::MXX_004:
     file: lib/Algorithm/CheckDigits/MXX_004.pm
     version: 0.53
@@ -151,4 +151,4 @@ requires:
   version: 0
 resources:
   license: http://dev.perl.org/licenses/
-version: v1.2.0
+version: v1.2.1

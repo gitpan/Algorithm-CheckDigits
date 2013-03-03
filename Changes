@@ -1,5 +1,14 @@
 Revision history for Perl extension CheckDigits.
 
+1.2.1 Sun Mar  3 22:51:45 CET 2013
+	- changed list items in POD from 0, 1, ... to S<0>, S<1>, ...
+	  according to a thread on the perl5 porters list
+	  (www.nntp.perl.org/group/perl.perl5.porters/2013/02/msg199355.html)
+
+	  David Wheeler: "Lists must start with 1. When it saw the 0, it
+	  assumed it was a definition list, so the numbers after that
+	  don't look right."
+
 1.2.0 Fr 8. Jun 11:19:25 CEST 2012
 	- reworked Algorithm::CheckDigits::MXX_001.pm, added ABA routing
 	  numbers

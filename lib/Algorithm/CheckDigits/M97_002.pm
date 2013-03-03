@@ -6,9 +6,7 @@ use strict;
 use warnings;
 use integer;
 
-#use Math::BigInt;
-
-our $VERSION = '0.53';
+use version; our $VERSION = qv('1.2.1');
 
 our @ISA = qw(Algorithm::CheckDigits);
 
@@ -149,21 +147,21 @@ Account Number (IBAN)
 
 =over 4
 
-=item 0
+=item S<0>
 
 The IBAN number must be prepared. The first two letters and the
 checksum will be moved to the right end. The letters are substituted
 according to the substitute table and the checksum is set to '00'.
 
-=item 1
+=item S<1>
 
 The whole number is taken modulo 97.
 
-=item 2
+=item S<2>
 
-The checksum is difference between 98 and the sum of step 2.
+The checksum is difference between 98 and the result of step 1.
 
-=item 3
+=item S<3>
 
 If the checksum is smaller then 10, a leading zero will be
 prepended.

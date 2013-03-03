@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use integer;
 
-use version; our $VERSION = qv('1.1.1');
+use version; our $VERSION = qv('1.2.1');
 
 our @ISA = qw(Algorithm::CheckDigits);
 
@@ -139,23 +139,23 @@ numerical SEDOL codes issued prior to March 2004 remain valid.
 
 =over 4
 
-=item 0
+=item S<0>
 
 All characters are assigned a numerical value from 0 to 35 where the
 characters '0' to '9' get 0 to 9, 'B' to 'Z' get 11 to 35 with the
 position of the vowels kept empty (for instance 'D' gets 13, 'F' gets
 15). 
 
-=item 1
+=item S<1>
 
 Beginning left all numbers are weighted with 1,3,1,7,3,9 and 1
 (checkdigit)
 
-=item 2
+=item S<2>
 
 The sum of all products is computed.
 
-=item 3
+=item S<3>
 
 The check digit is the difference of the sum from step 3 to the next
 multiple of 10.
