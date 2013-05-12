@@ -8,7 +8,7 @@ build_requires:
 configure_requires:
   Module::Build: 0.38
 dynamic_config: 1
-generated_by: 'Module::Build version 0.4003, CPAN::Meta::Converter version 2.120921'
+generated_by: 'Module::Build version 0.38, CPAN::Meta::Converter version 2.110440'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -17,7 +17,7 @@ name: Algorithm-CheckDigits
 provides:
   Algorithm::CheckDigits:
     file: lib/Algorithm/CheckDigits.pm
-    version: v1.2.1
+    version: v1.3.0
   Algorithm::CheckDigits::M07_001:
     file: lib/Algorithm/CheckDigits/M07_001.pm
     version: 0.53
@@ -151,4 +151,4 @@ requires:
   version: 0
 resources:
   license: http://dev.perl.org/licenses/
-version: v1.2.1
+version: v1.3.0

@@ -11,6 +11,7 @@ my $algorithm = param('algorithm');
 my $number    = param('number');
 my $ok = '';
 my @all_algorithms;
+my %all_labels;
 
 if ($ENV{ALL_ALGORITHMS}) {
     @all_algorithms = split /,/, $ENV{ALL_ALGORITHMS};
@@ -18,6 +19,8 @@ if ($ENV{ALL_ALGORITHMS}) {
 else {
     @all_algorithms = Algorithm::CheckDigits::method_list();
 }
+
+%all_labels = Algorithm::CheckDigits::method_descriptions(@all_algorithms);
 
 if ($number and $algorithm) {
     my $cd = CheckDigits($algorithm);
@@ -34,8 +37,13 @@ print header(),
       start_html(),
       start_form(),
       textfield('number'),
-      popup_menu('algorithm', \@all_algorithms),
+      popup_menu(-name   => 'algorithm',
+      		 -values => \@all_algorithms,
+		 -labels => \%all_labels),
       submit('check'),
       end_form(),
       $ok,
-      end_html();
+      end_html(),
+      "\n";
+
+exit 0;

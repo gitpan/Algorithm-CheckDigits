@@ -19,8 +19,16 @@ my $cmd = shift || 'check';
 pod2usage(0) unless $cmd;
 
 if ($cmd =~ /^list(_alg(orithms)?)?$/i) {
+    my %descr = Algorithm::CheckDigits::method_descriptions();
     for my $method (Algorithm::CheckDigits->method_list()) {
-        print $method, "\n";
+        print $method, ': ', $descr{$method}, "\n";
+    }
+    exit 0;
+}
+if ($cmd =~ /^descr(ibe)?$/i) {
+    while (my $method = shift @ARGV) {
+        print join(': ',Algorithm::CheckDigits->method_descriptions($method))
+            , "\n";
     }
     exit 0;
 }
@@ -93,6 +101,7 @@ This document describes checkdigits version 0.0.1
    checkdigit      - return checkdigit belonging to number
    complete        - return number completed with checkdigit
    list_algorithms - list all known algorithms
+   describe        - describe the given algorithms
 
 =head1 DESCRIPTION
 
@@ -123,9 +132,17 @@ compute any checkdigit.
 When called with this command, the program will take the number compute the
 appropriate checkdigits and return the complete number with checkdigits.
 
+=head3 describe
+
+Called with this command, the program will list the algorithm handles given on
+the command line with a short description or the word "unknown" for any
+unknown algorithm. See command I<list_algorithms> for a list of known
+algorithms.
+
 =head3 list_algorithms
 
-Called with this command, the program will list all known algorithms and exit.
+Called with this command, the program will list all known algorithms together
+with a short description and then exit.
 
 =head1 DIAGNOSTICS
 

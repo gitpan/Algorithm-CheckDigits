@@ -49,6 +49,7 @@ lib/Algorithm/CheckDigits/MXX_005.pm
 lib/Algorithm/CheckDigits/MXX_006.pm
 Makefile.PL
 MANIFEST
+META.json
 META.yml
 README
 t/checkdigits.t
@@ -58,6 +59,11 @@ t/iban.t
 t/imei.t
 t/isbn13.t
 t/nip.t
+t/plugina.t
+t/pluginb-without.t
+t/pluginb.t
+t/PluginLibA.pm
+t/PluginLibB.pm
 t/pod-coverage.t
 t/pod.t
 t/script-checkdigits.t
@@ -65,4 +71,3 @@ t/sedol.t
 t/upc.t
 t/valid.data
 t/valid.t
-META.json

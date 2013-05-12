@@ -19,6 +19,7 @@ my $cd = {
 };
 
 $cd->{'issn'} = $cd->{'isbn'};
+$cd->{'vatrn_pt'} = $cd->{'ustid_pt'};
 
 sub new {
 	my $proto = shift;
